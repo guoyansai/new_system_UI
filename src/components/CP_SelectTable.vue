@@ -29,6 +29,17 @@
                 placeholder=""
               />
             </div>
+            
+            <!-- <form method="POST">
+              <div class="form-group">
+                <label for="name">Email address</label>
+                <input class="form-control" id="name" name="name" aria-describedby="emailHelp">
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form> -->
+
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -54,8 +65,8 @@
           @click="getCategoryItem(item,key)"
           :class=" {active:key == itemKey}">
           
-            <td>{{item.partition_id}}</td>
-            <td>{{item.partition_name}}</td>
+            <td>{{key}}</td>
+            <td>{{item}}</td>
           </tr>
       
         </tbody>
@@ -69,9 +80,9 @@
 
 <script>
 import $ from "jquery";
-//connect to server
-var socket = io("http://localhost:3030");
 
+var socket = io("http://localhost:3030");
+var api = "http://127.0.0.1:1880/PARATION";
 export default {
     name: "cpSelectTable",
 
@@ -86,9 +97,13 @@ export default {
         };
     },
     created() {
-        //當前正在DI點清單
     },
     mounted() {
+        uibuilder.start();
+        uibuilder.onChange("msg", function (msg) {
+            console.log(msg);
+        });
+
         this.getCategory();
 
         setTimeout(() => {
@@ -107,10 +122,6 @@ export default {
         socket.on("Category", function (obj) {
             list.push(obj);
         });
-
-        // uibuilder.onChange("msg", (newMsg) => {
-        //     console.info("Msg received from Node-RED server in Home:", newMsg);
-        // });
     },
 
     methods: {
@@ -127,23 +138,36 @@ export default {
         },
 
         getCategory() {
-            var api = "http://127.0.0.1:1880/PARATION";
             this.$http.get(api).then((response) => {
-                console.log(response);
-                var resp = response.data;
-                this.addCategoryList = resp;
-                console.log(this.addCategoryList);
+               console.log(response.data);
+                var resp = response.data.partition_name;
+                console.log(resp);
+                var list = this.addCategoryList;
+                list = [];
+                list.push(resp);
             });
         },
 
         addCategory() {
-            var v = this;
-            var name = v.inp_name;
-            //v.addCategoryList.push(name);
+            var name = this.inp_name;
+            var list = this.addCategoryList;
+            if (name === null || name === "") {
+                alert("naame cannot be blank");
+                return;
+            }
+            this.$http
+                .post(api, name)
+
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             $("#CP_SelectTable").modal("hide");
-            v.inp_name = "";
-            //var data = JSON.stringify(v.addCategoryList);
-            // localStorage.setItem("addCategoryList", data);
+            list.push(name);
+            name = "";
+
             socket.emit("addCategory", name);
         },
         getCategoryItem(item, key) {
