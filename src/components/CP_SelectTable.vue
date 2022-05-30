@@ -84,18 +84,17 @@
         <tbody >
           <tr v-for="(item, key) in addCategoryList" 
           ref="Categorytr"
-          @click="getCategoryItem(item)"
-          :class=" {active:item.partition_id == itemKey}">
+          @click="getCategoryItem(item,$event)">
           
             <!-- <td>{{item.partition_id}}</td> -->
             <td>{{key + 1}}</td>
             <td>{{item.partition_name}}</td>
             <td>
-              <img class="icon" src="../icons/edit.svg" 
+              <img src="../icons/edit.svg" class="icon" id="editBtn"
                    data-toggle="modal" data-target="#onEdit_Model" 
-                   @click="editCategory(item)" >
-              <img class="icon" src="../icons/x.svg" 
-                @click="deleteSubmit(item)">
+                   @click="editCategory(item ,key)" >
+              <img src="../icons/x.svg" class="icon" id="deleteBtn"
+               @click="deleteSubmit(item)">
             </td>
           </tr>
       
@@ -123,16 +122,14 @@ export default {
             onEdit_id: null,
             itemKey: -1,
             addCategoryList: [],
-            isExist: false,
             CategoryList: "",
             CategoryCount: 1,
+            currentCategoryName:null,
             selected: "",
         };
     },
-   
-    created() {
-      
-    },
+
+    created() {},
     mounted() {
         uibuilder.start();
         uibuilder.onChange("msg", function (msg) {
@@ -179,30 +176,43 @@ export default {
                 this.addCategoryList = resp;
             });
         },
-        existName() {
-            var list = this.addCategoryList;
-            var name = this.inp_name;
-            list.forEach((element) => {
-                var n = element.partition_name;
-                if (n === name) {
-                    this.$swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: `${name} is existed`,
-                    });
-                    this.isExist = true;
-                }
-            });
-            this.inp_name = "";
-            $("#CP_SelectTable").modal("hide");
-            this.reload();
-             console.log(this.isExist);
-           
+
+        getCategoryItem(item,e) {
+          var td  =e.target.parentElement.parentElement
+          td.style.backgroundColor  = "red";
+            this.currentCategoryName = td;
+            
+            console.log(this.currentCategoryName);
+            // this.$bus.$emit("currentCategoryName", currentCategoryName);
+            // var currentTab = this.selected;
+            // //根據當前的item 渲染出 DI /AI /DPS ..點位名稱
+            // //目前所有清單的資料
+            // var PointType = JSON.parse(localStorage.getItem("addPointList"));
+            // if (PointType !== null || "") {
+            //     if (currentTab === "") {
+            //         currentTab = "DI";
+            //     }
+            //     PointType.forEach((element) => {
+            //         var currentCategory = element[0].currentCategory;
+            //         var currentPointType = element[0].currentPointType;
+            //         if (currentCategory === currentCategoryName) {
+            //             if (currentTab === currentPointType) {
+            //                 this.$bus.$emit("currentPoints", element);
+            //             }
+            //         }
+            //     });
+            // }
+            // //  Category
+            // this.itemKey = key;
+            // var list = this.CategoryList;
+            // list = item;
+            // this.$bus.$emit("getCategoryItem", list);
         },
+
         addCategory() {
             var name = this.inp_name;
             var list = this.addCategoryList;
-
+            var isExist = false;
             if (name === null || name === "") {
                 this.$swal.fire({
                     icon: "error",
@@ -211,10 +221,19 @@ export default {
                 });
                 return;
             }
-
-            this.existName();
-             console.log(this.isExist);
-            if (this.isExist === false) {
+            //Check if it has the same name
+            list.forEach((element) => {
+                var n = element.partition_name;
+                if (n === name) {
+                    isExist = true;
+                    this.$swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: `${name} is existed`,
+                    });
+                }
+            });
+            if (isExist === false) {
                 this.$http
                     .post(api, {
                         // partition_id: id,
@@ -234,17 +253,21 @@ export default {
 
                 socket.emit("addCategory", name);
             }
-
-           
         },
 
-        editCategory(item) {
+        editCategory(item, key) {
+          
+            // 
+           console.log( this.currentCategoryName);
+           // console.log(this.currentCategoryName);
             this.onEdit_id = item.partition_id;
-            console.log(this.onEdit_id);
+          
             this.onEdit_name = item.partition_name;
         },
         editSubmit() {
             var value = document.getElementById("onEditNameInp").value;
+            
+           
             var id = this.onEdit_id;
             var name = this.onEdit_name;
             var list = this.addCategoryList;
@@ -268,6 +291,7 @@ export default {
                         console.log("Error: Update data ", error);
                     });
                 $("#onEdit_Model").modal("hide");
+                this.getCategory();
             }
         },
         deleteSubmit(item) {
@@ -298,6 +322,7 @@ export default {
                             .delete(api, { data })
                             .then((response) => {
                                 console.log(response);
+                                this.getCategory();
                             })
                             .catch(function (error) {
                                 console.log("Error: Delete data ", error);
@@ -305,33 +330,7 @@ export default {
                     }
                 });
         },
-        getCategoryItem(item) {
-            // var currentCategoryName = item;
-            // this.$bus.$emit("currentCategoryName", currentCategoryName);
-            // var currentTab = this.selected;
-            // //根據當前的item 渲染出 DI /AI /DPS ..點位名稱
-            // //目前所有清單的資料
-            // var PointType = JSON.parse(localStorage.getItem("addPointList"));
-            // if (PointType !== null || "") {
-            //     if (currentTab === "") {
-            //         currentTab = "DI";
-            //     }
-            //     PointType.forEach((element) => {
-            //         var currentCategory = element[0].currentCategory;
-            //         var currentPointType = element[0].currentPointType;
-            //         if (currentCategory === currentCategoryName) {
-            //             if (currentTab === currentPointType) {
-            //                 this.$bus.$emit("currentPoints", element);
-            //             }
-            //         }
-            //     });
-            // }
-            // //  Category
-            // this.itemKey = key;
-            // var list = this.CategoryList;
-            // list = item;
-            // this.$bus.$emit("getCategoryItem", list);
-        },
+        
     },
 };
 </script>
@@ -344,7 +343,8 @@ tbody tr {
     cursor: pointer;
     color: red;
 }
-/* .icon:hover {
-    background: red;
-} */
+.icon:hover {
+    color: white;
+    background-color: yello;
+}
 </style>
