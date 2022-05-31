@@ -129,17 +129,18 @@ export default {
     name: "cpSelectTable",
     inject: ["reload"], //注入依赖
     data() {
-        return {
+         return {
             inp_name: "",
             onEdit_name: "",
             onEdit_id: null,
             itemKey: -1,
             addCategoryList: [],
+            addCategoryItem:"",
             CategoryList: "",
             CategoryCount: 1,
             currentCategoryName: null,
             selected: "",
-        };
+       };
     },
     updated() {
       
@@ -152,12 +153,23 @@ export default {
         // X
     },
     mounted() {
-        uibuilder.start();
-        uibuilder.onChange("msg", function (msg) {
-            console.log(msg);
-        });
-
-        setTimeout(() => {
+      this.getCategory();
+      //get old data list
+        socket.on("allCategory",(objs)=>{
+          console.log(objs)
+          this.addCategoryList = []
+          this.addCategoryList = objs
+          
+        console.log(this.addCategoryList)
+      })
+      // new added  name
+       socket.on("Category",(obj)=>{
+         this.addCategoryList.push(obj)
+         
+      })
+       
+       
+       setTimeout(() => {
             this.$nextTick(() => {
                 if (this.$refs.Categorytr) {
                     this.$bus.$emit("categoryAlltr", this.$refs.Categorytr[0]);
@@ -167,26 +179,35 @@ export default {
         this.$bus.$on("selected", (data) => {
             this.selected = data;
         });
-        this.$nextTick(() => {
-            this.getCategory();
-            // this.updateList();
-        });
+        // this.getCategory("Category",(obj) =>{
+        //   this.addCategoryItem = obj
+        // });
+       
+        
     },
 
     beforeUpdate() {
-        //getCateogry socket
-        // yes
-        // X
-        
-        var list = this.addCategoryList;
-        socket.on("Category", (obj) => {
-        
-            list.push(obj);
-        });
-        console.log(list);
+      
+       // this.updateList();
+      
     },
 
     methods: {
+      updateList(){
+          var list = this.addCategoryList;
+          var count =0;
+           this.$nextTick(() => {
+              socket.on("Category", (obj) => {
+                  count ++
+                  list = obj;
+                  console.log(obj);
+                  console.log(list);
+              });
+        
+        });
+         console.log(list);
+      },
+
         //當前正在DI點清單
         getselectedTab() {
             var selected = this.selected;
@@ -202,25 +223,26 @@ export default {
         getCategory() {
             this.$http.get(api).then((response) => {
                 var resp = response.data;
-                this.addCategoryList = [];
-                this.addCategoryList = resp;
+                // this.addCategoryList = [];
+                // this.addCategoryList = resp;
+                socket.emit("allCategory",resp)
             });
         },
 
         getCategoryItem(item, key, e) {
-            console.log(item);
-            console.log(key);
+            // console.log(item);
+            // console.log(key);
             var td = e.target.parentElement.parentElement.children;
             //td.classList.add("tdActive");
-            console.log("td", td);
-            // var td0 = e.target.parentElement.parentElement.children[0];
-            // var td1 = e.target.parentElement.parentElement.children[1];
+           // console.log("td", td);
+            var td0 = e.target.parentElement.parentElement.children[0];
+            var td1 = e.target.parentElement.parentElement.children[1];
 
-            // var td2 = e.target.parentElement.parentElement.children[2];
+            var td2 = e.target.parentElement.parentElement.children[2];
 
-            // td0.classList.add("tdActive");
-            // td1.classList.add("tdActive");
-            // td2.classList.add("tdActive");
+            td0.classList.add("tdActive");
+            td1.classList.add("tdActive");
+            td2.classList.add("tdActive");
 
             // this.$bus.$emit("currentCategoryName", currentCategoryName);
             // var currentTab = this.selected;
@@ -288,8 +310,8 @@ export default {
 
                 this.inp_name = "";
                 $("#CP_SelectTable").modal("hide");
-                list.push(data);
-                socket.emit("addCategory", list);
+                //list.push(data);
+                socket.emit("addCategory", data);
                 //this.getCategory();
             }
         },
