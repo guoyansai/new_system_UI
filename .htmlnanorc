@@ -1,0 +1,4 @@
+//parceljs build svg
+{
+    "minifySvg": false
+}

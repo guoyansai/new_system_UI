@@ -77,25 +77,37 @@
           <tr>
             <th scope="col">No.</th>
             <th scope="col">Name</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Actions
+            <th scope="col"></th></th>
 
           </tr>
         </thead>
         <tbody >
           <tr v-for="(item, key) in addCategoryList" 
           ref="Categorytr"
-          @click="getCategoryItem(item,$event)">
+          @click="getCategoryItem(item,key, $event)">
           
             <!-- <td>{{item.partition_id}}</td> -->
             <td>{{key + 1}}</td>
             <td>{{item.partition_name}}</td>
             <td>
-              <img src="../icons/edit.svg" class="icon" id="editBtn"
-                   data-toggle="modal" data-target="#onEdit_Model" 
-                   @click="editCategory(item ,key)" >
-              <img src="../icons/x.svg" class="icon" id="deleteBtn"
-               @click="deleteSubmit(item)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                    stroke-linejoin="round" class="feather feather-edit"  id="editBtn"
+                    data-toggle="modal" data-target="#onEdit_Model" 
+                    @click="editCategory(item ,key)"> 
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
             </td>
+            <td>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                    stroke-linejoin="round" class="feather feather-x" id="deleteBtn"
+                    @click="deleteSubmit(item)">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </td>
+         
           </tr>
       
         </tbody>
@@ -111,6 +123,7 @@
 import $ from "jquery";
 
 var socket = io("http://localhost:3030");
+
 var api = "http://127.0.0.1:1880/PARATION";
 export default {
     name: "cpSelectTable",
@@ -124,20 +137,26 @@ export default {
             addCategoryList: [],
             CategoryList: "",
             CategoryCount: 1,
-            currentCategoryName:null,
+            currentCategoryName: null,
             selected: "",
         };
     },
+    updated() {
+      
+    },
+    created() {
+        //x
+    },
 
-    created() {},
+    unmounted() {
+        // X
+    },
     mounted() {
         uibuilder.start();
         uibuilder.onChange("msg", function (msg) {
             console.log(msg);
         });
-        this.$nextTick(() => {
-            this.getCategory();
-        });
+
         setTimeout(() => {
             this.$nextTick(() => {
                 if (this.$refs.Categorytr) {
@@ -148,12 +167,23 @@ export default {
         this.$bus.$on("selected", (data) => {
             this.selected = data;
         });
+        this.$nextTick(() => {
+            this.getCategory();
+            // this.updateList();
+        });
+    },
 
+    beforeUpdate() {
         //getCateogry socket
+        // yes
+        // X
+        
         var list = this.addCategoryList;
-        socket.on("Category", function (obj) {
+        socket.on("Category", (obj) => {
+        
             list.push(obj);
         });
+        console.log(list);
     },
 
     methods: {
@@ -177,12 +207,21 @@ export default {
             });
         },
 
-        getCategoryItem(item,e) {
-          var td  =e.target.parentElement.parentElement
-          td.style.backgroundColor  = "red";
-            this.currentCategoryName = td;
-            
-            console.log(this.currentCategoryName);
+        getCategoryItem(item, key, e) {
+            console.log(item);
+            console.log(key);
+            var td = e.target.parentElement.parentElement.children;
+            //td.classList.add("tdActive");
+            console.log("td", td);
+            // var td0 = e.target.parentElement.parentElement.children[0];
+            // var td1 = e.target.parentElement.parentElement.children[1];
+
+            // var td2 = e.target.parentElement.parentElement.children[2];
+
+            // td0.classList.add("tdActive");
+            // td1.classList.add("tdActive");
+            // td2.classList.add("tdActive");
+
             // this.$bus.$emit("currentCategoryName", currentCategoryName);
             // var currentTab = this.selected;
             // //根據當前的item 渲染出 DI /AI /DPS ..點位名稱
@@ -233,15 +272,15 @@ export default {
                     });
                 }
             });
+            var data = {
+                partition_name: name,
+            };
             if (isExist === false) {
                 this.$http
-                    .post(api, {
-                        // partition_id: id,
-                        partition_name: name,
-                    })
+                    .post(api, data)
 
                     .then(function (response) {
-                        console.log(response);
+                        // console.log(response);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -249,25 +288,19 @@ export default {
 
                 this.inp_name = "";
                 $("#CP_SelectTable").modal("hide");
-                list.push({ partition_name: name });
-
-                socket.emit("addCategory", name);
+                list.push(data);
+                socket.emit("addCategory", list);
+                //this.getCategory();
             }
         },
 
         editCategory(item, key) {
-          
-            // 
-           console.log( this.currentCategoryName);
-           // console.log(this.currentCategoryName);
             this.onEdit_id = item.partition_id;
-          
             this.onEdit_name = item.partition_name;
         },
         editSubmit() {
             var value = document.getElementById("onEditNameInp").value;
-            
-           
+
             var id = this.onEdit_id;
             var name = this.onEdit_name;
             var list = this.addCategoryList;
@@ -291,6 +324,11 @@ export default {
                         console.log("Error: Update data ", error);
                     });
                 $("#onEdit_Model").modal("hide");
+
+                //not work
+                //var td = document.getElementsByClassName("tdActive")
+                // element.classList.remove("tdActive");
+
                 this.getCategory();
             }
         },
@@ -330,21 +368,17 @@ export default {
                     }
                 });
         },
-        
     },
 };
 </script>
 
 <style scoped>
-tbody tr {
+tbody tr:hover {
     cursor: pointer;
+    background: rgb(175, 175, 175);
 }
-.active {
-    cursor: pointer;
+.tdActive {
     color: red;
-}
-.icon:hover {
-    color: white;
-    background-color: yello;
+    stroke: red;
 }
 </style>
