@@ -1,10 +1,11 @@
 {
-    "include": [
-      "./src/**/*"
-    ]
+  "include": [
+    "./src/**/*"
+  ],
+  "minifySvg": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
   },
-  {
-    "minifySvg": false
-  }
-
-  
+  "exclude": ["node_modules"]
+}
