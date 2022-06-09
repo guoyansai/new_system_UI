@@ -23,6 +23,13 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 Vue.use(VueSweetalert2);
 
 
+//fortawesome
+// import { library } from '@fortawesome/fontawesome-svg-core'
+// import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// library.add(faSpinner)
+// Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 
 // uibuilder.start()
 window.uibuilder = uibuilder;

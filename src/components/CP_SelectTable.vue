@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="onEditCancleBtn()">Cancle</button>
-                    <button type="button" class="btn btn-primary" @click="editSubmit()">Update</button>
+                    <button type="button" class="btn btn-primary" @click="UpdateCategory()">Update</button>
                 </div>
             </div>
         </div>
@@ -70,20 +70,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, key) in addCategoryList" ref="Categorytr" @click="getCategoryItem(item, key, $event)">
+                <tr v-for="(item, key) in addCategoryList" ref="Categorytr" @click="getCategoryItem(item ,$event)">
 
                     <!-- <td>{{item.partition_id}}</td> -->
                     <td>{{ key + 1 }}</td>
                     <td>{{ item.partition_name }}</td>
                     <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" data-target="#onEdit_Model" @click="editCategory(item, $event)"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" data-target="#onEdit_Model" @click="editCategory(item, $event)"
                         >
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                     </td>
                     <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -135,6 +135,7 @@ export default {
                 }
             });
         }, 200);
+
         this.$bus.$on("selected", (data) => {
             this.selected = data;
         });
@@ -167,12 +168,16 @@ export default {
         //讀取資料庫Partition資料
         getCategory() {
             socket.on("allCategory", (objs) => {
+                if (objs === "Not Data" || objs.length <=0) {
+                    return;
+                }
                 if (this.addCategoryList === "undefined") {
                     return;
                 }
-
-                this.addCategoryList = [];
-                this.addCategoryList = objs;
+                if (objs.length >= 1) {
+                    this.addCategoryList = [];
+                    this.addCategoryList = objs;
+                }
             });
         },
 
@@ -182,19 +187,20 @@ export default {
             });
         },
 
-        getCategoryItem(item, key, e) {
-            // console.log(item);
-            // console.log(key);
-            //var td = e.target.parentElement.parentElement.children;
-            //td.classList.add("tdActive");
-            // console.log("td", td);
-            // var td0 = e.target.parentElement.parentElement.children[0];
-            // var td1 = e.target.parentElement.parentElement.children[1];
-            // var td2 = e.target.parentElement.parentElement.children[2];
-            // td0.classList.add("tdActive");
-            // td1.classList.add("tdActive");
-            // this.$bus.$emit("currentCategoryName", currentCategoryName);
+        getCategoryItem(item, e) {
+            //console.log("item", item);
+
+            var td_0 = e.target.parentElement.children[0];
+            var td_1 = e.target.parentElement.children[1];
+            td_0.classList.add("tdActive");
+            td_1.classList.add("tdActive");
+            
+
+            this.$bus.$emit("currentCategoryName", item);
+
             // var currentTab = this.selected;
+            // console.log(currentTab);
+
             // //根據當前的item 渲染出 DI /AI /DPS ..點位名稱
             // //目前所有清單的資料
             // var PointType = JSON.parse(localStorage.getItem("addPointList"));
@@ -233,19 +239,19 @@ export default {
                 return;
             }
             //Check if it has the same name
-            if (list.length < 1) {
-                list.forEach((element) => {
-                    var n = element.partition_name;
-                    if (n === name) {
-                        isExist = true;
-                        this.$swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: `${name} is existed`,
-                        });
-                    }
-                });
-            }
+            list.forEach((item) => {
+                var n = item.partition_name;
+                if (n === name) {
+                    isExist = true;
+                    console.log("same name", n);
+                    this.$swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: `${name} is existed`,
+                    });
+                    return;
+                }
+            });
 
             var data = {
                 partition_name: name,
@@ -277,9 +283,9 @@ export default {
 
             console.log("clicked");
         },
-        
+
         //編輯後更新Partition name
-        editSubmit() {
+        UpdateCategory() {
             var value = document.getElementById("onEditNameInp").value;
 
             var id = this.onEdit_id;
@@ -318,11 +324,21 @@ export default {
                 $("#onEdit_Model").modal("hide");
                 socket.emit("Updateing", data);
             }
+            this.getCategory();
         },
-        deleteSubmit(item,e) {
-            console.log(e.target);
-            var td = e.target;
-            td.classList.add("tdActive");
+
+        //##刪除後回傳的所有資料,此方法未使用
+        deletedList(){
+            socket.on("deleted_list", (objs) => {
+                this.addCategoryList = []
+                this.addCategoryList = objs
+            })
+        },
+        //##刪除後無法同步更新畫面
+        deleteSubmit(item, e) {
+            // var td = e.target;
+            // td.classList.add("tdActive");
+
             var id = item.partition_id;
             var name = item.partition_name;
             var list = this.addCategoryList;
@@ -334,8 +350,8 @@ export default {
             socket.emit("Deleteing", data);
 
             //0 = failed / 1 = successed
-            socket.on("deledted", (obj) => {
-                td.classList.remove("tdActive");
+            socket.on("deleted", (obj) => {
+                //td.classList.remove("tdActive");
                 this.$swal
                     .fire({
                         title: `Do you really want to delet?`,
@@ -346,37 +362,33 @@ export default {
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
                     })
-                    
+
                     .then((result) => {
-                        td.classList.remove("tdActive");
+                        //td.classList.remove("tdActive");
                         if (result.isConfirmed) {
                             //console.log(list);
                             if (obj.status === 1) {
-                                //console.log("obj 1 ", obj);
+                                list.forEach((item,index) => {
+                                     if (item.partition_id === id) {
+                                       list.splice( index, 1)
+                                    }
+                                });
                                 this.$swal.fire(
                                     "Deleted!",
                                     `${obj.msg}.`,
                                     "success"
                                 );
-                              
-
-                                list.forEach((item, index) =>{
-                                      if(data.partition_id === item.partition_id){
-                                        console.log("item", item, "index", index)
-                                        list.splice(0, index);
-                                        return list;
-                                    }
-                                });
-                             
-                            } else if (obj.status === 0) {
                                 
+
+
+                            } else if (obj.status === 0) {
                                 console.log("obj 0 ", obj);
                                 this.$swal.fire({
                                     icon: "error",
                                     title: "Oops...",
                                     text: `${obj.msg}.`,
                                 });
-                                td.classList.remove("tdActive");
+                                // td.classList.remove("tdActive");
                             }
                         }
                     });
@@ -393,15 +405,9 @@ tbody tr:hover {
 }
 
 .tdActive {
-    color: red;
-    stroke: red;
+    color: yellow;
+    stroke: yellow;
 }
 </style>
 
-[
-    {
-        "name": "1",
-        "status": 0,
-        "msg": "1 failed to delete"
-    }
-]
+

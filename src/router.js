@@ -11,9 +11,6 @@ import CS from "./components/CS_";
 import El from "./components/El_";
 import GUI from "./components/GUI_";
 
-import Page3 from "./components/Page3";
-import Page4a from "./components/Page4a";
-import Page4b from "./components/Page4b";
 
 
 Vue.use(VueRouter);
@@ -38,19 +35,19 @@ const router = new VueRouter({
             path: "/GUI",
             component: GUI,
         },
-        {
-            path: "/page3",
-            component: Page3,
-        },
+        // {
+        //     path: "/page3",
+        //     component: Page3,
+        // },
 
-        {
-            path: "/page4a",
-            component: Page4a,
-        },
-        {
-            path: "/page4b",
-            component: Page4b,
-        },
+        // {
+        //     path: "/page4a",
+        //     component: Page4a,
+        // },
+        // {
+        //     path: "/page4b",
+        //     component: Page4b,
+        // },
 
         {
             path: "*",

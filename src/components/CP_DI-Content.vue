@@ -26,9 +26,13 @@
                     @click="getPointItem(item)"
                 >
                     <td>{{ key + 1 }}</td>
-                    <td>{{ item[0].pointData.name }}</td>
-                    <td>{{ item[0].pointData.type }}</td>
-                    <td>{{ item[0].pointData.digital }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.digital }}</td>
+                    <td>
+                     
+                    </td>
+                    
                 </tr>
             </tbody>
         </table>
@@ -163,14 +167,18 @@ export default {
         //CP_SelectTable
         this.$bus.$on("selected", (data) => {
             this.selectedTab = data;
+            //console.log("166 this.selectedTab",this.selectedTab);
         });
 
         //CP_SelectTable.vue
         this.$bus.$on("categoryAlltr", (data) => {
             this.defaultCategory = data;
         });
+        //CP_SelectTable
         this.$bus.$on("currentCategoryName", (data) => {
-            this.currentCategoryName = data;
+            //讀取當前選擇的Partition name
+           
+           this.currentCategoryName = data;
         });
     },
 
@@ -180,45 +188,35 @@ export default {
             console.info("Msg received from Node-RED server in Home:", msg);
         });
         //CP_SelectTable.vue
-        this.$bus.$on("currentPoints", (data) => {
-            this.currentPoints.push(data);
-            console.log(this.currentPoints);
-        });
+        // this.$bus.$on("currentPoints", (data) => {
+        //     this.currentPoints.push(data);
+        // });
     },
 
     methods: {
         addPoint() {
-            var v = this;
             //目前選擇的類別名稱
-            var currentCategory = v.currentCategoryName;
-            var currentPointType = v.selectedTab;
-            //加入以下資料
-            var name = v.inp_nameDI;
-            var type = v.inp_typeDI;
-            var dig = v.inp_digitalDI;
+            var partition = this.currentCategoryName;
+            var tab = this.selectedTab;
+
+            // //加入以下資料
+            var name = this.inp_nameDI;
+            var type = this.inp_typeDI;
+            var dig = this.inp_digitalDI;
             var pointData = {
                 name: name,
                 type: type,
                 digital: dig,
             };
 
-            var addData = [{ currentCategory, currentPointType, pointData }];
+            
+            this.currentPoints.push(pointData)
 
-            var data = localStorage.getItem("addPointList");
-            if (data === null) {
-                localStorage.setItem("addPointList", JSON.stringify([addData]));
-            } else {
-                const getCurrentCart = localStorage.getItem("addPointList");
-                const currentCart = JSON.parse(getCurrentCart);
+            var addData = { partition, tab, pointData };
+            console.log("addData",addData);
 
-                currentCart.push(addData);
+            
 
-                localStorage.setItem(
-                    "addPointList",
-                    JSON.stringify(currentCart)
-                );
-            }
-            this.currentPoints.push(addData);
             console.log(this.currentPoints);
 
             $("#CP_PointsList").modal("hide");
@@ -242,7 +240,7 @@ export default {
         },
 
         getPointItem(item, key) {
-            console.log(this.currentPoints);
+          
             console.log(item);
             this.itemKey++;
             this.itemKey = key;
