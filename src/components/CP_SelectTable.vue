@@ -83,7 +83,7 @@
                         </svg>
                     </td>
                     <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -140,7 +140,7 @@ export default {
         });
 
         socket.on("Updated", (objs) => {
-            var list =this.addCategoryList;
+            var list = this.addCategoryList;
             list.map((item) => {
                 if (item.partition_id === objs.partition_id) {
                     item.partition_id = objs.partition_id;
@@ -178,9 +178,7 @@ export default {
 
         addItem() {
             socket.on("added", (obj) => {
-                //console.log(this.addCategoryList);
                 this.addCategoryList.push(obj);
-                console.log(this.addCategoryList);
             });
         },
 
@@ -279,11 +277,9 @@ export default {
 
             console.log("clicked");
         },
+        
         //編輯後更新Partition name
         editSubmit() {
-            //remove active style
-           
-
             var value = document.getElementById("onEditNameInp").value;
 
             var id = this.onEdit_id;
@@ -308,7 +304,8 @@ export default {
             };
 
             if (isExisted === false) {
-                 var td = document.getElementsByClassName("tdActive")[0];
+                //remove active style
+                var td = document.getElementsByClassName("tdActive")[0];
                 td.classList.remove("tdActive");
                 list.map((item) => {
                     if (item.partition_id === id) {
@@ -322,50 +319,68 @@ export default {
                 socket.emit("Updateing", data);
             }
         },
-        deleteSubmit(item) {
+        deleteSubmit(item,e) {
+            console.log(e.target);
+            var td = e.target;
+            td.classList.add("tdActive");
             var id = item.partition_id;
             var name = item.partition_name;
+            var list = this.addCategoryList;
 
-            this.$swal
-                .fire({
-                    title: `Do you really want to delet?`,
-                    text: `Name: ${name}`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
-                })
-                .then((result) => {
-                    if (result.isConfirmed) {
-                        this.$swal.fire(
-                            "Deleted!",
-                            `Your Name: ${name} deleted.`,
-                            "success"
-                        );
-                        var data = {
-                            partition_id: id,
-                            partition_name: name,
-                        };
-                        socket.emit("Delete_data", data);
+            var data = {
+                partition_id: id,
+                partition_name: name,
+            };
+            socket.emit("Deleteing", data);
 
-                        //this.$http
-                        //.delete(api, {data})
-                        // var list = this.addCategoryList;
+            //0 = failed / 1 = successed
+            socket.on("deledted", (obj) => {
+                td.classList.remove("tdActive");
+                this.$swal
+                    .fire({
+                        title: `Do you really want to delet?`,
+                        text: `Name: ${name}`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!",
+                    })
+                    
+                    .then((result) => {
+                        td.classList.remove("tdActive");
+                        if (result.isConfirmed) {
+                            //console.log(list);
+                            if (obj.status === 1) {
+                                //console.log("obj 1 ", obj);
+                                this.$swal.fire(
+                                    "Deleted!",
+                                    `${obj.msg}.`,
+                                    "success"
+                                );
+                              
 
-                        // var find = list.find(function(item, index, array){
-                        //         return item.partition_id === data.partition_id
-                        // })
-                        // socket.emit("deleteItem",find)
-
-                        // .then((response) => {
-                        //     this.getCategory();
-                        // })
-                        // .catch(function (error) {
-                        //     console.log("Error: Delete data ", error);
-                        // });
-                    }
-                });
+                                list.forEach((item, index) =>{
+                                      if(data.partition_id === item.partition_id){
+                                        console.log("item", item, "index", index)
+                                        list.splice(0, index);
+                                        return list;
+                                    }
+                                });
+                             
+                            } else if (obj.status === 0) {
+                                
+                                console.log("obj 0 ", obj);
+                                this.$swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: `${obj.msg}.`,
+                                });
+                                td.classList.remove("tdActive");
+                            }
+                        }
+                    });
+            });
         },
     },
 };
@@ -382,3 +397,11 @@ tbody tr:hover {
     stroke: red;
 }
 </style>
+
+[
+    {
+        "name": "1",
+        "status": 0,
+        "msg": "1 failed to delete"
+    }
+]
