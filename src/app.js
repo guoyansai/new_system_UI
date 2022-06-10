@@ -1,9 +1,8 @@
 import Vue from "vue";
 import App from "./components/App.vue";
 import router from "./router";
-import 'bootstrap'
+import "bootstrap"
 import "jquery"
-
 import { fabric } from "fabric";
 Vue.use(fabric);
 
@@ -11,29 +10,29 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 //axios
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import axios from "axios"
+import VueAxios from "vue-axios"
 Vue.use(VueAxios, axios)
 
 //sweetalert2
-import VueSweetalert2 from 'vue-sweetalert2';
-// If you don't need the styles, do not connect
-import 'sweetalert2/dist/sweetalert2.min.css';
+import VueSweetalert2 from "vue-sweetalert2";
+// If you don"t need the styles, do not connect
+import "sweetalert2/dist/sweetalert2.min.css";
 
 Vue.use(VueSweetalert2);
 
 
 //fortawesome
-// import { library } from '@fortawesome/fontawesome-svg-core'
-// import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// import { library } from "@fortawesome/fontawesome-svg-core"
+// import { faSpinner } from "@fortawesome/free-solid-svg-icons"
+// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 // library.add(faSpinner)
-// Vue.component('font-awesome-icon', FontAwesomeIcon)
+// Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 
 // uibuilder.start()
 window.uibuilder = uibuilder;
-uibuilder.start('/navbar', '/uibuilder/vendor/socket.io')
+uibuilder.start("/navbar", "/uibuilder/vendor/socket.io")
 
 // Enable Devtools
 Vue.config.devtools = true

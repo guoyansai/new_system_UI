@@ -186,16 +186,12 @@ export default {
                 this.addCategoryList.push(obj);
             });
         },
-
+        
         getCategoryItem(item, e) {
-            //console.log("item", item);
-
-            var td_0 = e.target.parentElement.children[0];
-            var td_1 = e.target.parentElement.children[1];
+            var td_0 = e.target.parentElement;     
             td_0.classList.add("tdActive");
-            td_1.classList.add("tdActive");
+            //td_0.classList.remove("tdActive");
             
-
             this.$bus.$emit("currentCategoryName", item);
 
             // var currentTab = this.selected;
@@ -405,7 +401,8 @@ tbody tr:hover {
 }
 
 .tdActive {
-    color: yellow;
+    /* color: yellow; */
+    background: rgb(175, 175, 175);
     stroke: yellow;
 }
 </style>
