@@ -194,8 +194,11 @@ export default {
             // var td_0 = e.target.parentElement;
             // td_0.classList.add("tdActive");
             //td_0.classList.remove("tdActive");
-
-            this.$bus.$emit("currentCategoryName", item);
+            
+           
+            this.$bus.$emit("currentCategory",item)
+            
+           // this.$bus.$emit("currentCategoryName", item);
         },
 
         //新增partition
