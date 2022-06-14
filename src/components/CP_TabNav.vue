@@ -14,6 +14,7 @@
       </ul>
 
       <slot></slot>
+    
     </nav>
   </div>
 </template>
@@ -46,9 +47,10 @@ export default {
 
   methods: {
     setTab(tab) {
-      //為什麼不用 加$bus???
+     
+      // console.log("TopNav setTab",tab);
       this.$emit("selected", tab);
-      this.$bus.$emit("selected", tab);
+      //this.$bus.$emit("selected", tab);
     },
   },
 };

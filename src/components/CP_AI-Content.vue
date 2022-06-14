@@ -1,14 +1,36 @@
 <template>
     <div v-if="isSelected">
-        <p>This is AI</p>
 
+        <!-- Button trigger modal -->
+        <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#CP_PointsList"
+        >
+            + Add
+        </button>
        
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
 </template>
 
 <script>
+import $ from "jquery";
+var socket = io("http://localhost:3030");
 export default {
-    name: "cpAIContent",
+    name: "cpDIContent",
 
     props: {
         isSelected: {
@@ -18,23 +40,43 @@ export default {
 
     data() {
         return {
-         
+        
         };
     },
 
-    mounted() {
-      
-    
-        uibuilder.onChange("msg", (newMsg) => {
-            console.info("Msg received from Node-RED server in Home:", newMsg);
+    created() {
+       
+        //CP_SelectTable
+        this.$bus.$on("selected", (data) => {
+            //console.log("DI Tag",data);
+            this.selectedTab = data;
         });
+
+    },
+
+    mounted() {
+        uibuilder.start();
+        uibuilder.onChange("msg", (msg) => {
+            console.info("Msg received from Node-RED server in Home:", msg);
+        });
+      
     },
 
     methods: {
-       
-    },
+    }
 };
 </script>
 
 <style scoped>
+tbody tr {
+    cursor: pointer;
+}
+.active {
+    cursor: pointer;
+    color: red;
+    background-color: rgb(167, 164, 164);
+}
+.radio_second {
+    margin-left: 10%;
+}
 </style>

@@ -1,5 +1,6 @@
 <template lang="html">
 <div>
+    
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
         + Add Paration
@@ -63,9 +64,7 @@
                 <tr>
                     <th scope="col">No.</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Actions
-                    <th scope="col"></th>
-                    </th>
+                    <th scope="col">Actions </th>
 
                 </tr>
             </thead>
@@ -75,19 +74,23 @@
                     <!-- <td>{{item.partition_id}}</td> -->
                     <td>{{ key + 1 }}</td>
                     <td>{{ item.partition_name }}</td>
-                    <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" data-target="#onEdit_Model" @click="editCategory(item, $event)"
+                    <td @click="editCategory(item, $event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                         fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" 
+                         data-target="#onEdit_Model"
                         >
+                        <!--   -->
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
-                    </td>
-                    <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
+
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </td>
+                 
 
                 </tr>
 
@@ -126,7 +129,7 @@ export default {
         //get all Paration list
         this.getCategory();
         //new a item
-        this.addItem();
+        this.addCItem();
 
         setTimeout(() => {
             this.$nextTick(() => {
@@ -168,7 +171,7 @@ export default {
         //讀取資料庫Partition資料
         getCategory() {
             socket.on("allCategory", (objs) => {
-                if (objs === "Not Data" || objs.length <=0) {
+                if (objs === "Not Data" || objs.length <= 0) {
                     return;
                 }
                 if (this.addCategoryList === "undefined") {
@@ -181,44 +184,18 @@ export default {
             });
         },
 
-        addItem() {
+        addCItem() {
             socket.on("added", (obj) => {
                 this.addCategoryList.push(obj);
             });
         },
-        
+
         getCategoryItem(item, e) {
-            var td_0 = e.target.parentElement;     
-            td_0.classList.add("tdActive");
+            // var td_0 = e.target.parentElement;
+            // td_0.classList.add("tdActive");
             //td_0.classList.remove("tdActive");
-            
+
             this.$bus.$emit("currentCategoryName", item);
-
-            // var currentTab = this.selected;
-            // console.log(currentTab);
-
-            // //根據當前的item 渲染出 DI /AI /DPS ..點位名稱
-            // //目前所有清單的資料
-            // var PointType = JSON.parse(localStorage.getItem("addPointList"));
-            // if (PointType !== null || "") {
-            //     if (currentTab === "") {
-            //         currentTab = "DI";
-            //     }
-            //     PointType.forEach((element) => {
-            //         var currentCategory = element[0].currentCategory;
-            //         var currentPointType = element[0].currentPointType;
-            //         if (currentCategory === currentCategoryName) {
-            //             if (currentTab === currentPointType) {
-            //                 this.$bus.$emit("currentPoints", element);
-            //             }
-            //         }
-            //     });
-            // }
-            // //  Category
-            // this.itemKey = key;
-            // var list = this.CategoryList;
-            // list = item;
-            // this.$bus.$emit("getCategoryItem", list);
         },
 
         //新增partition
@@ -262,26 +239,27 @@ export default {
 
         //編輯Partition name
         editCategory(item, e) {
-            var td = e.target;
-            td.classList.add("tdActive");
+            // console.log("e.target.children[0]",e.target.children[0]);
+            // var td = e.target.children[0];
+            // td.classList.add("tdActive");
             this.onEdit_id = item.partition_id;
             this.onEdit_name = item.partition_name;
         },
         onEditCloseBtn() {
-            var td = document.getElementsByClassName("tdActive")[0];
-            td.classList.remove("tdActive");
-
-            console.log("clicked");
+            // var td = document.getElementsByClassName("tdActive")[0].children[0];
+            //console.log("onEditCloseBtn",td);
+            //td.classList.remove("tdActive");
         },
         onEditCancleBtn() {
-            var td = document.getElementsByClassName("tdActive")[0];
-            td.classList.remove("tdActive");
-
-            console.log("clicked");
+            //var td = document.getElementsByClassName("tdActive")[0].children[0];
+            // console.log("onEditCancleBtn",td);
+            //td.classList.remove("tdActive");
         },
 
         //編輯後更新Partition name
         UpdateCategory() {
+            //var td = document.getElementsByClassName("tdActive")[0];
+            //td.classList.remove("tdActive");
             var value = document.getElementById("onEditNameInp").value;
 
             var id = this.onEdit_id;
@@ -307,8 +285,8 @@ export default {
 
             if (isExisted === false) {
                 //remove active style
-                var td = document.getElementsByClassName("tdActive")[0];
-                td.classList.remove("tdActive");
+                //var td = document.getElementsByClassName("tdActive")[0];
+                //td.classList.remove("tdActive");
                 list.map((item) => {
                     if (item.partition_id === id) {
                         item.partition_id = data.partition_id;
@@ -323,72 +301,45 @@ export default {
             this.getCategory();
         },
 
-        //##刪除後回傳的所有資料,此方法未使用
-        deletedList(){
-            socket.on("deleted_list", (objs) => {
-                this.addCategoryList = []
-                this.addCategoryList = objs
-            })
-        },
-        //##刪除後無法同步更新畫面
+        //
+
+        delectItem() {},
+
         deleteSubmit(item, e) {
-            // var td = e.target;
-            // td.classList.add("tdActive");
-
-            var id = item.partition_id;
             var name = item.partition_name;
-            var list = this.addCategoryList;
+            socket.emit("Deleteing", item);
 
-            var data = {
-                partition_id: id,
-                partition_name: name,
-            };
-            socket.emit("Deleteing", data);
+            this.$swal
+                .fire({
+                    title: `Do you really want to delet?`,
+                    text: `Name: ${name}`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        socket.on("deleted", (obj) => {
+                            this.addCategoryList.forEach((item, index) => {
+                                if (item.partition_name === obj.name) {
+                                    this.addCategoryList.splice(index, 1);
+                                }
+                            });
+                            console.log(this.addCategoryList);
+                        });
+                        this.$swal.fire("Deleted!", `${name}.`, "successfully");
+                    } else if (result.isDismissed) {
+                        console.log("isDismissed", result);
 
-            //0 = failed / 1 = successed
-            socket.on("deleted", (obj) => {
-                //td.classList.remove("tdActive");
-                this.$swal
-                    .fire({
-                        title: `Do you really want to delet?`,
-                        text: `Name: ${name}`,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
-                    })
-
-                    .then((result) => {
-                        //td.classList.remove("tdActive");
-                        if (result.isConfirmed) {
-                            //console.log(list);
-                            if (obj.status === 1) {
-                                list.forEach((item,index) => {
-                                     if (item.partition_id === id) {
-                                       list.splice( index, 1)
-                                    }
-                                });
-                                this.$swal.fire(
-                                    "Deleted!",
-                                    `${obj.msg}.`,
-                                    "success"
-                                );
-                                
-
-
-                            } else if (obj.status === 0) {
-                                console.log("obj 0 ", obj);
-                                this.$swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: `${obj.msg}.`,
-                                });
-                                // td.classList.remove("tdActive");
-                            }
-                        }
-                    });
-            });
+                        this.$swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `${name} is existed`,
+                        });
+                    }
+                });
         },
     },
 };
@@ -403,7 +354,7 @@ tbody tr:hover {
 .tdActive {
     /* color: yellow; */
     background: rgb(175, 175, 175);
-    stroke: yellow;
+    /* stroke: yellow; */
 }
 </style>
 

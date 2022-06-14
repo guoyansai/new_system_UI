@@ -1,5 +1,6 @@
 <template>
     <div v-if="isSelected">
+
         <!-- Button trigger modal -->
         <button
             type="button"
@@ -7,7 +8,7 @@
             data-toggle="modal"
             data-target="#CP_PointsList"
         >
-            Add
+            + Add
         </button>
         <!-- :class="{active: key == itemKey}" -->
         <table class="table table-striped">
@@ -31,13 +32,13 @@
                     <td>{{ item.digital_text }}</td>
                     <td>{{ item.digital_type }}</td>
                    <td>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" data-target="#onEdit_Model" @click="editCategory(item, $event)"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" data-target="#update_model" @click="UpdatePoint(item, $event)"
                         >
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                     
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deletePoint(item,$event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -47,7 +48,7 @@
             </tbody>
         </table>
 
-        <!-- Modal -->
+        <!--Add Modal -->
         <div
             class="modal fade"
             id="CP_PointsList"
@@ -78,7 +79,7 @@
                             </div>
 
                              <div class="form-group row">
-                                <label for="input_digital" class="col-sm-3 col-form-label">Digital Text</label>
+                                <label for="input_digital" class="col-sm-3 col-form-label" >Digital Text</label>
                                 <div class="col-sm-8">
                                 <input type="text" class="form-control" id="input_digital" v-model="Physical_DI.digital">
                                 </div>
@@ -96,7 +97,7 @@
                                     </span>
 
                                     <span class="radio_second">
-                                         <input class="form-check-input" type="radio" name="type" id="type_dps" value="DPS" v-model.trim="Physical_DI.type">
+                                        <input class="form-check-input" type="radio" name="type" id="type_dps" value="DPS" v-model.trim="Physical_DI.type">
                                         <label class="form-check-label" for="type_dps">
                                         DPS
                                         </label>
@@ -134,7 +135,89 @@
                 </div>
             </div>
         </div>
-    </div>
+        <!-- Update Modal -->
+
+
+          <div
+            class="modal fade"
+            id="update_model"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Physical Digital Input</h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                       <form>
+                           <div class="form-group row">
+                                <label for="input_name" class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-8">
+                                <input type="text" class="form-control" id="input_name" >
+                                </div>
+                            </div>
+
+                             <div class="form-group row">
+                                <label for="input_digital" class="col-sm-3 col-form-label" >Digital Text</label>
+                                <div class="col-sm-8">
+                                <input type="text" class="form-control" id="input_digital">
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-dismiss="modal"
+                                    >
+                                        Close
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        @click="addPoint"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+
+                       </form>
+
+
+
+                        
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
 </template>
 
 <script>
@@ -174,11 +257,10 @@ export default {
             //Category Name
             this.categoryItem = data;
         });
-        //this.$emit('selected',tab)
         //CP_SelectTable
         this.$bus.$on("selected", (data) => {
+            //console.log("DI Tag",data);
             this.selectedTab = data;
-            //console.log("166 this.selectedTab",this.selectedTab);
         });
 
         //CP_SelectTable.vue
@@ -199,14 +281,18 @@ export default {
             console.info("Msg received from Node-RED server in Home:", msg);
         });
         this.getAllPoints();
-       
     },
 
     methods: {
-        getAllPoints(){
-             socket.on("all_di", (objs) => {
-                 this.currentPoints = objs
-                console.log("all di",this.currentPoints);
+        getAllPoints() {
+            socket.on("all_di", (objs) => {
+                this.currentPoints = objs;
+                // console.log("all di",this.currentPoints);
+            });
+        },
+        addPointItem() {
+            socket.on("added", (obj) => {
+                this.addCategoryList.push(obj);
             });
         },
         addPoint() {
@@ -217,14 +303,14 @@ export default {
 
             // //加入以下資料
             var di = this.Physical_DI;
-            var di_name = di.name;
-            var di_digital = di.digital;
-            var di_type = di.type;
+            var DI_name = di.name;
+            var digital_text = di.digital;
+            var digital_type = di.type;
 
             var pointData = {
-                di_name: di_name,
-                di_digital: di_digital,
-                di_type: di_type,
+                DI_name: DI_name,
+                digital_text: digital_text,
+                digital_type: digital_type,
             };
             this.currentPoints.push(pointData);
 
@@ -235,9 +321,10 @@ export default {
             console.log(this.currentPoints);
 
             $("#CP_PointsList").modal("hide");
-            di_name = "";
-            di_digital = "";
-            di_type = "";
+            this.Physical_DI.name = "";
+            this.Physical_DI.digital = "";
+            this.Physical_DI.type = "";
+            this.getAllPoints();
         },
 
         getPointList() {
@@ -255,6 +342,9 @@ export default {
             this.itemKey++;
             this.itemKey = key;
         },
+
+        UpdatePoint(item, $event) {},
+        deletePoint(item, $event) {},
     },
 };
 </script>

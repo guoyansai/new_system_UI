@@ -7,10 +7,14 @@
             <cpSelectTable/>
           </div>
           <div class="col-sm-9">
-            <cpTabNav :tabs="['DI','AI','DPS']" :selected="selected" @selected="setSelected"/>
-              <cpDIContent :isSelected="selected === 'DI'">
-              <cpAIContent :isSelected="selected  === 'AI'">
-              <cpDPSContent :isSelected="selected === 'DPS'">
+            <cpTabNav :tabs="['DI','AI','DPS']" :selected="selected" @selected="setSelected">
+              <cpAIContent :isSelected="selected  === 'AI'"/>
+              <cpDIContent :isSelected="selected === 'DI'" />
+                
+
+              <cpDPSContent :isSelected="selected === 'DPS'"/>
+                
+            <cpTabNav/>
           </div>
       </div>
     </div>
@@ -46,7 +50,7 @@ export default {
     },
     data() {
         return {
-            selected: "DI",
+            selected: "",
         };
     },
 
@@ -61,7 +65,7 @@ export default {
     methods: {
         setSelected(tab) {
             this.selected = tab;
-            this.$bus.$emit("selected", this.selected);
+           //this.$emit("selected", this.selected);
         },
     },
 };
