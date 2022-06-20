@@ -11,24 +11,24 @@
                             <li class="nav-item">
                                 <a
                                     class="nav-link"
-                                    :style="[default_tab ? 'border: 3px solid orange;' : 'border: none;']"
-                                    @click="tabChange(cpDIContent)"
+                                    :class="{ BgColor: (cpDIContent === default_tab) }"
+                                    @click="tabChange(cpDIContent,$event)"
                                     >Physical Digital Input</a
                                 >
                             </li>
                             <li class="nav-item">
                                 <a
                                     class="nav-link"
-                                    :style="[default_tab ? 'border: 1px solid orange;' : 'border: none;']"
-                                    @click="tabChange(cpAIContent)"
+                                    :class="{ BgColor: (cpAIContent === default_tab) }"
+                                    @click="tabChange(cpAIContent,$event)"
                                     >Physical Analog Input</a
                                 >
                             </li>
                             <li class="nav-item">
                                 <a
                                     class="nav-link"
-                                    :style="[default_tab ? 'border: 1px solid orange;' : 'border: none;']"
-                                    @click="tabChange(cpDPSContent)"
+                                    :class="{ BgColor: (cpDPSContent === default_tab) }"
+                                    @click="tabChange(cpDPSContent,$event)"
                                     >Software Digital Input</a
                                 >
                             </li>
@@ -66,8 +66,8 @@ export default {
             cpDIContent: "cpDIContent",
             cpAIContent: "cpAIContent",
             cpDPSContent: "cpDPSContent",
-            default_tab: "cpAIContent",
-            active:false,
+            default_tab: "cpDIContent",
+           
         };
     },
 
@@ -80,8 +80,9 @@ export default {
 
     methods: {
         tabChange(tab) {
-            this.active = true;
             this.default_tab = tab; 
+            console.log(tab);
+           
             this.$bus.$emit("currentTab",this.default_tab)
         },
     },
@@ -93,6 +94,7 @@ export default {
     cursor: pointer;
 }
 .BgColor {
-        background-color: yellow;
+    color:red;
+    font-weight: bolder;
 }
 </style>

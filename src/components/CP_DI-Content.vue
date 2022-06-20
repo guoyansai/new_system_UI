@@ -243,7 +243,7 @@ export default {
             itemKey: -1,
             defaultCategory: "",
 
-            currentCategory:[],
+            currentCategory: [],
         };
     },
 
@@ -270,10 +270,13 @@ export default {
             this.currentCategoryName = data;
         });
 
-          this.$bus.$on("currentCategory",objs =>{ 
-               this.currentCategory.push(objs.partition_name);
-               console.log(this.currentCategory);
-            })
+
+      
+        this.$bus.$on("currentCategory", (objs) => {
+            this.currentCategory = [];
+            this.currentCategory.push(objs.partition_name);
+            console.log(this.currentCategory);
+        });
     },
 
     mounted() {
@@ -289,16 +292,17 @@ export default {
             socket.on("all_di", (objs) => {
                 this.currentPoints = objs;
                 // console.log("all di",this.currentPoints);
-                this.$bus.$emit("all_di",objs)
+                this.$bus.$emit("all_di", objs);
             });
-          
-            
-            // this.$bus.$on("currentTab",objs =>{
-            //     console.log("currentTab",objs);
-            // })
-            console.log(this.currentCategory);
-        },
 
+            
+        this.$bus.$on("currentTab", (objs) => {
+            
+            console.log("currentTab",objs);
+        });
+
+            //console.log(this.currentCategory);
+        },
 
         addPointItem() {
             socket.on("added", (obj) => {
