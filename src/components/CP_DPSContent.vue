@@ -28,7 +28,7 @@
 
 <script>
 import $ from "jquery";
-var socket = io("http://localhost:3030");
+
 export default {
     name: "cpDIContent",
 

@@ -14,9 +14,6 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/CS" exact :active="$route.name == 'CS'">Custom Shopes</router-link>
             </li>
-             <li class="nav-item">
-              <router-link class="nav-link" to="/El" exact :active="$route.name == 'El'">Create Elements</router-link>
-            </li> 
 
              <!--<li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
@@ -27,6 +24,14 @@
                 <router-link class="dropdown-item" to="/page4b" exact :active="$route.name == 'page4b'">Page 4b</router-link>
               </div>
             </li>-->
+
+
+
+             <li class="nav-item">
+              <router-link class="nav-link" to="/El" exact :active="$route.name == 'El'">Create Elements</router-link>
+            </li> 
+
+            
 
 
 

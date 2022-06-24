@@ -6,7 +6,7 @@ import "jquery"
 import { fabric } from "fabric";
 Vue.use(fabric);
 
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 //axios
@@ -22,17 +22,9 @@ import "sweetalert2/dist/sweetalert2.min.css";
 Vue.use(VueSweetalert2);
 
 
-//fortawesome
-// import { library } from "@fortawesome/fontawesome-svg-core"
-// import { faSpinner } from "@fortawesome/free-solid-svg-icons"
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-// library.add(faSpinner)
-// Vue.component("font-awesome-icon", FontAwesomeIcon)
-
-
-// uibuilder.start()
+ uibuilder.start()
 window.uibuilder = uibuilder;
-uibuilder.start("/navbar", "/uibuilder/vendor/socket.io")
+uibuilder.start("/new_system_UI", "/uibuilder/vendor/lib/socket.io")
 
 // Enable Devtools
 Vue.config.devtools = true

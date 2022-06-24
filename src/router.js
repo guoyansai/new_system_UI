@@ -17,7 +17,7 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode: "history",
-    base: "navbar",
+    //base: "navbar",
     linkActiveClass: "active",
     routes: [{
             path: "/",

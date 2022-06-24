@@ -14,114 +14,51 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <!-- width -->
-                                <div
-                                    class="input-group input-group-sm mb-3"
-                                    v-show="w"
-                                >
+                                <div class="input-group input-group-sm mb-3" v-show="w">
                                     <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="inputGroup-sizing-sm"
-                                            >Width</span
-                                        >
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Width</span>
                                     </div>
-                                    <input
-                                        type="number"
-                                        id="inp_width"
-                                        v-model.number="inpWidth"
-                                        class="form-control"
-                                        aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm"
-                                    />
+                                    <input type="number" id="inp_width" v-model.number="inpWidth" class="form-control"
+                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                 </div>
                                 <!-- height  -->
-                                <div
-                                    class="input-group input-group-sm mb-3"
-                                    v-show="h"
-                                >
+                                <div class="input-group input-group-sm mb-3" v-show="h">
                                     <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="inputGroup-sizing-sm"
-                                            >Height</span
-                                        >
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Height</span>
                                     </div>
-                                    <input
-                                        type="number"
-                                        id="inp_height"
-                                        v-model.number="inpHeight"
-                                        class="form-control"
-                                        aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm"
-                                    />
+                                    <input type="number" id="inp_height" v-model.number="inpHeight" class="form-control"
+                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
                                 <!-- fill color  -->
-                                <div
-                                    class="input-group input-group-sm mb-3"
-                                    v-show="fill_color"
-                                >
+                                <div class="input-group input-group-sm mb-3" v-show="fill_color">
                                     <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="inputGroup-sizing-sm"
-                                            >Fill Color</span
-                                        >
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Fill Color</span>
                                     </div>
-                                    <input
-                                        type="color"
-                                        id="fill_color"
-                                        v-model="drawColor"
-                                        class="form-control"
-                                        aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm"
-                                    />
+                                    <input type="color" id="fill_color" v-model="drawColor" class="form-control"
+                                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
                                 <!-- Border -->
 
                                 <!-- borderWidth -->
-                                <div
-                                    class="input-group input-group-sm mb-3"
-                                    v-show="border_w"
-                                >
+                                <div class="input-group input-group-sm mb-3" v-show="border_w">
                                     <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="inputGroup-sizing-sm"
-                                            >BorderWidth</span
-                                        >
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">BorderWidth</span>
                                     </div>
-                                    <input
-                                        type="number"
-                                        id="inp_border"
-                                        v-model.number="strokeWidth"
-                                        class="form-control"
-                                        aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm"
-                                    />
+                                    <input type="number" id="inp_border" v-model.number="strokeWidth"
+                                        class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
                                 <!-- borderColor  -->
-                                <div
-                                    class="input-group input-group-sm mb-3"
-                                    v-show="border_color"
-                                >
+                                <div class="input-group input-group-sm mb-3" v-show="border_color">
                                     <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="inputGroup-sizing-sm"
-                                            >BorderColor</span
-                                        >
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">BorderColor</span>
                                     </div>
-                                    <input
-                                        type="color"
-                                        id="borderColor"
-                                        v-model.number="strokeColor"
-                                        class="form-control"
-                                        aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm"
-                                    />
+                                    <input type="color" id="borderColor" v-model.number="strokeColor"
+                                        class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
                                 <!-- point  -->
@@ -129,80 +66,41 @@
                                     <!-- point X -->
                                     <div v-show="point_x">
                                         <h5>Coord Point</h5>
-                                        <div
-                                            class="
+                                        <div class="
                                                 input-group input-group-sm
                                                 mb-3
-                                            "
-                                        >
+                                            ">
                                             <div class="input-group-prepend">
-                                                <span
-                                                    class="input-group-text"
-                                                    id="inputGroup-sizing-sm"
-                                                    >X</span
-                                                >
+                                                <span class="input-group-text" id="inputGroup-sizing-sm">X</span>
                                             </div>
-                                            <input
-                                                type="number"
-                                                id="position_x"
-                                                v-model.number="inpPointX"
-                                                class="form-control"
-                                                aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm"
-                                            />
+                                            <input type="number" id="position_x" v-model.number="inpPointX"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm" />
                                         </div>
 
                                         <!-- point Y -->
-                                        <div
-                                            class="
+                                        <div class="
                                                 input-group input-group-sm
                                                 mb-3
-                                            "
-                                            v-show="point_y"
-                                        >
+                                            " v-show="point_y">
                                             <div class="input-group-prepend">
-                                                <span
-                                                    class="input-group-text"
-                                                    id="inputGroup-sizing-sm"
-                                                    >Y</span
-                                                >
+                                                <span class="input-group-text" id="inputGroup-sizing-sm">Y</span>
                                             </div>
-                                            <input
-                                                type="number"
-                                                id="position_y"
-                                                v-model.number="inpPointY"
-                                                class="form-control"
-                                                aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm"
-                                            />
+                                            <input type="number" id="position_y" v-model.number="inpPointY"
+                                                class="form-control" aria-label="Sizing example input"
+                                                aria-describedby="inputGroup-sizing-sm" />
                                         </div>
                                     </div>
 
                                     <!-- zoom in / out -->
-                                    <div
-                                        class="input-group input-group-sm mb-3"
-                                        v-show="zoom"
-                                    >
+                                    <div class="input-group input-group-sm mb-3" v-show="zoom">
                                         <div class="input-group-prepend">
-                                            <span
-                                                class="input-group-text"
-                                                id="inputGroup-sizing-sm"
-                                                >Zoom</span
-                                            >
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Zoom</span>
                                         </div>
-                                        <input
-                                            type="text"
-                                            id="zoom"
-                                            value="100%"
-                                            class="form-control"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-sm"
-                                        />
+                                        <input type="text" id="zoom" value="100%" class="form-control"
+                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                     </div>
-                                    <button
-                                        v-show="updateRect"
-                                        @click="updateActiveRect()"
-                                    >
+                                    <button r v-show="updateRect" @click="updateActiveRect()">
                                         Update
                                     </button>
                                 </div>
@@ -212,29 +110,17 @@
                                 <!-- font -->
                                 <div id="fontBox">
                                     <!-- font size -->
-                                    <div
-                                        class="input-group input-group-sm mb-3"
-                                        v-show="font_size"
-                                    >
-                                        <label for="text-font-size"
-                                            >Font size:</label
-                                        >
+                                    <div class="input-group input-group-sm mb-3" v-show="font_size">
+                                        <label for="text-font-size">Font size:</label>
                                         <select @change="setFontSize($event)">
-                                            <option
-                                                v-for="(font, key) in fontSize"
-                                                :key="key"
-                                                id="fontSize"
-                                                :value="font"
-                                            >
+                                            <option v-for="(font, key) in fontSize" :key="key" id="fontSize"
+                                                :value="font">
                                                 {{ font }}
                                             </option>
                                         </select>
                                     </div>
                                     <!-- font family: -->
-                                    <div
-                                        class="input-group input-group-sm mb-3"
-                                        v-show="font_family"
-                                    >
+                                    <div class="input-group input-group-sm mb-3" v-show="font_family">
                                         <select id="font-family">
                                             <option value="arial">Arial</option>
                                             <option value="helvetica" selected>
@@ -279,26 +165,15 @@
                                         </select>
                                     </div>
 
-                                    <div
-                                        class="input-group input-group-sm mb-3"
-                                        v-show="font_weight"
-                                    >
-                                        <label for="text-font-size"
-                                            >Font Weight:</label
-                                        >
-                                        <select
-                                            @change="
-                                                setFontWeight($event, font)
-                                            "
-                                        >
+                                    <div class="input-group input-group-sm mb-3" v-show="font_weight">
+                                        <label for="text-font-size">Font Weight:</label>
+                                        <select @change="
+                                            setFontWeight($event, font)
+                                        ">
                                             <!-- :value="font.id" -->
-                                            <option
-                                                v-for="(
+                                            <option v-for="(
                                                     font, key
-                                                ) in fontWeight"
-                                                :key="key"
-                                                :id="font.id"
-                                            >
+                                                ) in fontWeight" :key="key" :id="font.id">
                                                 {{ font.text }}
                                             </option>
                                         </select>
@@ -310,10 +185,7 @@
                                     <!-- Point X1 -->
                                     <h5>Coord Point</h5>
                                     <div>
-                                        <table
-                                            class="table table-sm table-dark"
-                                            v-show="line_X1"
-                                        >
+                                        <table class="table table-sm table-dark" v-show="line_X1">
                                             <thead>
                                                 <tr>
                                                     <!-- <th scope="col">#</th> -->
@@ -322,51 +194,31 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr
-                                                    v-for="(
+                                                <tr v-for="(
                                                         item, key
-                                                    ) in points"
-                                                    :key="key"
-                                                    id="tr"
-                                                >
+                                                    ) in points" :key="key" id="tr">
                                                     <!-- <td>{{key + 1}}</td> -->
                                                     <td>
-                                                        <input
-                                                            type="number"
-                                                            v-model="item.x"
-                                                            class="
+                                                        <input type="number" v-model="item.x" class="
                                                                 form-control
                                                                 input
-                                                            "
-                                                            aria-label="Sizing example input"
-                                                            aria-describedby="inputGroup-sizing-sm"
-                                                        />
+                                                            " aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm" />
                                                     </td>
                                                     <td>
-                                                        <input
-                                                            type="number"
-                                                            v-model="item.y"
-                                                            class="
+                                                        <input type="number" v-model="item.y" class="
                                                                 form-control
                                                                 input
-                                                            "
-                                                            aria-label="Sizing example input"
-                                                            aria-describedby="inputGroup-sizing-sm"
-                                                        />
+                                                            " aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm" />
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <button
-                                            @click="addPointsBtn"
-                                            v-show="line_X1"
-                                        >
+                                        <button @click="addPointsBtn" v-show="line_X1">
                                             Add
                                         </button>
-                                        <button
-                                            @click="UpdatePointsBtn"
-                                            v-show="line_X1"
-                                        >
+                                        <button @click="UpdatePointsBtn" v-show="line_X1">
                                             Update
                                         </button>
                                         <button v-show="line_X1">Delete</button>
@@ -381,26 +233,20 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-6">
-                        <ul id="objectBtns">
-                            <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                    @click.prevent="createRect"
-                                >
-                                    Rect
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                    @click.prevent="createCircle"
-                                >
-                                    Circle
-                                </button>
-                            </li>
-                            <!-- <li>
+                        <div id="objectBtns">
+                            <h5>Shopes Tool</h5>
+                            <ul>
+                                <li>
+                                    <button type="button" class="btn btn-outline-dark" @click.prevent="createRect">
+                                        Rect
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-outline-dark" @click.prevent="createCircle">
+                                        Circle
+                                    </button>
+                                </li>
+                                <!-- <li>
                                 <button
                                     type="button"
                                     class="btn btn-outline-dark"
@@ -409,62 +255,44 @@
                                     Triangle
                                 </button>
                             </li> -->
-                            <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                    @click.prevent="createLine()"
-                                >
-                                    Line
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                    @click.prevent="createText"
-                                >
-                                    Text
-                                </button>
-                            </li>
-                            <li>
-                                <!-- image/svg+xml -->
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="basic-addon1"
-                                            >Image</span
-                                        >
+                                <li>
+                                    <button type="button" class="btn btn-outline-dark" @click.prevent="createLine()">
+                                        Line
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-outline-dark" @click.prevent="createText">
+                                        Text
+                                    </button>
+                                </li>
+                                <li>
+                                    <!-- image/svg+xml -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">Image</span>
+                                        </div>
+                                        <input type="file" class="form-control" id="imgLoader" accept="image/*"
+                                            @change="imgUpload($event)" />
                                     </div>
-                                    <input
-                                        type="file"
-                                        class="form-control"
-                                        id="imgLoader"
-                                        accept="image/*"
-                                        @change="imgUpload($event)"
-                                    />
-                                </div>
-                            </li>
-                            <li>
-                                <!-- <button
+                                    
+                                </li>
+                                <li>
+                                    <!-- <button
                                     type="button"
                                     class="btn btn-light"
                                     @click.prevent="createPolyline()"
                                 >
                                     Polyline (no)
                                 </button> -->
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-success"
-                                    @click="GroupObjects()"
-                                >
-                                    Group
-                                </button>
-                            </li>
-                        </ul>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-success" @click="GroupObjects()">
+                                        Group
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                     <div class="col-sm-6">
                         <table class="table-responsive-md">
@@ -475,10 +303,7 @@
                                 </tr>
                             </thead>
                             <tbody id="shopesTbody" ref="shopesTbody">
-                                <tr
-                                    v-for="(item, key) in shopesList"
-                                    :key="key" @click="getCurrentShope(item)"
-                                >
+                                <tr v-for="(item, key) in shopesList" :key="key" @click="getCurrentShope(item)">
                                     <td>{{ key + 1 }}</td>
                                     <td>{{ item.set_name }}</td>
                                 </tr>
@@ -486,29 +311,17 @@
                         </table>
                         <ul id="btnBox">
                             <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-success"
-                                    @click="changeZindexHandle('add')"
-                                >
+                                <button type="button" class="btn btn-success" @click="changeZindexHandle('add')">
                                     Move Up
                                 </button>
                             </li>
                             <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-success"
-                                    @click="changeZindexHandle('down')"
-                                >
+                                <button type="button" class="btn btn-success" @click="changeZindexHandle('down')">
                                     Down
                                 </button>
                             </li>
                             <li>
-                                <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    @click="DeleteObj"
-                                >
+                                <button type="button" class="btn btn-danger" @click="DeleteObj">
                                     Delet
                                 </button>
                             </li>
@@ -533,18 +346,13 @@ fabric.Object.prototype.set({
     transparentCorners: false,
     borderColor: "#61abe8",
 });
-
-//connect to server
-var socket = io("http://localhost:3030")
-// socket.emit("message","Hello message")
-
-
 export default {
     name: "CS_Tools",
     props: {},
 
     data() {
         return {
+            socket: {},
             editorCanvas: null,
             drawWidth: 4,
             drawColor: "#E34F51",
@@ -620,6 +428,8 @@ export default {
             shopeListItems: [],
             trClass: false,
             points: [],
+            //shape btn
+
 
             //input used
 
@@ -641,6 +451,9 @@ export default {
             //update data buttons
             updateRect: false,
         };
+    },
+    created() {
+        this.socket = io("http://localhost:3030");
     },
     mounted() {
         this.$bus.$on("ref", (data) => {
@@ -676,7 +489,7 @@ export default {
     },
 
     updated() {
-        this.$nextTick(function () {});
+        this.$nextTick(function () { });
     },
 
     methods: {
@@ -725,23 +538,23 @@ export default {
                 // bot-right corner
                 if (
                     obj.getBoundingRect().top + obj.getBoundingRect().height >
-                        obj.canvas.height ||
+                    obj.canvas.height ||
                     obj.getBoundingRect().left + obj.getBoundingRect().width >
-                        obj.canvas.width
+                    obj.canvas.width
                 ) {
                     obj.top = Math.min(
                         obj.top,
                         obj.canvas.height -
-                            obj.getBoundingRect().height +
-                            obj.top -
-                            obj.getBoundingRect().top
+                        obj.getBoundingRect().height +
+                        obj.top -
+                        obj.getBoundingRect().top
                     );
                     obj.left = Math.min(
                         obj.left,
                         obj.canvas.width -
-                            obj.getBoundingRect().width +
-                            obj.left -
-                            obj.getBoundingRect().left
+                        obj.getBoundingRect().width +
+                        obj.left -
+                        obj.getBoundingRect().left
                     );
                 }
             });
@@ -902,7 +715,7 @@ export default {
                     //    e.target.opacity = 1;
                     // }
                 },
-                "object:added": (e) => {},
+                "object:added": (e) => { },
 
                 "object:modified": (e) => {
                     console.log("modified", e);
@@ -1164,10 +977,9 @@ export default {
             canvas.setActiveObject(rect);
 
             this.shopesList.push(rect);
+            //this.socket.emit("createRect",rect)
 
-            socket.emit("createRect",this.shopesList)
-          
-           
+
         },
         //customer shopes:create circle
         createCircle() {
@@ -1277,7 +1089,7 @@ export default {
         //     localStorage.setItem("shopesList", JSON.stringify(data));
         // },
         //customer shopes:create Ellipse
-        createPolyline() {},
+        createPolyline() { },
         //customer shopes:create Line
         createLine() {
             this.updateRect = true;
@@ -1345,7 +1157,7 @@ export default {
 
             input.forEach((element, index) => {
                 var p = parseInt(element.value);
-              
+
                 //odd y
                 if (index % 2) {
                     var list = [];
@@ -1485,7 +1297,7 @@ export default {
                         height: h,
                     });
                     canvas.add(image);
-  console.log(image);
+                    console.log(image);
                     var tojson = `{"version": "5.2.1","objects": [${JSON.stringify(
                         image
                     )}]}`;
@@ -1546,10 +1358,8 @@ export default {
             canvas.requestRenderAll();
 
             //canvas.discardActiveObject()
-
-            var data = JSON.parse(localStorage.getItem("shopesList") || "[]");
-            data.push(objs);
-            localStorage.setItem("shopesList", JSON.stringify(data));
+            console.log("objs", objs);
+            // data.push(objs);
         },
         // setZoom(zoom) {
         //     var canvas = this.editorCanvas;
@@ -1572,8 +1382,8 @@ export default {
             var top = canvas.cacheCanvasEl.offsetTop;
         },
         //在shopesList table 取得當前的一筆資料
-         getCurrentShope(item) {
-             console.log(item);
+        getCurrentShope(item) {
+            console.log(item);
         },
 
         //圖層移動
@@ -1581,7 +1391,7 @@ export default {
             console.log(this.shopesList);
             var canvas = this.editorCanvas;
             const obj = canvas.getActiveObject();
-            
+
             if (type == "add") {
                 canvas.bringForward(obj); // 上移
                 this.shopesList = []
@@ -1624,15 +1434,19 @@ export default {
     border: 2px solid black;
     /* overflow: scroll; */
 }
+
 .active {
     background: rgb(247, 52, 52);
 }
+
 ul {
     list-style-type: none;
 }
+
 input {
     width: 60%;
 }
+
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
@@ -1640,8 +1454,14 @@ input[type="number"]::-webkit-inner-spin-button {
 .card {
     border: none;
 }
+
 button {
     width: 100px;
     margin: 10px 0;
+}
+#objectBtns{
+    width: 200px;
+    height: 400px;
+    border: 1px solid black;
 }
 </style>

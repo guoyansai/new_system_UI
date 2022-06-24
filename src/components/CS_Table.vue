@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h5>Custom Shapes</h5>
-        <div id="table">
-            <table class="table-responsive-md">
+        
+        <div id="custom_table">
+<h5>Custom Shapes</h5>
+            <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Value</th>
+                        <th scope="col">Name</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -19,7 +19,7 @@
                     >
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.setname }}</td>
-                        <td>{{ item.setvalue }}</td>
+                       
                     </tr>
                 </tbody>
             </table>
@@ -36,17 +36,7 @@
                 v-model="newItem.setname"
             />
         </div>
-        <div class="input-group" id="CS_addVal_input">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Value</span>
-            </div>
-            <input
-                type="number"
-                class="form-control"
-                required
-                v-model="newItem.setvalue"
-            />
-        </div>
+       
         <div>
             <br />
             <button
@@ -76,7 +66,6 @@ export default {
         return {
             newItem: {
                 setname: "",
-                setvalue: "",
             },
             itemKey: -1,
             editorCanvas: null,
@@ -115,7 +104,6 @@ export default {
 
             var shopesList = localStorage.getItem("shopesList");
             var setname = this.newItem.setname;
-            var setvalue = this.newItem.setvalue;
             //var items = this.CustomerItem;
             if (objs != undefined) {
                 if (objs.length >= 2) {
@@ -130,12 +118,11 @@ export default {
                 } else if (objs.length <= 1) {
                     //  console.log(objs);
                 }
-            } else if (setname == "" || setvalue == "" || shopesList == null) {
+            } else if (setname == ""  || shopesList == null) {
                 alert("cannot empty");
             }
             this.CustomerItem.push({
                 setname: setname,
-                setvalue: setvalue,
                 shopesList: shopesList,
             });
             this.$bus.$emit("CustomerItem", this.CustomerItem);
@@ -145,7 +132,6 @@ export default {
             );
             localStorage.removeItem("shopesList");
             this.newItem.setname = "";
-            this.newItem.setvalue = "";
             this.editorCanvas.clear();
         },
 
@@ -195,8 +181,10 @@ tbody tr:hover {
     color: red;
 }
 
-.table {
-    border: 1px solid;
+#custom_table {
+    width: 200px;
+    height: 400px;
+    border: 1px solid black;
     text-align: center;
 }
 </style>

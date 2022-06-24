@@ -1,117 +1,131 @@
 <template lang="html">
-<div>
-    
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
-        + Add Paration
-    </button>
+    <div>
 
-    <!-- Add Paration Modal -->
-    <div class="modal fade" id="CP_SelectTable" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Paration</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Name</span>
-                        </div>
-                        <input type="text" class="form-control" id="addNameInp" v-model.trim="inp_name" required />
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
+            + Add Paration
+        </button>
+
+        <!-- Add Paration Modal -->
+        <div class="modal fade" id="CP_SelectTable" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Paration</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-                    <button type="button" class="btn btn-primary" @click.prevent="addCategory()">Save</button>
+                    <div class="modal-body">
+                        <!-- <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
+                            </div>
+                            <input type="text" class="form-control" id="addNameInp"  />
+                        </div> -->
+                        <form>
+                            <div class="form-group row">
+                                <label for="paration_name" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="paration_name" v-model.trim="inp_name" required >
+                                </div>
+                            </div>
+                        </form>
+                        
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+                        <button type="button" class="btn btn-primary" @click.prevent="addCategory()">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- onEdit Pration Modal -->
-    <div class="modal fade" id="onEdit_Model" tabindex="-1" aria-labelledby="onEditModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="onEditModalLabel">Update Paration</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"  @click="onEditCloseBtn()">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Name</span>
-                        </div>
-                        <input type="text" class="form-control" id="onEditNameInp" v-model="onEdit_name" required />
+        <!-- onEdit Pration Modal -->
+        <div class="modal fade" id="onEdit_Model" tabindex="-1" aria-labelledby="onEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="onEditModalLabel">Update Paration</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" @click="onEditCloseBtn()">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="onEditCancleBtn()">Cancle</button>
-                    <button type="button" class="btn btn-primary" @click="UpdateCategory()">Update</button>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
+                            </div>
+                            <input type="text" class="form-control" id="onEditNameInp" v-model="onEdit_name" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            @click="onEditCancleBtn()">Cancle</button>
+                        <button type="button" class="btn btn-primary" @click="UpdateCategory()">Update</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div id="table " ref="table_paration">
+            <table class="table table-sm" style="overflow-y:scroll;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Actions </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, key) in addCategoryList" ref="Categorytr" @click="getCategoryItem(item, $event)">
+
+                        <!-- <td>{{item.partition_id}}</td> -->
+                        <td>{{ key + 1 }}</td>
+                        <td>{{ item.partition_name }}</td>
+                        <td @click="editCategory(item, $event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="blue" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-edit" data-toggle="modal"
+                                data-target="#onEdit_Model">
+                                <!--   -->
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item, $event)">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </td>
+
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
     </div>
-
-    <div id="table">
-        <table class="table table-sm">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Actions </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, key) in addCategoryList" ref="Categorytr" @click="getCategoryItem(item ,$event)">
-
-                    <!-- <td>{{item.partition_id}}</td> -->
-                    <td>{{ key + 1 }}</td>
-                    <td>{{ item.partition_name }}</td>
-                    <td @click="editCategory(item, $event)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                         fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" 
-                         stroke-linejoin="round" class="feather feather-edit" data-toggle="modal" 
-                         data-target="#onEdit_Model"
-                        >
-                        <!--   -->
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item,$event)">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </td>
-                 
-
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-</div>
 </template>
 
 <script>
 import $ from "jquery";
+import io from "socket.io-client";
 
-var socket = io("http://localhost:3030");
-
-var api = "http://127.0.0.1:1880/PARATION";
 export default {
     name: "cpSelectTable",
     inject: ["reload"], //注入依赖
     data() {
         return {
+            socket: {},
             inp_name: "",
             onEdit_name: "",
             onEdit_id: null,
@@ -124,7 +138,9 @@ export default {
             selected: "",
         };
     },
-
+    created() {
+        this.socket = io("http://localhost:3030");
+    },
     mounted() {
         //get all Paration list
         this.getCategory();
@@ -143,7 +159,7 @@ export default {
             this.selected = data;
         });
 
-        socket.on("Updated", (objs) => {
+        this.socket.on("Updated", (objs) => {
             var list = this.addCategoryList;
             list.map((item) => {
                 if (item.partition_id === objs.partition_id) {
@@ -170,29 +186,31 @@ export default {
 
         //讀取資料庫Partition資料
         getCategory() {
-            socket.on("allCategory", (objs) => {
-                if (objs === "Not Data" || objs.length <= 0) {
-                    return;
-                }
+            this.socket.on("allCategory", (objs) => {
+
                 if (this.addCategoryList === "undefined") {
                     return;
                 }
                 if (objs.length >= 1) {
                     this.addCategoryList = [];
-                    this.addCategoryList = objs;
+                    this.addCategoryList = objs[0];
+                    // console.log(this.addCategoryList.length)
+                    // if(this.addCategoryList.length <= 15){
+                    //     this.$refs.table_paration.$el.classList.add("over")
+                    // }
                 }
             });
         },
 
         addCItem() {
-            socket.on("added", (obj) => {
+            this.socket.on("added", (obj) => {
                 this.addCategoryList.push(obj);
             });
         },
 
         getCategoryItem(item, e) {
-         
-            this.$bus.$emit("currentCategory",item)
+
+            this.$bus.$emit("currentPartition", item)
         },
 
         //新增partition
@@ -229,7 +247,7 @@ export default {
             if (isExist === false) {
                 this.inp_name = "";
                 $("#CP_SelectTable").modal("hide");
-                socket.emit("addCategory", data);
+                this.socket.emit("addCategory", data);
                 this.getCategory();
             }
         },
@@ -293,18 +311,14 @@ export default {
                 });
 
                 $("#onEdit_Model").modal("hide");
-                socket.emit("Updateing", data);
+                this.socket.emit("Updateing", data);
             }
             this.getCategory();
         },
 
-        //
-
-        delectItem() {},
-
         deleteSubmit(item, e) {
             var name = item.partition_name;
-            socket.emit("Deleteing", item);
+            this.socket.emit("Deleteing", item);
 
             this.$swal
                 .fire({
@@ -318,7 +332,7 @@ export default {
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
-                        socket.on("deleted", (obj) => {
+                        this.socket.on("deleted", (obj) => {
                             this.addCategoryList.forEach((item, index) => {
                                 if (item.partition_name === obj.name) {
                                     this.addCategoryList.splice(index, 1);
@@ -352,6 +366,11 @@ tbody tr:hover {
     /* color: yellow; */
     background: rgb(175, 175, 175);
     /* stroke: yellow; */
+}
+.over{
+    /* scroll-behavior: smooth;
+    overscroll-behavior: contain; */
+    overflow: scroll;
 }
 </style>
 

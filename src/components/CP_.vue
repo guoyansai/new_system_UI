@@ -81,8 +81,6 @@ export default {
     methods: {
         tabChange(tab) {
             this.default_tab = tab; 
-            console.log(tab);
-           
             this.$bus.$emit("currentTab",this.default_tab)
         },
     },
