@@ -295,6 +295,9 @@
 
                     </div>
                     <div class="col-sm-6">
+                        <div id="objectBtns">
+                             <h5>Shopes Tool</h5>
+                        </div>
                         <table class="table-responsive-md">
                             <thead class="thead-dark">
                                 <tr>
