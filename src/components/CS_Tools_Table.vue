@@ -1,60 +1,58 @@
 <template>
     <div>
-        <!-- <h5>Shapes</h5>
-        <div id="table">
-            <table class="table-responsive-md" >
+        <div >
+            <!-- <h6>Shapes</h6> -->
+            <table class="table table-sm" id="shopes_table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
                         <th scope="col">Name</th>
+                        <th>
+                        </th>
                     </tr>
                 </thead>
-                <tbody id="shopesTbody" ref="shopesTbody">
-                    <tr
-                        v-for="(item, key) in getshopesList"
-                        :key="key"
-                        @click="getDataItem(item, key)"
-                        :class="{ active: key == itemKey }"
-                    >
-                        <td>{{ key + 1 }}</td>
-                        <td>{{ item.type }}</td>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
                     </tr>
                 </tbody>
             </table>
-        <div>
-        <div>
-            <br />
+            <div id="shopesBtnBox">
+                <span>
+                    <button type="button" class="" 
+                    @click="changeZindexHandle('add')">
+                        Move Up
+                    </button>
+                </span>
+                <span>
+                    <button type="button" class="" 
+                    @click="changeZindexHandle('down')">
+                        Move Down
+                    </button>
+                </span>
+                <span>
+                    <button type="button" class="">Delet</button>
+                </span>
+                  <span>
+                    <button type="button" class="">Delet All</button>
+                </span>
+            </div>
 
-            <ul id="btnBox">
-                <li>
-                    <button
-                        type="button"
-                        class="btn btn-success"
-                        @click="changeZindexHandle('add')"
-                    >
-                         Move Up
-                    </button>
-                </li>
-                <li>
-                    <button
-                        type="button"
-                        class="btn btn-success"
-                        @click="changeZindexHandle('down')"
-                    >
-                        <font-awesome-icon icon="fa-thin fa-down" />Move Down
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="btn btn-danger">Delet</button>
-                </li>
-            </ul>
-        </div> -->
+
+        </div>
+
+
+
     </div>
+
+
+
 </template>
 
 <script>
 export default {
-    name: "CS_Tools_Table",
+    name: "csToolsTable",
 
     data() {
         return {
@@ -85,21 +83,21 @@ export default {
             }
         });
     },
-    created() {},
+    created() { },
     methods: {
         getData() {
-            var objs = JSON.parse(localStorage.getItem("shopesList"));
-            console.log(objs);
-            if (objs != null || []) {
-                objs.forEach((element) => {
-                    var el = JSON.parse(element);
-                    //console.log(el);
-                    var obj = el.objects[0];
-                    this.getshopesList.push(obj);
-                    // console.log(this.getshopesList);
-                });
-            }
-            this.$bus.$emit("ref", this.$refs.shopesTbody);
+            // var objs = JSON.parse(localStorage.getItem("shopesList"));
+            // console.log(objs);
+            // if (objs != null || []) {
+            //     objs.forEach((element) => {
+            //         var el = JSON.parse(element);
+            //         //console.log(el);
+            //         var obj = el.objects[0];
+            //         this.getshopesList.push(obj);
+            //         // console.log(this.getshopesList);
+            //     });
+            // }
+            // this.$bus.$emit("ref", this.$refs.shopesTbody);
         },
         getDataItem(item, key) {
             this.itemKey = key;
@@ -121,20 +119,45 @@ export default {
 </script>
 
 <style scoped>
-table {
-    /* height: 400px; */
-    border: 1px solid;
+#shopes_table {
+    width: 100%;
+    height: 300px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+h6 {
+    background: black;
+    color: white;
+}
+#shopesBtnBox{
+      display: flex;  
+}
+#shopesBtnBox button{
+    width: 50px;
+    height: 50px;
+    font-size: 10px;
+    margin: 2px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+}
+div {
+    font-size: 0;
 }
 .active {
     color: red;
 }
+
 tr {
     border-bottom: 1px solid black;
     cursor: pointer;
 }
+
 tr:hover {
     background-color: rgb(182, 182, 182);
 }
+
 tr th {
     background-color: white;
     cursor: default;

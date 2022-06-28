@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./components/App.vue";
 import router from "./router";
 import "bootstrap"
-import "jquery"
+
 import { fabric } from "fabric";
 Vue.use(fabric);
 

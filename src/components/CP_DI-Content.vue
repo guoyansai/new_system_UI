@@ -1,15 +1,6 @@
 <template>
-    <div>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_PointsList">
-            + Add
-        </button>
-       
-
-
-
-        <table class="table table-striped">
+    <div id="diContent_table">
+        <table class="table table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">No.</th>
@@ -17,6 +8,12 @@
                     <th scope="col">Digital Type</th>
                     <th scope="col">Digital Text</th>
                     <th scope="col">Actions</th>
+                    <th>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_PointsList">
+                            + Add
+                        </button>
+                    </th>
                 </tr>
             </thead>
             <tbody id="tobdy">
@@ -26,24 +23,23 @@
                     <td>{{ item.digital_type }}</td>
                     <td>{{ item.digital_text }}</td>
                     <td>
-                        
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-edit" data-toggle="modal" data-target="#diUpdateModal"
-                            >
+                            class="feather feather-edit" data-toggle="modal" data-target="#diUpdateModal">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
 
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-x" id="deleteBtn" @click="deletePoint(item, $event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-                       
+
                     </td>
-                   
+
 
                 </tr>
             </tbody>
@@ -120,14 +116,15 @@
                     </div>
                 </div>
             </div>
-           
-            
+
+
         </div>
 
-          <!-- Update Modal -->
-        <div class="modal fade" id="diUpdateModal" tabindex="-1" aria-labelledby="diUpdateModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-           <div class="modal-content">
+        <!-- Update Modal -->
+        <div class="modal fade" id="diUpdateModal" tabindex="-1" aria-labelledby="diUpdateModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Create Physical Digital Input</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -194,9 +191,9 @@
 
                     </div>
                 </div>
+            </div>
         </div>
-        </div>
-        
+
     </div>
 </template>
 
@@ -219,14 +216,14 @@ export default {
             categoryItem: "",
             currentTab: "",
             currentPoints: [],
-            currentPoint:[],
+            currentPoint: [],
             itemKey: -1,
             defaultCategory: "",
 
             currentPartition: [],
         };
     },
-      created() {
+    created() {
         this.socket = io("http://localhost:3030");
 
 
@@ -247,24 +244,24 @@ export default {
 
 
     },
-     mounted() {
+    mounted() {
         uibuilder.start();
         uibuilder.onChange("msg", (msg) => {
             console.info("Msg received from Node-RED server in Home:", msg);
         });
         this.socket.on("server:di_List", (objs) => {
-                this.currentPoints = [] 
+            this.currentPoints = []
             this.currentPoints.push(objs[0])
         });
 
-         //CP_SelectTable
+        //CP_SelectTable
         this.$bus.$on("currentPartition", (objs) => {
             this.currentPartition = [];
             this.currentPartition.push(objs);
             this.socket.emit("client:di_Partition", this.currentPartition);
         });
 
-       
+
         //CP_
         this.$bus.$on("currentTab", (obj) => {
             this.currentTab = "";
@@ -278,10 +275,10 @@ export default {
 
         getAllPoints() {
 
-            
-         
 
-           
+
+
+
 
         },
 
@@ -349,7 +346,7 @@ export default {
         },
 
         getPointItem(item, key) {
-            
+
             this.currentPoint.push(item)
             this.itemKey++;
             this.itemKey = key;
@@ -357,19 +354,26 @@ export default {
 
         UpdatePoint() {
             var objs = this.currentPoint
-           
+
 
         },
         deletePoint(item, $event) { },
     },
 
-   
-  
+
+
 
 };
 </script>
 
 <style scoped>
+#diContent_table {
+    width: 100%;
+    height: 100vh;
+    border: 1px solid black;
+    text-align: center;
+}
+
 tbody tr {
     cursor: pointer;
 }

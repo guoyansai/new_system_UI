@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-sm-9">
                     <nav>
-                        <ul class="nav nav-tabs" >
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a
                                     class="nav-link"
@@ -92,7 +92,8 @@ export default {
     cursor: pointer;
 }
 .BgColor {
-    color:red;
+    color:white;
     font-weight: bolder;
+    background-color: rgb(136, 136, 136);
 }
 </style>

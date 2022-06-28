@@ -1,9 +1,6 @@
 <template>
-    <div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AI_Add_Modal">
-            + Add
-        </button>
+    <div id="aiContent_table">
+       
         <!-- add Modal -->
         <div class="modal fade" id="AI_Add_Modal" tabindex="-1" aria-labelledby="AI_Add_Label" aria-hidden="true">
             <div class="modal-dialog">
@@ -61,6 +58,10 @@
                     <th scope="col">Min Value</th>
                     <th scope="col">Mix Value</th>
                     <th scope="col">Actions</th>
+                    <th scope="col"> <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AI_Add_Modal">
+            + Add
+        </button></th>
                 </tr>
             </thead>
             <tbody id="tobdy">
@@ -167,7 +168,12 @@ export default {
 tbody tr {
     cursor: pointer;
 }
-
+#aiContent_table{
+    width: 100%;
+    height: 100vh;
+    border: 1px solid black;
+    text-align: center;
+}
 .active {
     cursor: pointer;
     color: red;

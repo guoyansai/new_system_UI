@@ -5,9 +5,9 @@ export default class CanvasInit {
   }
   initialiaze() {
     return new fabric.Canvas(this.canvasId, {
-      width: 720,
-      height: 500,
-      backgroundColor: "",
+      width: 800,
+      height: 600,
+      backgroundColor: "black",
     });
   }
 }

@@ -1,10 +1,7 @@
 <template lang="html">
     <div>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
-            + Add Paration
-        </button>
+       
 
         <!-- Add Paration Modal -->
         <div class="modal fade" id="CP_SelectTable" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -72,13 +69,20 @@
             </div>
         </div>
 
-        <div id="table " ref="table_paration">
-            <table class="table table-sm" style="overflow-y:scroll;">
+        <div id="partition_table" ref="table_paration">
+             <h6>Partition</h6>
+            <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
                         <th scope="col">Name</th>
                         <th scope="col">Actions </th>
+                        <th scope="col">
+                             <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
+            + Add
+        </button>
+                        </th>
 
                     </tr>
                 </thead>
@@ -357,6 +361,20 @@ export default {
 </script>
 
 <style scoped>
+* {
+    margin: 0;
+    padding: 0;
+}
+#partition_table {
+    width: 100%;
+    height: 100vh;
+    border: 1px solid black;
+}
+h6 {
+    background: black;
+    color: white;
+    text-align: center;
+}
 tbody tr:hover {
     cursor: pointer;
     background: rgb(175, 175, 175);

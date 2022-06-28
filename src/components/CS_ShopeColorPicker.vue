@@ -19,12 +19,10 @@ export default {
     components: { Sketch },
     data() {
         return {
-            colors: "#194d33",
+            colors: "#000000",
         };
     },
 
 };
 </script>
 
-<style scoped>
-</style>
