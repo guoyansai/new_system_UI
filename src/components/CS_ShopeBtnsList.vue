@@ -1,7 +1,7 @@
 <template>
   <div id="shopebtnselement">
     <h6>Create Shopes</h6>
-    <div :key="button.text" v-for="button in buttons">
+    <div :key="button.type" v-for="button in buttons">
       <ShopeBtnsElement :button="button" 
       @add-buttons="$emit('add-buttons', $event)"/>
     </div>

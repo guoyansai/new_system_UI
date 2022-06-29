@@ -6,35 +6,45 @@
                 <div class="input">
                     <p></p>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_width">width</label>
-                            <input type="number" class="form-control" id="inp_width"
-                                @input="$emit('change-Objwidth', $event)">
+                            <input type="number" class="form-control" id="inp_width" :value="inp_width"
+                                @input="$emit('change-ObjWidth', $event)">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_height">height</label>
-                            <input type="number" class="form-control" id="inp_height"
+                            <input type="number" class="form-control" id="inp_height" :value="inp_height"
                                 @input="$emit('change-ObjHeight', $event)">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_color">color</label>
-                            <input type="color" class="form-control" id="inp_color" />
+                            <input type="color" class="form-control" id="inp_color" :value="inp_color"
+                                @input="$emit('change-ObjColor', $event)" />
                         </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="inp_radius">radius</label>
+                            <input type="number" class="form-control" id="inp_radius" :value="inp_radius"
+                                @input="$emit('change-ObjRadius', $event)" />
+                        </div>
+
                     </div>
                 </div>
                 <!-- border -- width,color -->
                 <div class="input">
                     <p>Border</p>
                     <div class="form-row ">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_borderW">width</label>
-                            <input type="number" class="form-control" id="inp_borderW"
-                            @input="$emit('change-ObjborderW', $event)">
+                            <input type="number" class="form-control" id="inp_borderW" :value="inp_borderW"
+                                @input="$emit('change-ObjBorderW', $event)">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_borderC">color</label>
-                            <input type="color" class="form-control" id="inp_borderC">
+                            <input type="color" class="form-control" id="inp_borderC" :value="inp_borderC"
+                                @input="$emit('change-ObjBorderC', $event)">
                         </div>
+
                     </div>
                 </div>
 
@@ -42,97 +52,28 @@
                 <div class="input">
                     <p>position</p>
                     <div class="form-row ">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_position_x">x</label>
-                            <input type="number" class="form-control" id="inp_position_x">
+                            <input type="number" class="form-control" id="inp_position_x" :value="inp_position_x"
+                                @input="$emit('change-ObjObjPositionX', $event)">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_position_y">y</label>
-                            <input type="number" class="form-control" id="inp_position_y">
+                            <input type="number" class="form-control" id="inp_position_y" :value="inp_position_y"
+                                @input="$emit('change-ObjObjPositionY', $event)">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inp_zoom">zoom</label>
-                            <input type="number" class="form-control" id="inp_zoom">
+                            <input type="number" class="form-control" id="inp_zoom" :value="inp_zoom"><span>%</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- text --  -->
-                <div class="input">
-                    <p>text</p>
-                    <div class="form-row ">
-                        <!-- font size -->
-                        <div class="form-group col-md-3">
-                            <label for="inp_position_x">font size</label>
-                            <select>
-                                <option>
-                                    example
-                                </option>
-                            </select>
-                        </div>
-                        <!-- font family -->
-                        <div class="form-group col-md-3">
-                            <label for="inp_position_y">font family</label>
-                            <select id="font-family">
-                                <option value="arial">Arial</option>
-                                <option value="helvetica" selected>
-                                    Helvetica
-                                </option>
-                                <option value="myriad pro">
-                                    Myriad Pro
-                                </option>
-                                <option value="delicious">
-                                    Delicious
-                                </option>
-                                <option value="verdana">
-                                    Verdana
-                                </option>
-                                <option value="georgia">
-                                    Georgia
-                                </option>
-                                <option value="courier">
-                                    Courier
-                                </option>
-                                <option value="comic sans ms">
-                                    Comic Sans MS
-                                </option>
-                                <option value="impact">
-                                    Impact
-                                </option>
-                                <option value="monaco">
-                                    Monaco
-                                </option>
-                                <option value="optima">
-                                    Optima
-                                </option>
-                                <option value="hoefler text">
-                                    Hoefler Text
-                                </option>
-                                <option value="plaster">
-                                    Plaster
-                                </option>
-                                <option value="engagement">
-                                    Engagement
-                                </option>
-                            </select>
-                        </div>
-                        <!-- font Weight -->
-                        <div class="form-group col-md-3">
-                            <label for="inp_font_weight">font Weight</label>
-                            <select>
-                                <option>
-                                    example
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- line -- X / Y , zoom -->
+                <!-- line -- X / Y -->
                 <div class="input">
                     <p>Coord Point</p>
                     <div class="form-row ">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
 
                             <table class="table table-sm table-dark">
                                 <thead>
@@ -161,24 +102,22 @@
                                 </tbody>
                             </table>
                             <div id="coordPointBox">
-                                <span><button>Add</button></span>
+                                <span>
+                                    <button @click.prevent="$emit('add-coordPoints', $event)">Add</button>
+                                </span>
                                 <span><button>Update</button></span>
                                 <span><button>Delete</button></span>
                             </div>
-                         
+
                         </div>
 
 
                     </div>
                 </div>
-
-
+               
+                      
             </form>
         </div>
-
-        <!-- <div class="col-4">
-
-        </div> -->
 
     </div>
 
@@ -194,8 +133,20 @@
 
 export default {
     name: "csShopeEditor",
+
     props: {
-        msg: String
+        inp_width: Number,
+        inp_height: Number,
+        inp_radius: Number,
+        inp_color: String,
+        inp_borderW: Number,
+        inp_borderC: String,
+        inp_position_x: Number,
+        inp_position_y: Number,
+        inp_zoom: Number,
+        inp_font_size: Array,
+        // inp_font_family: Array,
+        // inp_font_weight: Array,
     },
     data() {
         return {
@@ -206,21 +157,21 @@ export default {
 </script>
 
 <style scoped>
-
 .input {
-
     border: 1px solid black;
 }
-#coordPointBox{
-    display: flex;  
+
+#coordPointBox {
+    display: flex;
 }
-#coordPointBox button{
-     width: 50px;
+
+#coordPointBox button {
+    width: 50px;
     height: 30px;
     font-size: 10px;
     margin: 2px;
     border-radius: 5px;
     background-color: #007bff;
-    color: white; 
+    color: white;
 }
 </style>

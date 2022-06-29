@@ -11,7 +11,19 @@ import CanvasInit from "../../public/js/CanvasInit.js"
 
 export default {
   name: "DrawBoard",
-
+  props: {
+    inp_width: Number,
+    inp_height: Number,
+    inp_radius: Number,
+    inp_color: String,
+    inp_borderW: Number,
+    inp_borderC: String,
+    inp_position_x: Number,
+    inp_position_y: Number,
+    inp_zoom: Number,
+    inp_font_size: Array,
+    inp_font_style: Array,
+  },
   data() {
     return {
       canvasId: "mycanvas",
@@ -27,10 +39,10 @@ export default {
       let newCanvas = new CanvasInit(this.canvasId);
       this.canvas = newCanvas.initialiaze();
     },
+    //CHANGE SHOPE PROPERTY
     setCanvasObjFillColor(event) {
       let curObj = this.canvas.getActiveObject()
       let color = event;
-
       if (curObj) {
         curObj.set({
           fill: color,
@@ -57,99 +69,252 @@ export default {
       }
       console.log(this.canvas);
     },
-
-
-
-    createCir(canvas) {
-      const canvCenter = canvas.getCenter();
-      const circle = new fabric.Circle({
-        radius: 50,
-        fill: "MediumPurple",
-        left: canvCenter.left,
-        top: -50,
-        originX: "center",
-        originY: "center",
-        cornerColor: "white",
-        objectCaching: false,
-      });
-      canvas.add(circle);
-      canvas.setActiveObject(circle);
-      canvas.renderAll();
-      circle.animate("top", canvas.height - 50, {
-        onChange: canvas.renderAll.bind(canvas),
-        onComplete: () => {
-          circle.animate("top", canvCenter.top, {
-            onChange: canvas.renderAll.bind(canvas),
-            duration: 200,
-            easing: fabric.util.ease.easeOutBounce,
-          });
-        },
-      });
+    changeObjColor(event) {
+      let curObj = this.canvas.getActiveObject()
+      let color = event;
+      if (curObj) {
+        curObj.set({
+          fill: color,
+        });
+        this.canvas.requestRenderAll();
+      }
     },
+    changeObjBorderW(event) {
+      let curObj = this.canvas.getActiveObject()
+      let w = parseInt(event);
+      console.log("changeObjBorderW", w);
+      if (curObj) {
+        curObj.set({
+          strokeWidth: w,
+        });
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjBorderW(event) {
+      let curObj = this.canvas.getActiveObject()
+      let w = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          strokeWidth: w,
+        });
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjBorderC(event) {
+      let curObj = this.canvas.getActiveObject()
+      let c = event;
+      if (curObj) {
+        curObj.set({
+          stroke: c,
+        });
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjPositionX(event) {
+      console.log(event);
+      let curObj = this.canvas.getActiveObject()
+      let x = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          left: x,
+        }).setCoords();
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjPositionY(event) {
+      console.log(event);
+      let curObj = this.canvas.getActiveObject()
+      let y = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          top: y,
+        }).setCoords();
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjRadius(event) {
+      let curObj = this.canvas.getActiveObject()
+      let r = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          radius: r,
+        })
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeTextSize(event) {
+      let curObj = this.canvas.getActiveObject()
+      let size = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          fontSize: size,
+        })
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeTextWeight(event) {
+      let curObj = this.canvas.getActiveObject()
+      let w = event
+      // switch (w) {
+      //   case "normal":
+      //     curObj.set("fontWeight", "normal");
+      //     console.log(curObj);
+      //     break;
+      //   case "bold":
+      //     curObj.set("fontWeight", "bold");
+      //     console.log(curObj);
+      //     break;
+      //   case "italic":
+      //     curObj.set("fontStyle", "italic");
+      //     console.log(curObj);
+      //     break;
+      //   case "text-cmd-underline":
+      //     curObj.set("underline", true);
+      //     console.log(curObj);
+      //     break;
+      //   case "text-cmd-linethrough":
+      //     curObj.set("linethrough", true);
+      //     console.log(curObj);
+      //     break;
+      //   case "text-cmd-overline":
+      //     curObj.set("overline", true);
+      //     console.log(curObj);
+      //     break;
+      //   default:
+      // }
+      // if(curObj.fontStyle === "italic"){
+      //   curObj.set("fontStyle", "");
+      // }
+      if (curObj) {
+        if (w == "normal") {
+          curObj.set("fontWeight", "normal");
+        }
+        if (w == "bold") {
+          curObj.set("fontWeight", "bold");
+        }
+        if (w == "italic") {
+          curObj.set("fontStyle", "italic");
+        }
+        if (w == "text-cmd-underline") {
+          curObj.set("underline", true);
+          console.log(curObj.underline);
+        } else if (curObj.underline === true) {
+          curObj.set("underline", false);
+        }
+        if (w == "text-cmd-linethrough") {
+          curObj.set("linethrough", true);
+        }
+        if (w == "text-cmd-overline") {
+          curObj.set("overline", true);
+        }
+      // } else {
+      //   if (curObj.fontWeight == "normal") {
+      //     curObj.set("fontWeight", "");
+      //   }
+      //   if (curObj.fontWeight == "bold") {
+      //     curObj.set("fontWeight", "");
+      //   }
+      //   if (curObj.fontStyle == "italic") {
+      //     curObj.set("fontStyle", "italic");
+      //   }
+      //   if (curObj.underline === true) {
+      //     curObj.set("underline", false);
+
+      //   }
+      //   if (curObj.fontStyle == "text-cmd-overline") {
+      //     canvas.getActiveObject().set("textDecoration", "");
+      //   }
+      }
+      this.canvas.requestRenderAll();
+
+    },
+
+    //CREATE SHOPES
     createRec(canvas) {
-      const canvCenter = canvas.getCenter();
+      let h = parseInt(inp_height.value)
+      let w = parseInt(inp_width.value)
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+
       const rect = new fabric.Rect({
-        height: 100,
-        width: 100,
-        fill: "yellow",
-        left: canvCenter.left,
-        top: 100,
-        originX: "center",
-        originY: "center",
-        cornerColor: "white",
-        objectCaching: false,
+        height: h,
+        width: w,
+        fill: color,
+        left: x,
+        top: y,
+        stroke: borderC,
+        strokeWidth: borderW,
       });
       canvas.add(rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
-
     },
-    createTri(canvas) {
-      const canvCenter = canvas.getCenter();
-      const trianlge = new fabric.Triangle({
-        height: 150,
-        width: 100,
-        fill: "yellow",
-        left: canvCenter.left,
-        top: 100,
-        stroke: 'green',
-        strokeWidth: 3,
-        cornerColor: 'blue',
-        angle: 0,
+    createCir(canvas) {
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      let radius = parseInt(inp_radius.value)
+
+      const circle = new fabric.Circle({
+        fill: color,
+        left: x,
+        top: y,
+        stroke: borderC,
+        strokeWidth: borderW,
+        radius: radius,
       });
-      canvas.add(trianlge);
-      canvas.setActiveObject(trianlge);
+      canvas.add(circle);
+      canvas.setActiveObject(circle);
       canvas.renderAll();
     },
+
     createLine(canvas) {
-      const canvCenter = canvas.getCenter();
-      let points = [];
-      points.push(new fabric.Point(parseInt(0), parseInt(200)));
-      points.push(new fabric.Point(parseInt(300), parseInt(400)));
+      let h = parseInt(inp_height.value)
+      let w = parseInt(inp_width.value)
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+
+      this.points = [];
+      points.push(new fabric.Point(parseInt(50), parseInt(0)));
+      points.push(new fabric.Point(parseInt(0), parseInt(50)));
+      points.push(new fabric.Point(parseInt(100), parseInt(50)));
+      //points.push(new fabric.Point(parseInt(50), parseInt(25)));
 
       const line = new fabric.Polyline(points, {
-        height: 150,
-        width: 100,
-        fill: "transparent",
-        left: canvCenter.left,
-        top: 100,
-        stroke: 'green',
-        strokeWidth: 3,
-        cornerColor: 'blue',
-        angle: 0,
+        height: h,
+        width: w,
+        fill: color,
+        left: x,
+        top: y,
+        stroke: borderC,
+        strokeWidth: borderW,
       });
       canvas.add(line);
       canvas.setActiveObject(line);
       canvas.renderAll();
     },
     createText(canvas) {
-      const canvCenter = canvas.getCenter();
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let s = inp_font_size.value
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      console.log(s);
       const text = new fabric.IText("TEXT", {
-        fill: "yellow",
-        left: canvCenter.left,
-        top: 100,
+        fill: color,
+        left: x,
+        top: y,
+        fontSize: s,
         fontFamily: "Courier New",
-        fontSize: 20,
         underline: false,
       });
       canvas.add(text);
@@ -157,7 +322,7 @@ export default {
       canvas.renderAll();
     },
     addImageCanvas() {
-       const reader = new FileReader();
+      const reader = new FileReader();
       reader.addEventListener("load", () => {
         fabric.Image.fromURL(
           reader.result,
@@ -181,7 +346,8 @@ export default {
       const inputImage = document.getElementById("inp_image");
       const file = inputImage.files[0];
       reader.readAsDataURL(file);
-    }
+    },
+
 
   }
 
