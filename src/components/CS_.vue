@@ -23,7 +23,7 @@
                                     <csCanvasModel :canvas="canvas" :canvasComponent="canvasComponent" />
                                 </div>
                                 <div class="col">
-                                    <DrawBoard ref="canvas" />
+                                    <DrawBoard ref="canvas" @points="getCoordPoints"/>
                                 </div>
                             </div>
 
@@ -39,15 +39,15 @@
                                         </div>
                                         <div class="col-8">
                                             <div class="row">
-                                                <div class="col">
-                                                    <!--  Coord 
-                                                    :inp_font_family="inp_font_family"
-                                                    :inp_font_weight="inp_font_weight"-->
-                                                    <csShopeEditor :inp_width="inp_width" :inp_height="inp_height"
-                                                        :inp_radius="inp_radius" :inp_color="inp_color"
-                                                        :inp_borderW="inp_borderW" :inp_borderC="inp_borderC"
+                                                <div class="col-12">
+                                                    <csShopeEditor :inp_width="inp_width" 
+                                                    :inp_height="inp_height"
+                                                        :inp_color="inp_color"
+                                                        :inp_borderW="inp_borderW" 
+                                                        :inp_borderC="inp_borderC"
                                                         :inp_position_x="inp_position_x"
-                                                        :inp_position_y="inp_position_y" :inp_zoom="inp_zoom"
+                                                        :inp_position_y="inp_position_y" 
+                                                        :inp_zoom="inp_zoom"
                                                         @change-ObjWidth="changeObjWidth($event)"
                                                         @change-ObjHeight="changeObjHeight($event)"
                                                         @change-ObjColor="changeObjColor($event)"
@@ -57,11 +57,31 @@
                                                         @change-ObjObjPositionY="changeObjPositionY($event)"
                                                         @change-ObjRadius="changeObjRadius($event)" />
                                                 </div>
-                                                <div class="col">
-                                                    <csTextBoxElement :inp_font_size="inp_font_size"
+                                                <div class="col-12">
+                                                    <csInputsRadius :inp_radius="inp_radius"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <csInputsTextBox 
+                                                        :inp_font_size="inp_font_size"
                                                         :inp_font_style="inp_font_style"
                                                         @change-textSize="changeTextSize($event)"
                                                         @change-textWeight="changeTextWeight($event)" />
+                                                </div>
+                                                <div class="col-12">
+                                                    <csInputsArcBox 
+                                                    :inp_arcStart="inp_arcStart"
+                                                    :inp_arcEnd="inp_arcEnd"
+                                                    @change-ObjArcStart="changeObjArcStart($event)"
+                                                    @change-ObjArcEnd="changeObjArcEnd($event)"
+                                                    />
+                                                </div>
+                                                <div class="col-12">
+                                                    <csInputsCoordBox 
+                                                    :inp_CoordX="inp_CoordX"
+                                                    :inp_CoordY="inp_CoordY"
+                                                    @change-ObjCoordX="changeObjCoordX($event)"
+                                                    @change-ObjCoordY="changeObjCoordY($event)"
+                                                    />
                                                 </div>
                                             </div>
 
@@ -70,19 +90,9 @@
                                     </div>
 
                                 </div>
-                                <div class="w-100"></div>
-                                <div class="col">
-                                    <csShopeColorPicker @update-color="changObjColor($event)" ref="colorPicker" />
-                                </div>
-
-
 
                             </div>
-                            <div class="row">
-                                <div class="col">
 
-                                </div>
-                            </div>
 
                         </div>
 
@@ -109,9 +119,10 @@ import DrawBoard from "./CS_DrawBoard.vue";
 import csCanvasModel from "./CS_CanvasModel.vue";
 import csShopeColorPicker from "./CS_ShopeColorPicker.vue";
 import csShopeEditor from "./CS_ShopeEditor.vue";
-import csTextBoxElement from "./CS_TextBoxElement.vue"
-
-
+import csInputsTextBox from "./CS_InputsTextBox.vue"
+import csInputsArcBox from "./CS_InputsArcBox.vue"
+import csInputsCoordBox from "./CS_InputsCoordBox.vue"
+import csInputsRadius from "./CS_InputsRadius.vue"
 
 export default {
     name: "CS",
@@ -124,7 +135,10 @@ export default {
         csCanvasModel,
         csShopeColorPicker,
         csShopeEditor,
-        csTextBoxElement,
+        csInputsTextBox,
+        csInputsArcBox,
+        csInputsCoordBox,
+        csInputsRadius
     },
 
     data() {
@@ -138,7 +152,10 @@ export default {
                     type: "Circle",
                 },
                 {
-                    type: "Line(no)",
+                    type: "Line",
+                },
+                {
+                    type: "Acr",
                 },
                 {
                     type: "Text",
@@ -207,6 +224,10 @@ export default {
                 //     id: "text-cmd-overline",
                 // },
             ],
+            inp_arcStart:360,
+            inp_arcEnd:0,
+            inp_CoordX:[],
+            inp_CoordY:[],
             canvasComponent: undefined,
             canvas: undefined,
 
@@ -260,6 +281,22 @@ export default {
             let value = event.target.value
             this.canvasComponent.changeTextWeight(value)
         },
+        changeObjArcStart(event) {
+            let value = event.target.value
+            this.canvasComponent.changeObjArcStart(value)
+        },
+        changeObjArcEnd(event) {
+            let value = event.target.value
+            this.canvasComponent.changeObjArcEnd(value)
+        },
+        changeObjCoordX(event) {
+            let value = event.target.value
+            this.canvasComponent.changeObjCoordX(value)
+        },
+         changeObjCoordY(event) {
+            let value = event.target.value
+            this.canvasComponent.changeObjCoordY(value)
+        },
 
         createButton(event) {
             let key = event.target.dataset.key
@@ -274,6 +311,9 @@ export default {
                 case "Line":
                     this.canvasComponent.createLine(this.canvas);
                     break;
+                case "Acr":
+                    this.canvasComponent.createAcr(this.canvas);
+                    break;
                 case "Text":
                     this.canvasComponent.createText(this.canvas);
                     break;
@@ -283,6 +323,14 @@ export default {
         },
         addImage() {
             this.canvasComponent.addImageCanvas();
+        },
+
+        getCoordPoints(value){
+            //value.x/y -->> underfind 
+            this.inp_CoordX.push(value)
+            this.inp_CoordY.push(value.y)
+            console.log(this.inp_CoordX);
+            console.log(this.inp_CoordY);
         },
 
     },

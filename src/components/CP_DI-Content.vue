@@ -1,5 +1,15 @@
 <template>
     <div id="diContent_table">
+        <div id="diContent_title">
+            <h6></h6>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary my-2 my-lg-0" data-toggle="modal" data-target="#CP_PointsList"
+            id="diContent_addBtn">
+                + Add
+            </button>
+        </div>
+
+
         <table class="table table-sm">
             <thead class="thead-dark">
                 <tr>
@@ -8,12 +18,6 @@
                     <th scope="col">Digital Type</th>
                     <th scope="col">Digital Text</th>
                     <th scope="col">Actions</th>
-                    <th>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_PointsList">
-                            + Add
-                        </button>
-                    </th>
                 </tr>
             </thead>
             <tbody id="tobdy">
@@ -23,21 +27,18 @@
                     <td>{{ item.digital_type }}</td>
                     <td>{{ item.digital_text }}</td>
                     <td>
-
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-edit" data-toggle="modal" data-target="#diUpdateModal">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
-
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-x" id="deleteBtn" @click="deletePoint(item, $event)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
-
                     </td>
 
 
@@ -225,23 +226,16 @@ export default {
     },
     created() {
         this.socket = io("http://localhost:3030");
-
-
         //當前正在的類別清單名稱
         this.$bus.$on("getCategoryItem", (data) => {
             //Category Name
             this.categoryItem = data;
         });
 
-
-
         //CP_SelectTable.vue
         this.$bus.$on("categoryAlltr", (data) => {
             this.defaultCategory = data;
         });
-
-
-
 
     },
     mounted() {
@@ -369,11 +363,23 @@ export default {
 <style scoped>
 #diContent_table {
     width: 100%;
-    height: 100vh;
+    height: 90vh;
+    overflow: scroll;
     border: 1px solid black;
     text-align: center;
 }
-
+#diContent_title{
+    display: flex-end;
+    flex-direction: row-reverse;
+    width: 100%;
+}
+#diContent_addBtn{
+    width: 70px;
+    height: 30px;
+    font-size: 10px;
+    background-color: #007bff;
+    color: white;
+}
 tbody tr {
     cursor: pointer;
 }

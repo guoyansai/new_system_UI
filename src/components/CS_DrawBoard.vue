@@ -23,11 +23,16 @@ export default {
     inp_zoom: Number,
     inp_font_size: Array,
     inp_font_style: Array,
+    inp_arcStart: Number,
+    inp_arcEnd: Number,
+    inp_arcEnd: Number,
+
   },
   data() {
     return {
       canvasId: "mycanvas",
       canvas: undefined,
+      points: [],
     }
   },
   mounted() {
@@ -207,27 +212,65 @@ export default {
         if (w == "text-cmd-overline") {
           curObj.set("overline", true);
         }
-      // } else {
-      //   if (curObj.fontWeight == "normal") {
-      //     curObj.set("fontWeight", "");
-      //   }
-      //   if (curObj.fontWeight == "bold") {
-      //     curObj.set("fontWeight", "");
-      //   }
-      //   if (curObj.fontStyle == "italic") {
-      //     curObj.set("fontStyle", "italic");
-      //   }
-      //   if (curObj.underline === true) {
-      //     curObj.set("underline", false);
+        // } else {
+        //   if (curObj.fontWeight == "normal") {
+        //     curObj.set("fontWeight", "");
+        //   }
+        //   if (curObj.fontWeight == "bold") {
+        //     curObj.set("fontWeight", "");
+        //   }
+        //   if (curObj.fontStyle == "italic") {
+        //     curObj.set("fontStyle", "italic");
+        //   }
+        //   if (curObj.underline === true) {
+        //     curObj.set("underline", false);
 
-      //   }
-      //   if (curObj.fontStyle == "text-cmd-overline") {
-      //     canvas.getActiveObject().set("textDecoration", "");
-      //   }
+        //   }
+        //   if (curObj.fontStyle == "text-cmd-overline") {
+        //     canvas.getActiveObject().set("textDecoration", "");
+        //   }
       }
       this.canvas.requestRenderAll();
 
     },
+    changeObjArcStart(event) {
+      let curObj = this.canvas.getActiveObject()
+      let acr = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          startAngle: acr,
+        });
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjArcEnd(event) {
+      let curObj = this.canvas.getActiveObject()
+      console.log("D", event);
+      let acr = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          endAngle: acr,
+        });
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjCoordX(event) {
+      let points = this.points
+      
+      console.log("changeObjCoordX", points);
+      
+
+    },
+    changeObjCoordY(event) {
+      let points = this.points
+
+      console.log("changeObjCoordY", points);
+    
+
+
+    },
+
+
 
     //CREATE SHOPES
     createRec(canvas) {
@@ -281,13 +324,14 @@ export default {
       let y = parseInt(inp_position_y.value)
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
-
-      this.points = [];
-      points.push(new fabric.Point(parseInt(50), parseInt(0)));
+      let points = this.points
+      points.push(new fabric.Point(parseInt(50), parseInt(50)));
       points.push(new fabric.Point(parseInt(0), parseInt(50)));
-      points.push(new fabric.Point(parseInt(100), parseInt(50)));
-      //points.push(new fabric.Point(parseInt(50), parseInt(25)));
 
+      
+      this.$emit("points",points)
+
+      // console.log(points);
       const line = new fabric.Polyline(points, {
         height: h,
         width: w,
@@ -301,14 +345,35 @@ export default {
       canvas.setActiveObject(line);
       canvas.renderAll();
     },
+    createAcr(canvas) {
+      let h = parseInt(inp_height.value)
+      let w = parseInt(inp_width.value)
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      const acr = new fabric.Circle({
+        height: h,
+        width: w,
+        left: x,
+        right: y,
+        radius: w / 2,
+        startAngle: 360,
+        endAngle: 0,
+        stroke: borderC,
+        strokeWidth: borderW,
+      });
+      canvas.add(acr);
+      canvas.setActiveObject(acr);
+      canvas.renderAll();
+      console.log(acr);
+    },
     createText(canvas) {
       let color = inp_color.value
       let x = parseInt(inp_position_x.value)
       let y = parseInt(inp_position_y.value)
       let s = inp_font_size.value
-      let borderW = parseInt(inp_borderW.value)
-      let borderC = inp_borderC.value
-      console.log(s);
       const text = new fabric.IText("TEXT", {
         fill: color,
         left: x,

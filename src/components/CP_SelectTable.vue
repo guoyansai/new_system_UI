@@ -1,8 +1,5 @@
 <template lang="html">
     <div>
-
-       
-
         <!-- Add Paration Modal -->
         <div class="modal fade" id="CP_SelectTable" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -15,22 +12,16 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- <div class="input-group">
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Name</span>
-                            </div>
-                            <input type="text" class="form-control" id="addNameInp"  />
-                        </div> -->
                         <form>
                             <div class="form-group row">
                                 <label for="paration_name" class="col-sm-2 col-form-label">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="paration_name" v-model.trim="inp_name" required >
+                                    <input type="text" class="form-control" id="paration_name" v-model.trim="inp_name"
+                                        required>
                                 </div>
                             </div>
                         </form>
-                        
+
 
 
                     </div>
@@ -70,26 +61,25 @@
         </div>
 
         <div id="partition_table" ref="table_paration">
-             <h6>Partition</h6>
+            <div id="partition_title">
+                <h6>Partition</h6>
+                <!-- Button trigger modal -->
+                <button type="button" id="paration_addBtn" data-toggle="modal" data-target="#CP_SelectTable">
+                + Add
+                </button>
+            </div>
             <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
                         <th scope="col">Name</th>
                         <th scope="col">Actions </th>
-                        <th scope="col">
-                             <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CP_SelectTable">
-            + Add
-        </button>
-                        </th>
-
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, key) in addCategoryList" ref="Categorytr" @click="getCategoryItem(item, $event)">
-
-                        <!-- <td>{{item.partition_id}}</td> -->
+                    <tr v-for="(item, key) in addCategoryList" ref="Categorytr" 
+                    :class="{actived:true, 'tdActive':(item === currentPartition)}"
+                    @click="getCategoryItem(item, $event)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
                         <td @click="editCategory(item, $event)">
@@ -138,8 +128,10 @@ export default {
             addCategoryItem: "",
             CategoryList: "",
             CategoryCount: 1,
-            currentCategoryName: null,
+            currentPartition: null,
             selected: "",
+            actived:false,
+            
         };
     },
     created() {
@@ -213,7 +205,7 @@ export default {
         },
 
         getCategoryItem(item, e) {
-
+            this.currentPartition = item;
             this.$bus.$emit("currentPartition", item)
         },
 
@@ -365,27 +357,42 @@ export default {
     margin: 0;
     padding: 0;
 }
+
 #partition_table {
     width: 100%;
-    height: 100vh;
+    height: 90vh;
+    overflow: scroll;
     border: 1px solid black;
 }
+#partition_title{
+    display: flex;
+    width: 100%;
+}
+#paration_addBtn{
+    width: 70px;
+    height: 30px;
+    font-size: 10px;
+    background-color: #007bff;
+    color: white;
+}
+
 h6 {
     background: black;
     color: white;
     text-align: center;
+    width: 100%;
 }
+
 tbody tr:hover {
     cursor: pointer;
     background: rgb(175, 175, 175);
 }
 
 .tdActive {
-    /* color: yellow; */
     background: rgb(175, 175, 175);
-    /* stroke: yellow; */
 }
-.over{
+
+.over {
     /* scroll-behavior: smooth;
     overscroll-behavior: contain; */
     overflow: scroll;

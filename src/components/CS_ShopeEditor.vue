@@ -6,26 +6,20 @@
                 <div class="input">
                     <p></p>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md">
                             <label for="inp_width">width</label>
                             <input type="number" class="form-control" id="inp_width" :value="inp_width"
                                 @input="$emit('change-ObjWidth', $event)">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md">
                             <label for="inp_height">height</label>
                             <input type="number" class="form-control" id="inp_height" :value="inp_height"
                                 @input="$emit('change-ObjHeight', $event)">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md">
                             <label for="inp_color">color</label>
                             <input type="color" class="form-control" id="inp_color" :value="inp_color"
                                 @input="$emit('change-ObjColor', $event)" />
-                        </div>
-
-                        <div class="form-group col-md-4">
-                            <label for="inp_radius">radius</label>
-                            <input type="number" class="form-control" id="inp_radius" :value="inp_radius"
-                                @input="$emit('change-ObjRadius', $event)" />
                         </div>
 
                     </div>
@@ -69,62 +63,13 @@
                     </div>
                 </div>
 
-                <!-- line -- X / Y -->
-                <div class="input">
-                    <p>Coord Point</p>
-                    <div class="form-row ">
-                        <div class="form-group col-md-6">
-
-                            <table class="table table-sm table-dark">
-                                <thead>
-                                    <tr>
-                                        <!-- <th scope="col">#</th> -->
-                                        <th scope="col">X</th>
-                                        <th scope="col">Y</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="number" class="
-                                                                form-control
-                                                                input
-                                                            " aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm" />
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control
-                                                                input
-                                                            " aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div id="coordPointBox">
-                                <span>
-                                    <button @click.prevent="$emit('add-coordPoints', $event)">Add</button>
-                                </span>
-                                <span><button>Update</button></span>
-                                <span><button>Delete</button></span>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </div>
+                
                
                       
             </form>
         </div>
 
     </div>
-
-
-
-
-
 
 
 </template>
@@ -137,7 +82,6 @@ export default {
     props: {
         inp_width: Number,
         inp_height: Number,
-        inp_radius: Number,
         inp_color: String,
         inp_borderW: Number,
         inp_borderC: String,

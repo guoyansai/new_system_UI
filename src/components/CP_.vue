@@ -66,7 +66,7 @@ export default {
             cpDIContent: "cpDIContent",
             cpAIContent: "cpAIContent",
             cpDPSContent: "cpDPSContent",
-            default_tab: "cpDIContent",
+            default_tab: "",
            
         };
     },
