@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import { log } from "console";
+
 import $ from "jquery";
 import io from "socket.io-client";
 export default {
@@ -252,6 +252,7 @@ export default {
         this.$bus.$on("currentPartition", (objs) => {
             this.currentPartition = [];
             this.currentPartition.push(objs);
+            console.log("client:di_Partition",this.currentPartition);
             this.socket.emit("client:di_Partition", this.currentPartition);
         });
 

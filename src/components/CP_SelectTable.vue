@@ -112,7 +112,7 @@
 
 <script>
 import $ from "jquery";
-import io from "socket.io-client";
+import io from "socket.io"
 
 export default {
     name: "cpSelectTable",
@@ -182,8 +182,8 @@ export default {
 
         //讀取資料庫Partition資料
         getCategory() {
-            this.socket.on("allCategory", (objs) => {
-
+            this.socket.on("server:allCategory", (objs) => {
+                console.log("server:allCategory",objs);
                 if (this.addCategoryList === "undefined") {
                     return;
                 }
