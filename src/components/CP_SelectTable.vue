@@ -65,7 +65,7 @@
                 <h6>Partition</h6>
                 <!-- Button trigger modal -->
                 <button type="button" id="paration_addBtn" data-toggle="modal" data-target="#CP_SelectTable">
-                + Add
+                    + Add
                 </button>
             </div>
             <table class="table table-sm">
@@ -77,9 +77,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, key) in addCategoryList" ref="Categorytr" 
-                    :class="{actived:true, 'tdActive':(item === currentPartition)}"
-                    @click="getCategoryItem(item, $event)">
+                    <tr v-for="(item, key) in addCategoryList" ref="Categorytr"
+                        :class="{ actived: true, 'tdActive': (item === currentPartition) }"
+                        @click="getCategoryItem(item, $event)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
                         <td @click="editCategory(item, $event)">
@@ -112,7 +112,7 @@
 
 <script>
 import $ from "jquery";
-import io from "socket.io"
+import io from "socket.io-client"
 
 export default {
     name: "cpSelectTable",
@@ -130,8 +130,8 @@ export default {
             CategoryCount: 1,
             currentPartition: null,
             selected: "",
-            actived:false,
-            
+            actived: false,
+
         };
     },
     created() {
@@ -155,16 +155,16 @@ export default {
             this.selected = data;
         });
 
-        this.socket.on("Updated", (objs) => {
-            var list = this.addCategoryList;
-            list.map((item) => {
-                if (item.partition_id === objs.partition_id) {
-                    item.partition_id = objs.partition_id;
-                    item.partition_name = objs.partition_name;
-                }
-                return list;
-            });
-        });
+        // this.socket.on("Updated", (objs) => {
+        //     var list = this.addCategoryList;
+        //     list.map((item) => {
+        //         if (item.partition_id === objs.partition_id) {
+        //             item.partition_id = objs.partition_id;
+        //             item.partition_name = objs.partition_name;
+        //         }
+        //         return list;
+        //     });
+        // });
     },
 
     methods: {
@@ -183,17 +183,13 @@ export default {
         //讀取資料庫Partition資料
         getCategory() {
             this.socket.on("server:allCategory", (objs) => {
-                console.log("server:allCategory",objs);
+
                 if (this.addCategoryList === "undefined") {
                     return;
                 }
                 if (objs.length >= 1) {
                     this.addCategoryList = [];
                     this.addCategoryList = objs[0];
-                    // console.log(this.addCategoryList.length)
-                    // if(this.addCategoryList.length <= 15){
-                    //     this.$refs.table_paration.$el.classList.add("over")
-                    // }
                 }
             });
         },
@@ -213,7 +209,7 @@ export default {
         addCategory() {
             var name = this.inp_name;
             var list = this.addCategoryList;
-            var isExist = false;
+
             if (name === null || name === "") {
                 this.$swal.fire({
                     icon: "error",
@@ -222,37 +218,51 @@ export default {
                 });
                 return;
             }
-            //Check if it has the same name
-            list.forEach((item) => {
-                var n = item.partition_name;
-                if (n === name) {
-                    isExist = true;
-                    console.log("same name", n);
+            let data = {
+                partition_name: name,
+            };
+            //SEND DATA TO SOCKET 
+            this.socket.emit("client:adding", data);
+
+            this.socket.on("server:added", (obj) => {
+                let msg = obj.status
+                //Check HAS A SAME NAME]
+                if (msg === 200) {
+                    console.log("200", obj);
+
+                    //連續新增兩次會相同的假性資料PUSH兩次
+                    list.push(obj.obj)
+                    console.log("200 this.addCategoryList", list);
+                    this.inp_name = "";
+                    $("#CP_SelectTable").modal("hide");
+                } else if (msg === 400) {
+                    console.log("400", obj);
                     this.$swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: `${name} is existed`,
+                        text: `${obj.msg}`,
                     });
-                    return;
+                } else if (msg === 500) {
+                    console.log("500", obj);
+                    this.$swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: `${obj.msg}`,
+                    });
                 }
+
+
+
+
             });
 
-            var data = {
-                partition_name: name,
-            };
-            if (isExist === false) {
-                this.inp_name = "";
-                $("#CP_SelectTable").modal("hide");
-                this.socket.emit("addCategory", data);
-                this.getCategory();
-            }
+
+
         },
 
         //編輯Partition name
         editCategory(item, e) {
-            // console.log("e.target.children[0]",e.target.children[0]);
-            // var td = e.target.children[0];
-            // td.classList.add("tdActive");
+
             this.onEdit_id = item.partition_id;
             this.onEdit_name = item.partition_name;
         },
@@ -307,46 +317,53 @@ export default {
                 });
 
                 $("#onEdit_Model").modal("hide");
-                this.socket.emit("Updateing", data);
+                // this.socket.emit("client:Updateing", data);
             }
             this.getCategory();
         },
 
         deleteSubmit(item, e) {
-            var name = item.partition_name;
-            this.socket.emit("Deleteing", item);
+            let list = this.addCategoryList;
+            this.$swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                let cancel = result.isDismissed //===true
+                let yes = result.isConfirmed //===true
+                if (cancel) {
+                    console.log("cancel", cancel);
+                    return;
+                } else if (yes) {
+                    this.socket.emit("client:deleteing", item);
 
-            this.$swal
-                .fire({
-                    title: `Do you really want to delet?`,
-                    text: `Name: ${name}`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
-                })
-                .then((result) => {
-                    if (result.isConfirmed) {
-                        this.socket.on("deleted", (obj) => {
-                            this.addCategoryList.forEach((item, index) => {
-                                if (item.partition_name === obj.name) {
-                                    this.addCategoryList.splice(index, 1);
-                                }
+                    this.socket.on("server:deleted", (obj) => {
+                        let msg = obj.status
+                        if (msg === 200) {
+                           
+                            
+var newArray = list.filter(function(f) { return f !== obj })
+console.log("200", newArray);
+                        } else if (msg === 500) {
+                            this.$swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: `${obj.msg}`,
                             });
-                            console.log(this.addCategoryList);
-                        });
-                        this.$swal.fire("Deleted!", `${name}.`, "successfully");
-                    } else if (result.isDismissed) {
-                        console.log("isDismissed", result);
+                        }
+                    });
+                }
 
-                        this.$swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: `${name} is existed`,
-                        });
-                    }
-                });
+
+            })
+
+
+
+
         },
     },
 };
@@ -364,11 +381,13 @@ export default {
     overflow: scroll;
     border: 1px solid black;
 }
-#partition_title{
+
+#partition_title {
     display: flex;
     width: 100%;
 }
-#paration_addBtn{
+
+#paration_addBtn {
     width: 70px;
     height: 30px;
     font-size: 10px;

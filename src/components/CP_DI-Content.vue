@@ -243,17 +243,17 @@ export default {
         uibuilder.onChange("msg", (msg) => {
             console.info("Msg received from Node-RED server in Home:", msg);
         });
-        this.socket.on("server:di_List", (objs) => {
-            this.currentPoints = []
-            this.currentPoints.push(objs[0])
-        });
+        // this.socket.on("server:di_List", (objs) => {
+        //     this.currentPoints = []
+        //     this.currentPoints.push(objs[0])
+        // });
 
         //CP_SelectTable
         this.$bus.$on("currentPartition", (objs) => {
             this.currentPartition = [];
             this.currentPartition.push(objs);
             console.log("client:di_Partition",this.currentPartition);
-            this.socket.emit("client:di_Partition", this.currentPartition);
+            //this.socket.emit("client:di_Partition", this.currentPartition);
         });
 
 
@@ -278,9 +278,9 @@ export default {
         },
 
         addPointItem() {
-            socket.on("added", (obj) => {
-                this.addCategoryList.push(obj);
-            });
+            // socket.on("added", (obj) => {
+            //     this.addCategoryList.push(obj);
+            // });
         },
         addPoint() {
             //目前選擇的類別名稱
@@ -319,7 +319,7 @@ export default {
 
             var addData = { partition, tab, pointData };
             console.log(addData);
-            socket.emit("add_di", addData);
+            //socket.emit("add_di", addData);
 
             // console.log(this.currentPoints);
 

@@ -122,15 +122,15 @@ export default {
            
             this.currentPartition = [];
             this.currentPartition.push(objs);
-            this.socket.emit("client:ai_Partition", this.currentPartition);
+            //this.socket.emit("client:ai_Partition", this.currentPartition);
             
         });
 
-        this.socket.on("server:ai_List", (objs) => {
-            console.log("server:ai_List",objs[0]);
-            this.AI_List = [] 
-            this.AI_List.push(objs[0])
-        });
+        // this.socket.on("server:ai_List", (objs) => {
+        //     console.log("server:ai_List",objs[0]);
+        //     this.AI_List = [] 
+        //     this.AI_List.push(objs[0])
+        // });
     },
 
     methods: {
@@ -156,7 +156,7 @@ export default {
             this.Physical_AI.ai_min = ""
             this.Physical_AI.ai_max = ""
             $("#AI_Add_Modal").modal("hide");
-            this.socket.emit("client:ai_add", ai_data);
+            //this.socket.emit("client:ai_add", ai_data);
         },
     },
 
