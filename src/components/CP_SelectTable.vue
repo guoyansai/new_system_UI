@@ -48,13 +48,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Name</span>
                             </div>
-                            <input type="text" class="form-control" id="onEditNameInp" v-model="onEdit_name" required />
+                            <input type="text" class="form-control" v-model="onEdit_name" required />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
                             @click="onEditCancleBtn()">Cancle</button>
-                        <button type="button" class="btn btn-primary" @click="UpdateCategory()">Update</button>
+                        <button type="button" class="btn btn-primary" @click.lazy="UpdateCategory">Update</button>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         @click="getCategoryItem(item, $event)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
-                        <td @click="editCategory(item, $event)">
+                        <td @click="editCategory(item)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="blue" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-edit" data-toggle="modal"
@@ -122,6 +122,7 @@ export default {
             socket: {},
             inp_name: "",
             onEdit_name: "",
+            old_onEdit_name: "",
             onEdit_id: null,
             itemKey: -1,
             addCategoryList: [],
@@ -134,9 +135,18 @@ export default {
 
         };
     },
+    watch: {
+        onEdit_name(newVal, oldVal) { //<-- Edited
+            this.new_onEdit_name = newVal
+        }
+
+
+    },
     created() {
         this.socket = io("http://localhost:3030");
     },
+
+
     mounted() {
         //get all Paration list
         this.getCategory();
@@ -155,16 +165,7 @@ export default {
             this.selected = data;
         });
 
-        // this.socket.on("Updated", (objs) => {
-        //     var list = this.addCategoryList;
-        //     list.map((item) => {
-        //         if (item.partition_id === objs.partition_id) {
-        //             item.partition_id = objs.partition_id;
-        //             item.partition_name = objs.partition_name;
-        //         }
-        //         return list;
-        //     });
-        // });
+
     },
 
     methods: {
@@ -258,13 +259,14 @@ export default {
 
 
 
+
         },
 
-        //編輯Partition name
+        // //編輯Partition name
         editCategory(item, e) {
-
             this.onEdit_id = item.partition_id;
             this.onEdit_name = item.partition_name;
+            this.old_onEdit_name = item.partition_name
         },
         onEditCloseBtn() {
             // var td = document.getElementsByClassName("tdActive")[0].children[0];
@@ -279,48 +281,42 @@ export default {
 
         //編輯後更新Partition name
         UpdateCategory() {
-            //var td = document.getElementsByClassName("tdActive")[0];
-            //td.classList.remove("tdActive");
-            var value = document.getElementById("onEditNameInp").value;
-
-            var id = this.onEdit_id;
-            var name = this.onEdit_name;
-            var list = this.addCategoryList;
-
-            var isExisted = false;
-            list.forEach((element) => {
-                var n = element.partition_name;
-                if (n === value) {
-                    isExisted = true;
+            let new_ = this.onEdit_name
+            let old_ = this.old_onEdit_name;
+            let list = this.addCategoryList;
+            let data = {
+                new: new_,
+                old: old_,
+            }
+            this.socket.emit("client:updating", data)
+            this.socket.on("server:updated", (obj) => {
+                
+                let status = obj.status
+                if (status === 200) {
+                    let new_ = obj.obj.new
+                    let old_ = obj.obj.old
+                    list.map(el => {
+                        if (el.partition_name === old_) {
+                            el.partition_id = el.partition_id;
+                            el.partition_name = new_;
+                        }
+                        return list;
+                    });
+                    $("#onEdit_Model").modal("hide");
+                } else if (status === 500) {
+                    console.log("500",obj);
                     this.$swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: `${name} is existed`,
+                        text: `${obj.msg}`,
                     });
                 }
+
+
             });
-            var data = {
-                partition_id: id,
-                partition_name: value,
-            };
 
-            if (isExisted === false) {
-                //remove active style
-                //var td = document.getElementsByClassName("tdActive")[0];
-                //td.classList.remove("tdActive");
-                list.map((item) => {
-                    if (item.partition_id === id) {
-                        item.partition_id = data.partition_id;
-                        item.partition_name = data.partition_name;
-                    }
-                    return list;
-                });
-
-                $("#onEdit_Model").modal("hide");
-                // this.socket.emit("client:Updateing", data);
-            }
-            this.getCategory();
         },
+
 
         deleteSubmit(item, e) {
             let list = this.addCategoryList;
@@ -344,10 +340,15 @@ export default {
                     this.socket.on("server:deleted", (obj) => {
                         let msg = obj.status
                         if (msg === 200) {
-                           
-                            
-var newArray = list.filter(function(f) { return f !== obj })
-console.log("200", newArray);
+                            let name = obj.obj.partition_name;
+                            let result;
+                            list.forEach((el, index) => {
+                                if (el.partition_name === name) {
+                                    result = index;
+                                }
+                            });
+                            return list.splice(result, 1)
+
                         } else if (msg === 500) {
                             this.$swal.fire({
                                 icon: "error",
