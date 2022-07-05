@@ -4,7 +4,7 @@
             <h6></h6>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary my-2 my-lg-0" data-toggle="modal" data-target="#CP_PointsList"
-            id="diContent_addBtn">
+                id="diContent_addBtn">
                 + Add
             </button>
         </div>
@@ -219,23 +219,17 @@ export default {
             currentPoints: [],
             currentPoint: [],
             itemKey: -1,
-            defaultCategory: "",
 
             currentPartition: [],
         };
     },
     created() {
         this.socket = io("http://localhost:3030");
-        //當前正在的類別清單名稱
-        this.$bus.$on("getCategoryItem", (data) => {
-            //Category Name
-            this.categoryItem = data;
-        });
 
-        //CP_SelectTable.vue
-        this.$bus.$on("categoryAlltr", (data) => {
-            this.defaultCategory = data;
-        });
+
+        
+
+
 
     },
     mounted() {
@@ -250,25 +244,18 @@ export default {
 
         //CP_SelectTable
         this.$bus.$on("currentPartition", (objs) => {
-            this.currentPartition = [];
-            this.currentPartition.push(objs);
-            console.log("client:di_Partition",this.currentPartition);
-            //this.socket.emit("client:di_Partition", this.currentPartition);
+
+            // this.currentPartition.push(objs);
+            console.log("objs", objs);
         });
 
 
-        //CP_
-        this.$bus.$on("currentTab", (obj) => {
-            this.currentTab = "";
-            this.currentTab = obj;
-        });
-
-
+        this.getCurrenPoints();
     },
 
     methods: {
+        getCurrenPoints() {
 
-        getAllPoints() {
 
 
 
@@ -327,7 +314,6 @@ export default {
             this.Physical_DI.name = "";
             this.Physical_DI.digital = "";
             this.Physical_DI.type = "";
-            // this.getAllPoints();
         },
 
         getPointList() {
@@ -369,18 +355,21 @@ export default {
     border: 1px solid black;
     text-align: center;
 }
-#diContent_title{
+
+#diContent_title {
     display: flex-end;
     flex-direction: row-reverse;
     width: 100%;
 }
-#diContent_addBtn{
+
+#diContent_addBtn {
     width: 70px;
     height: 30px;
     font-size: 10px;
     background-color: #007bff;
     color: white;
 }
+
 tbody tr {
     cursor: pointer;
 }

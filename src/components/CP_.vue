@@ -3,39 +3,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3">
-                    <cpSelectTable />
+                    <cpSelectTable 
+                       @selected-partition="onSelectedPartition"
+                    />
                 </div>
                 <div class="col-sm-9">
-                    <nav>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    :class="{ BgColor: (cpDIContent === default_tab) }"
-                                    @click="tabChange(cpDIContent,$event)"
-                                    >Physical Digital Input</a
-                                >
-                            </li>
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    :class="{ BgColor: (cpAIContent === default_tab) }"
-                                    @click="tabChange(cpAIContent,$event)"
-                                    >Physical Analog Input</a
-                                >
-                            </li>
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    :class="{ BgColor: (cpDPSContent === default_tab) }"
-                                    @click="tabChange(cpDPSContent,$event)"
-                                    >Software Digital Input</a
-                                >
-                            </li>
-                        </ul>
-                        <div :is="default_tab"></div>
-                        <!-- <slot></slot> -->
-                    </nav>
+                 <cpDIContent 
+                  
+                   />
                 </div>
             </div>
         </div>
@@ -82,6 +57,9 @@ export default {
         tabChange(tab) {
             this.default_tab = tab; 
             this.$bus.$emit("currentTab",this.default_tab)
+        },
+        onSelectedPartition(value){
+            console.log("onSelectedPartition",value);
         },
     },
 };

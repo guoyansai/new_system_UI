@@ -79,7 +79,7 @@
                 <tbody>
                     <tr v-for="(item, key) in addCategoryList" ref="Categorytr"
                         :class="{ actived: true, 'tdActive': (item === currentPartition) }"
-                        @click="getCategoryItem(item, $event)">
+                        @click="getCategoryItem(item)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
                         <td @click="editCategory(item)">
@@ -135,13 +135,6 @@ export default {
 
         };
     },
-    watch: {
-        onEdit_name(newVal, oldVal) { //<-- Edited
-            this.new_onEdit_name = newVal
-        }
-
-
-    },
     created() {
         this.socket = io("http://localhost:3030");
     },
@@ -167,20 +160,8 @@ export default {
 
 
     },
-
+ 
     methods: {
-        //當前正在DI點清單
-        getselectedTab() {
-            var selected = this.selected;
-            this.$bus.$emit("getselectedTab", selected);
-            //console.log(selected);
-            if (selected != "") {
-                selected;
-            } else {
-                alert("not select categoryTab");
-            }
-        },
-
         //讀取資料庫Partition資料
         getCategory() {
             this.socket.on("server:allCategory", (objs) => {
@@ -201,9 +182,10 @@ export default {
             });
         },
 
-        getCategoryItem(item, e) {
+        getCategoryItem(item) {
             this.currentPartition = item;
-            this.$bus.$emit("currentPartition", item)
+            this.$emit('selected-partition',this.currentPartition)
+            //console.log("selected-Partition",item);
         },
 
         //新增partition
@@ -290,7 +272,7 @@ export default {
             }
             this.socket.emit("client:updating", data)
             this.socket.on("server:updated", (obj) => {
-                
+
                 let status = obj.status
                 if (status === 200) {
                     let new_ = obj.obj.new
@@ -304,7 +286,7 @@ export default {
                     });
                     $("#onEdit_Model").modal("hide");
                 } else if (status === 500) {
-                    console.log("500",obj);
+                    console.log("500", obj);
                     this.$swal.fire({
                         icon: "error",
                         title: "Oops...",
@@ -367,6 +349,7 @@ export default {
 
         },
     },
+
 };
 </script>
 
