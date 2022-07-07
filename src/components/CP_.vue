@@ -59,7 +59,7 @@ export default {
             this.$bus.$emit("currentTab",this.default_tab)
         },
         onSelectedPartition(value){
-            console.log("onSelectedPartition",value);
+  
         },
     },
 };

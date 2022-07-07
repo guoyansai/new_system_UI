@@ -87,7 +87,6 @@
                                 fill="none" stroke="blue" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-edit" data-toggle="modal"
                                 data-target="#onEdit_Model">
-                                <!--   -->
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                             </svg>
@@ -143,9 +142,7 @@ export default {
     mounted() {
         //get all Paration list
         this.getCategory();
-        //new a item
-        this.addCItem();
-
+    
         setTimeout(() => {
             this.$nextTick(() => {
                 if (this.$refs.Categorytr) {
@@ -165,22 +162,20 @@ export default {
         //讀取資料庫Partition資料
         getCategory() {
             this.socket.on("server:allCategory", (objs) => {
-
-                if (this.addCategoryList === "undefined") {
+                let list = this.addCategoryList;
+                if (list === "undefined") {
                     return;
                 }
                 if (objs.length >= 1) {
-                    this.addCategoryList = [];
-                    this.addCategoryList = objs[0];
+                    list.length = 0;
+                    objs.forEach(element => {
+                        list.push(element)
+                    });
                 }
             });
         },
 
-        addCItem() {
-            this.socket.on("added", (obj) => {
-                this.addCategoryList.push(obj);
-            });
-        },
+       
 
         getCategoryItem(item) {
             this.currentPartition = item;
@@ -206,27 +201,21 @@ export default {
             };
             //SEND DATA TO SOCKET 
             this.socket.emit("client:adding", data);
-
-            this.socket.on("server:added", (obj) => {
+            this.socket.once("server:added", (obj) => {
+                console.log(obj)
                 let msg = obj.status
-                //Check HAS A SAME NAME]
                 if (msg === 200) {
-                    console.log("200", obj);
-
                     //連續新增兩次會相同的假性資料PUSH兩次
-                    list.push(obj.obj)
-                    console.log("200 this.addCategoryList", list);
+                    list.push(obj.obj)                
                     this.inp_name = "";
                     $("#CP_SelectTable").modal("hide");
                 } else if (msg === 400) {
-                    console.log("400", obj);
                     this.$swal.fire({
                         icon: "error",
                         title: "Oops...",
                         text: `${obj.msg}`,
                     });
                 } else if (msg === 500) {
-                    console.log("500", obj);
                     this.$swal.fire({
                         icon: "error",
                         title: "Oops...",
