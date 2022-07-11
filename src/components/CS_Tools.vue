@@ -788,10 +788,10 @@ export default {
             var y = document.getElementById("position_y");
             y.addEventListener("input", (e) => {
                 var actObj = this.editorCanvas.getActiveObject();
-                if (actObj) {
-                    actObj.set({ top: parseInt(e.target.value) }).setCoords();
-                    this.editorCanvas.requestRenderAll();
-                }
+                // if (actObj) {
+                //     actObj.set({ top: parseInt(e.target.value) }).setCoords();
+                //     this.editorCanvas.requestRenderAll();
+                // }
             });
         },
 

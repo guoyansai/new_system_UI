@@ -77,9 +77,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- @click="getCategoryItem(item)" :class="{ actived: true, 'tdActive': (item === curParation) }"-->
                     <tr v-for="(item, key) in addCategoryList" ref="Categorytr"
-                        :class="{ actived: true, 'tdActive': (item === currentPartition) }"
-                        @click="getCategoryItem(item)">
+                        @click="$emit('selected-partition', item)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
                         <td @click="editCategory(item)">
@@ -110,12 +110,13 @@
 </template>
 
 <script>
+import objectAssign from "core-js/internals/object-assign";
 import $ from "jquery";
 import io from "socket.io-client"
 
 export default {
     name: "cpSelectTable",
-    inject: ["reload"], //注入依赖
+
     data() {
         return {
             socket: {},
@@ -123,26 +124,29 @@ export default {
             onEdit_name: "",
             old_onEdit_name: "",
             onEdit_id: null,
-            itemKey: -1,
             addCategoryList: [],
             addCategoryItem: "",
             CategoryList: "",
             CategoryCount: 1,
-            currentPartition: null,
+            // curParation: null,
             selected: "",
             actived: false,
 
         };
     },
+    props: {
+        curparation: {
+            type:Object,
+            required: true,
+        }
+    },
     created() {
         this.socket = io("http://localhost:3030");
     },
-
-
     mounted() {
         //get all Paration list
         this.getCategory();
-    
+
         setTimeout(() => {
             this.$nextTick(() => {
                 if (this.$refs.Categorytr) {
@@ -151,16 +155,12 @@ export default {
             });
         }, 200);
 
-        this.$bus.$on("selected", (data) => {
-            this.selected = data;
-        });
-
-
     },
- 
+
     methods: {
         //讀取資料庫Partition資料
         getCategory() {
+            // console.log(this.curparation);
             this.socket.on("server:allCategory", (objs) => {
                 let list = this.addCategoryList;
                 if (list === "undefined") {
@@ -172,16 +172,18 @@ export default {
                         list.push(element)
                     });
                 }
+                this.socket.removeAllListeners();
             });
+
         },
 
-       
 
-        getCategoryItem(item) {
-            this.currentPartition = item;
-            this.$emit('selected-partition',this.currentPartition)
-            //console.log("selected-Partition",item);
-        },
+
+        // getCategoryItem(item) {
+        //     this.curParation = item;
+        //     this.$emit('selected-partition', this.curParation)
+        //     //console.log("selected-Partition",item);
+        // },
 
         //新增partition
         addCategory() {
@@ -201,12 +203,12 @@ export default {
             };
             //SEND DATA TO SOCKET 
             this.socket.emit("client:adding", data);
-            this.socket.once("server:added", (obj) => {
+            this.socket.on("server:added", (obj) => {
                 console.log(obj)
                 let msg = obj.status
                 if (msg === 200) {
                     //連續新增兩次會相同的假性資料PUSH兩次
-                    list.push(obj.obj)                
+                    list.push(obj.obj)
                     this.inp_name = "";
                     $("#CP_SelectTable").modal("hide");
                 } else if (msg === 400) {
@@ -222,11 +224,9 @@ export default {
                         text: `${obj.msg}`,
                     });
                 }
-
-
-
-
+                this.socket.removeAllListeners();
             });
+
 
 
 
@@ -234,7 +234,7 @@ export default {
         },
 
         // //編輯Partition name
-        editCategory(item, e) {
+        editCategory(item) {
             this.onEdit_id = item.partition_id;
             this.onEdit_name = item.partition_name;
             this.old_onEdit_name = item.partition_name
@@ -261,7 +261,6 @@ export default {
             }
             this.socket.emit("client:updating", data)
             this.socket.on("server:updated", (obj) => {
-
                 let status = obj.status
                 if (status === 200) {
                     let new_ = obj.obj.new
@@ -282,7 +281,7 @@ export default {
                         text: `${obj.msg}`,
                     });
                 }
-
+                this.socket.removeAllListeners();
 
             });
 
@@ -327,10 +326,9 @@ export default {
                                 text: `${obj.msg}`,
                             });
                         }
+                        this.socket.removeAllListeners();
                     });
                 }
-
-
             })
 
 

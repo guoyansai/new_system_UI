@@ -1,5 +1,6 @@
 <template>
-    <div id="dpsContent_table">
+    <div id="dpsContent_table" v-if="isSelected">
+<slot></slot>
         <table class="table table-sm">
             <thead class="thead-dark">
                 <tr>
@@ -57,11 +58,15 @@
 </template>
 
 <script>
-import $ from "jquery";
+
 
 export default {
     name: "cpDIContent",
-
+    props:{
+        isSelected:{
+            type:Boolean
+        }
+    },
 
     data() {
         return {
@@ -71,12 +76,7 @@ export default {
 
     created() {
 
-        //CP_SelectTable
-        this.$bus.$on("selected", (data) => {
-            //console.log("DI Tag",data);
-            this.selectedTab = data;
-        });
-
+       
     },
 
     mounted() {

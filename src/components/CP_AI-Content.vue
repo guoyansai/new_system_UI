@@ -1,6 +1,6 @@
 <template>
-    <div id="aiContent_table">
-       
+    <div id="aiContent_table" v-if="isSelected">
+        <slot></slot>
         <!-- add Modal -->
         <div class="modal fade" id="AI_Add_Modal" tabindex="-1" aria-labelledby="AI_Add_Label" aria-hidden="true">
             <div class="modal-dialog">
@@ -58,10 +58,12 @@
                     <th scope="col">Min Value</th>
                     <th scope="col">Mix Value</th>
                     <th scope="col">Actions</th>
-                    <th scope="col"> <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AI_Add_Modal">
-            + Add
-        </button></th>
+                    <th scope="col">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AI_Add_Modal">
+                            + Add
+                        </button>
+                    </th>
                 </tr>
             </thead>
             <tbody id="tobdy">
@@ -97,7 +99,11 @@ import $ from "jquery";
 import io from "socket.io-client";
 export default {
     name: "cpDIContent",
-
+    props: {
+        isSelected: {
+            type: Boolean
+        }
+    },
     data() {
         return {
             Physical_AI: {
@@ -106,12 +112,12 @@ export default {
                 ai_max: "",
             },
             AI_List: [],
-            currentPartition:[],
+            currentPartition: [],
         };
     },
-     created() {
+    created() {
         this.socket = io("http://localhost:3030");
-     },
+    },
     mounted() {
         uibuilder.start();
         uibuilder.onChange("msg", (msg) => {
@@ -119,11 +125,11 @@ export default {
         });
         //CP_SelectTable
         this.$bus.$on("currentPartition", (objs) => {
-           
+
             this.currentPartition = [];
             this.currentPartition.push(objs);
             //this.socket.emit("client:ai_Partition", this.currentPartition);
-            
+
         });
 
         // this.socket.on("server:ai_List", (objs) => {
@@ -134,12 +140,12 @@ export default {
     },
 
     methods: {
-        getAIList(){
+        getAIList() {
 
         },
         addAI() {
             console.log("this.currentPartition",);
-           
+
             var AI_name = this.Physical_AI.ai_name;
             var min_value = this.Physical_AI.ai_min;
             var max_value = this.Physical_AI.ai_max;
@@ -168,12 +174,14 @@ export default {
 tbody tr {
     cursor: pointer;
 }
-#aiContent_table{
+
+#aiContent_table {
     width: 100%;
     height: 100vh;
     border: 1px solid black;
     text-align: center;
 }
+
 .active {
     cursor: pointer;
     color: red;

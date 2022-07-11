@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div >
+        <div>
             <!-- <h6>Shapes</h6> -->
             <table class="table table-sm" id="shopes_table">
                 <thead class="thead-dark">
@@ -20,21 +20,19 @@
             </table>
             <div id="shopesBtnBox">
                 <span>
-                    <button type="button" class="" 
-                    @click="changeZindexHandle('add')">
+                    <button type="button" class="" @click="changeZindexHandle('add')">
                         Move Up
                     </button>
                 </span>
                 <span>
-                    <button type="button" class="" 
-                    @click="changeZindexHandle('down')">
+                    <button type="button" class="" @click="changeZindexHandle('down')">
                         Move Down
                     </button>
                 </span>
                 <span>
                     <button type="button" class="">Delet</button>
                 </span>
-                  <span>
+                <span>
                     <button type="button" class="">Delet All</button>
                 </span>
             </div>
@@ -53,6 +51,10 @@
 <script>
 export default {
     name: "csToolsTable",
+    props: {
+        buttons: Array,
+    },
+
 
     data() {
         return {
@@ -62,13 +64,18 @@ export default {
             itemKey: -1,
         };
     },
-
+    watch: {
+        '$props': {
+            handler: function (val, oldVal) {
+                console.log('watch val', val)
+            },
+            deep: true
+        }
+    },
     mounted() {
         this.getData();
-        uibuilder.onChange("msg", (newMsg) => {
-            console.info("Msg received from Node-RED server in Page1:", newMsg);
-            //this.msg = newMsg
-        });
+    console.log("this.buttons",this.buttons)
+
         this.$bus.$on("editorCanvas", (canvas) => {
             var data = this.getshopesList;
             //console.log(data);
@@ -130,10 +137,12 @@ h6 {
     background: black;
     color: white;
 }
-#shopesBtnBox{
-      display: flex;  
+
+#shopesBtnBox {
+    display: flex;
 }
-#shopesBtnBox button{
+
+#shopesBtnBox button {
     width: 50px;
     height: 50px;
     font-size: 10px;
@@ -142,9 +151,11 @@ h6 {
     background-color: #007bff;
     color: white;
 }
+
 div {
     font-size: 0;
 }
+
 .active {
     color: red;
 }

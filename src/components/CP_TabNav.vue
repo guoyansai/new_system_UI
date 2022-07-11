@@ -1,38 +1,34 @@
 <template>
   <div>
-    <!-- <nav>
-      <ul class="nav nav-tabs">
-        <li v-for="tab in tabs" :key="tab" class="nav-item">
-          <a
-            class="nav-link"
-            :class="{ active: tab === selected }"
-            @click="setTab(tab)"
-          >
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li v-for="tab in tabs" :key="tab" class="breadcrumb-item">
+          <!--  @click="setTab(tab)" -->
+          <a class="nav-link" :class="{ active: tab === selected }" @click="setTab(tab)">
             {{ tab }}
           </a>
         </li>
-      </ul>
+      </ol>
 
       <slot></slot>
-    
-    </nav> -->
+
+    </nav>
   </div>
 </template>
 
 <script>
 export default {
   name: "cpTabNav",
-  // props: {
-  //   tabs: {
-  //     type: Array,
-  //     required: true,
-  //   },
-  //   selected: {
-  //     type: String,
-  //     required: true,
-  //     //default:"DI"
-  //   },
-  // },
+  props: {
+    tabs: {
+      type: Array,
+      required: true,
+    },
+    selected: {
+      type: String,
+      required: true,
+    }
+  },
 
   data() {
     return {
@@ -46,27 +42,41 @@ export default {
   },
 
   methods: {
-    // setTab(tab) {
-     
-    //   // console.log("TopNav setTab",tab);
-    //   this.$emit("selected", tab);
-    //   //this.$bus.$emit("selected", tab);
-    // },
+    setTab(tab) {
+      this.$emit("selected", tab);
+    },
   },
 };
 </script>
 
 <style scoped>
-.nav-link{
+.nav-link {
   cursor: pointer;
 }
-.nav-link:hover{
+
+.nav-link:hover {
   cursor: pointer;
-  background-color: rgb(177, 177, 177);
-}
-.nav-tabs .nav-link.active{
-  color: red; 
+  color: red;
 }
 
+.active {
+  color: red;
+  /* border: 1px solid black; */
+  border-bottom: 1px solid red;
+  ;
+}
 
+.breadcrumb-item+.breadcrumb-item::before {
+  float: left;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: "";
+}
+
+.breadcrumb {
+  padding: 0.25rem 1rem;
+  font-size: 12px;
+  margin: 0;
+  border-radius: 0rem;
+}
 </style>

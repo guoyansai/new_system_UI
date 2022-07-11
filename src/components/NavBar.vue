@@ -25,15 +25,9 @@
               </div>
             </li>-->
 
-
-
              <li class="nav-item">
               <router-link class="nav-link" to="/El" exact :active="$route.name == 'El'">Create Elements</router-link>
             </li> 
-
-            
-
-
 
             <li class="nav-item">
               <router-link class="nav-link" to="/GUI" exact :active="$route.name == 'GUI'">Design Views GUI</router-link>

@@ -34,7 +34,8 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col-4">
-                                            <ShopeBtnsList @add-buttons="createButton($event)" :buttons="buttons"
+                                            <ShopeBtnsList 
+                                            @add-buttons="createButton($event)" :buttons="buttons"
                                                 @add-image="addImage" />
                                         </div>
                                         <div class="col-8">

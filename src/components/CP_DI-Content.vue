@@ -1,12 +1,17 @@
 <template>
-    <div id="diContent_table">
+    <div id="diContent_table" v-if="isSelected">
+        <slot></slot>
         <div id="diContent_title">
-            <h6></h6>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success mt-2 my-sm-0" type="submit">Search</button>
+                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#CP_PointsList"
+                    id="diContent_addBtn">
+                    + Add {{selected}} || {{curparation}}
+                </button>
+            </form>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary my-2 my-lg-0" data-toggle="modal" data-target="#CP_PointsList"
-                id="diContent_addBtn">
-                + Add
-            </button>
+
         </div>
 
 
@@ -204,7 +209,13 @@ import $ from "jquery";
 import io from "socket.io-client";
 export default {
     name: "cpDIContent",
-
+    props: {
+        isSelected: {
+            type: Boolean,
+            default:true,
+        },
+    },
+    inject: ['paration',],
     data() {
         return {
             Physical_DI: {
@@ -224,15 +235,13 @@ export default {
         };
     },
     created() {
+         
         this.socket = io("http://localhost:3030");
-
-
-        
-
-
-
     },
     mounted() {
+        
+        this.getCurrenPoints();
+
         uibuilder.start();
         uibuilder.onChange("msg", (msg) => {
             console.info("Msg received from Node-RED server in Home:", msg);
@@ -242,26 +251,12 @@ export default {
         //     this.currentPoints.push(objs[0])
         // });
 
-        //CP_SelectTable
-        this.$bus.$on("currentPartition", (objs) => {
 
-            // this.currentPartition.push(objs);
-            console.log("objs", objs);
-        });
-
-
-        this.getCurrenPoints();
     },
 
     methods: {
         getCurrenPoints() {
-
-
-
-
-
-
-
+           
         },
 
         addPointItem() {
@@ -352,8 +347,10 @@ export default {
     width: 100%;
     height: 90vh;
     overflow: scroll;
-    border: 1px solid black;
     text-align: center;
+    /* border: 1px solid black; */
+    background-color: rgb(233, 236, 239);
+    ;
 }
 
 #diContent_title {
@@ -363,11 +360,13 @@ export default {
 }
 
 #diContent_addBtn {
-    width: 70px;
+    /* width: 70px;
     height: 30px;
     font-size: 10px;
     background-color: #007bff;
-    color: white;
+    color: white; */
+    position: absolute;
+    right: 5%;
 }
 
 tbody tr {

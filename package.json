@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/socket.io-client": "^3.0.0",
     "axios": "^0.27.2",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.22.0",
@@ -19,6 +20,7 @@
     "fabric": "^5.2.1",
     "jquery": "^3.5.1",
     "regenerator-runtime": "^0.13.9",
+    "save-dev": "0.0.1-security",
     "socket.io-client": "^2.2.0",
     "sweetalert2": "^11.4.20",
     "vue": "^2.6.14",

@@ -1,12 +1,10 @@
-import "core-js/stable"
-import "core-js/stable"
-
-import "regenerator-runtime/runtime"
-
 import Vue from "vue";
 import App from "./components/App.vue";
 import router from "./router";
 import "bootstrap"
+//regenerator-runtime
+import "core-js/stable"
+import "regenerator-runtime/runtime"
 
 import { fabric } from "fabric";
 Vue.use(fabric);
