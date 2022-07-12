@@ -54,44 +54,20 @@ export default {
             curparation: {},
         };
     },
-    provide() {
-        const paration = {}
-         Object.defineProperty(paration, "curparation", {
-            enumerable: true,
-            get: () => this.curparation,
-        })
-         return {
-            onSelectedPartition: this.onSelectedPartition,
-            paration,
-        }
-    },
     created() {
         this.socket = io("http://localhost:3030");
-    },
-
-    mounted() {
-
-    },
-    provide() {
-        return {
-            selected: this.selected,
-            curparation: this.curparation
-        }
-    },
-    computed:{
-          onSelectedPartition(value) {
-            console.log(value);
-            // this.curparation = value
-            // console.log("this", this.curparation);
-            // this.socket.emit("client:curParation", this.curparation)
-        },
     },
     methods: {
         setSelected(value) {
             this.selected = value;
             this.socket.emit("client:curSelect", this.selected)
+            this.$bus.$emit("bus:curSelect", this.selected)
         },
-      
+        onSelectedPartition(value) {
+            this.curparation = value
+            this.socket.emit("client:curParation", this.curparation)
+            this.$bus.$emit("bus:curParation", this.curparation)
+        },
     },
 };
 </script>

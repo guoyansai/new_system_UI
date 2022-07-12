@@ -82,7 +82,7 @@
                         @click="$emit('selected-partition', item)">
                         <td>{{ key + 1 }}</td>
                         <td>{{ item.partition_name }}</td>
-                        <td @click="editCategory(item)">
+                        <td @click="editSubmit(item)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="blue" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-edit" data-toggle="modal"
@@ -93,7 +93,7 @@
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item, $event)">
+                                class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item)">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
                                 <line x1="6" y1="6" x2="18" y2="18"></line>
                             </svg>
@@ -110,16 +110,12 @@
 </template>
 
 <script>
-import objectAssign from "core-js/internals/object-assign";
 import $ from "jquery";
-import io from "socket.io-client"
-
 export default {
     name: "cpSelectTable",
 
     data() {
         return {
-            socket: {},
             inp_name: "",
             onEdit_name: "",
             old_onEdit_name: "",
@@ -140,9 +136,7 @@ export default {
             required: true,
         }
     },
-    created() {
-        this.socket = io("http://localhost:3030");
-    },
+   
     mounted() {
         //get all Paration list
         this.getCategory();
@@ -160,8 +154,7 @@ export default {
     methods: {
         //讀取資料庫Partition資料
         getCategory() {
-            // console.log(this.curparation);
-            this.socket.on("server:allCategory", (objs) => {
+            this.$socket.on("server:allCategory", (objs) => {
                 let list = this.addCategoryList;
                 if (list === "undefined") {
                     return;
@@ -172,18 +165,10 @@ export default {
                         list.push(element)
                     });
                 }
-                this.socket.removeAllListeners();
+                this.$socket.removeAllListeners();
             });
 
         },
-
-
-
-        // getCategoryItem(item) {
-        //     this.curParation = item;
-        //     this.$emit('selected-partition', this.curParation)
-        //     //console.log("selected-Partition",item);
-        // },
 
         //新增partition
         addCategory() {
@@ -202,9 +187,8 @@ export default {
                 partition_name: name,
             };
             //SEND DATA TO SOCKET 
-            this.socket.emit("client:adding", data);
-            this.socket.on("server:added", (obj) => {
-                console.log(obj)
+            this.$socket.emit("client:adding", data);
+            this.$socket.on("server:added", (obj) => {
                 let msg = obj.status
                 if (msg === 200) {
                     //連續新增兩次會相同的假性資料PUSH兩次
@@ -224,17 +208,12 @@ export default {
                         text: `${obj.msg}`,
                     });
                 }
-                this.socket.removeAllListeners();
+                this.$socket.removeAllListeners();
             });
-
-
-
-
-
         },
 
         // //編輯Partition name
-        editCategory(item) {
+        editSubmit(item) {
             this.onEdit_id = item.partition_id;
             this.onEdit_name = item.partition_name;
             this.old_onEdit_name = item.partition_name
@@ -259,8 +238,8 @@ export default {
                 new: new_,
                 old: old_,
             }
-            this.socket.emit("client:updating", data)
-            this.socket.on("server:updated", (obj) => {
+            this.$socket.emit("client:updating", data)
+            this.$socket.on("server:updated", (obj) => {
                 let status = obj.status
                 if (status === 200) {
                     let new_ = obj.obj.new
@@ -281,14 +260,14 @@ export default {
                         text: `${obj.msg}`,
                     });
                 }
-                this.socket.removeAllListeners();
+                this.$socket.removeAllListeners();
 
             });
 
         },
 
 
-        deleteSubmit(item, e) {
+        deleteSubmit(item) {
             let list = this.addCategoryList;
             this.$swal.fire({
                 title: 'Are you sure?',
@@ -302,12 +281,11 @@ export default {
                 let cancel = result.isDismissed //===true
                 let yes = result.isConfirmed //===true
                 if (cancel) {
-                    console.log("cancel", cancel);
                     return;
-                } else if (yes) {
-                    this.socket.emit("client:deleteing", item);
-
-                    this.socket.on("server:deleted", (obj) => {
+                } else if (yes) {                  
+                    this.$socket.emit("client:deleteing", item);
+                    this.$socket.on("server:deleted", (obj) => {
+                         console.log("server:deleted", obj);
                         let msg = obj.status
                         if (msg === 200) {
                             let name = obj.obj.partition_name;
@@ -326,7 +304,7 @@ export default {
                                 text: `${obj.msg}`,
                             });
                         }
-                        this.socket.removeAllListeners();
+                        this.$socket.removeAllListeners();
                     });
                 }
             })

@@ -42,7 +42,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             Close
                         </button>
-                        <button type="button" class="btn btn-primary" @click="addAI()">
+                        <button type="button" class="btn btn-primary" @click="addPoint">
                             Save
                         </button>
                     </div>
@@ -67,7 +67,7 @@
                 </tr>
             </thead>
             <tbody id="tobdy">
-                <tr v-for="(item, key) in AI_List[0]" :key="key">
+                <tr v-for="(item, key) in currentPoints" :key="key">
                     <td>{{ key + 1 }}</td>
                     <td>{{ item.AI_name }}</td>
                     <td>{{ item.min_value }}</td>
@@ -96,7 +96,7 @@
 
 <script>
 import $ from "jquery";
-import io from "socket.io-client";
+
 export default {
     name: "cpDIContent",
     props: {
@@ -111,58 +111,79 @@ export default {
                 ai_min: "",
                 ai_max: "",
             },
-            AI_List: [],
+            currentPoints: [],
             currentPartition: [],
+            currentTab: "",
+            currentPartition: {},
         };
     },
-    created() {
-        this.socket = io("http://localhost:3030");
-    },
+
     mounted() {
-        uibuilder.start();
-        uibuilder.onChange("msg", (msg) => {
-            console.info("Msg received from Node-RED server in Home:", msg);
-        });
-        //CP_SelectTable
-        this.$bus.$on("currentPartition", (objs) => {
-
-            this.currentPartition = [];
-            this.currentPartition.push(objs);
-            //this.socket.emit("client:ai_Partition", this.currentPartition);
-
-        });
-
-        // this.socket.on("server:ai_List", (objs) => {
-        //     console.log("server:ai_List",objs[0]);
-        //     this.AI_List = [] 
-        //     this.AI_List.push(objs[0])
-        // });
+        this.getCurData();
     },
 
     methods: {
-        getAIList() {
-
+        getCurData() {
+            //from CP_.vue
+            this.$bus.$on("bus:curParation", msg => {
+                this.currentPartition = msg
+                console.log("currentPartition", this.currentPartition);
+            });
+            //from CP_.vue
+            this.$bus.$on("bus:curSelect", msg => {
+                this.currentTab = msg
+                console.log("curSelect", this.currentTab);
+            });
         },
-        addAI() {
-            console.log("this.currentPartition",);
-
-            var AI_name = this.Physical_AI.ai_name;
-            var min_value = this.Physical_AI.ai_min;
-            var max_value = this.Physical_AI.ai_max;
-            var partition = this.currentPartition[0]
-            var ai_data = {
-                AI_name,
-                min_value,
-                max_value,
-                partition
+        addPoint() {
+            let partition = this.currentPartition
+            let tab = this.currentTab
+            let name = this.Physical_AI.ai_name;
+            let min_value = this.Physical_AI.ai_min;
+            let max_value = this.Physical_AI.ai_max;
+            if (partition.length === 0) {
+                this.$swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: `Please Select Partition`,
+                });
             }
-            this.AI_List[0].push(ai_data)
-            console.log(this.AI_List);
+            if (tab === "") {
+                this.$swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: `Please Select Type`,
+                });
+            }
+            if (partition === "Pysical Analog Input") {
+                let pointData = {
+                    name,
+                    min_value,
+                    max_value,
+                }
+                console.log("pointData",pointData);
+                // this.currentPoints.push(pointData);
+
+                // let addData = { partition, tab, pointData };
+                // this.$socket.emit("client:AI_adding", addData)
+            }
+            // else {
+            //      this.$swal.fire({
+            //         icon: "error",
+            //         title: "Oops...",
+            //         text: `Please Select Object Type`,
+            //     }); 
+
+            // }
+
+
+
+            
             this.Physical_AI.ai_name = ""
             this.Physical_AI.ai_min = ""
             this.Physical_AI.ai_max = ""
             $("#AI_Add_Modal").modal("hide");
-            //this.socket.emit("client:ai_add", ai_data);
+            //this.$socket.emit("client:ai_add", ai_data);
         },
     },
 

@@ -7,7 +7,7 @@
                 <button class="btn btn-outline-success mt-2 my-sm-0" type="submit">Search</button>
                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#CP_PointsList"
                     id="diContent_addBtn">
-                    + Add {{selected}} || {{curparation}}
+                    + Add
                 </button>
             </form>
             <!-- Button trigger modal -->
@@ -26,12 +26,12 @@
                 </tr>
             </thead>
             <tbody id="tobdy">
-                <tr v-for="(item, key) in currentPoints[0]" :key="key" @click="getPointItem(item)">
+                <tr v-for="(item, key) in currentPoints" :key="key" @click="getPointItem(item)">
                     <td>{{ key + 1 }}</td>
                     <td>{{ item.DI_name }}</td>
                     <td>{{ item.digital_type }}</td>
                     <td>{{ item.digital_text }}</td>
-                    <td>
+                    <td @click="editSubmit(item)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-edit" data-toggle="modal" data-target="#diUpdateModal">
@@ -40,7 +40,7 @@
                         </svg>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-x" id="deleteBtn" @click="deletePoint(item, $event)">
+                            class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -206,16 +206,14 @@
 <script>
 
 import $ from "jquery";
-import io from "socket.io-client";
 export default {
     name: "cpDIContent",
     props: {
         isSelected: {
             type: Boolean,
-            default:true,
+            default: true,
         },
     },
-    inject: ['paration',],
     data() {
         return {
             Physical_DI: {
@@ -223,53 +221,43 @@ export default {
                 digital: "",
                 type: "",
             },
-            socket: {},
+            old_Physical_DI: {},
             addPointList: [],
             categoryItem: "",
-            currentTab: "",
-            currentPoints: [],
-            currentPoint: [],
-            itemKey: -1,
 
-            currentPartition: [],
+            currentPoints: [],
+            currentPoint: {},
+            itemKey: -1,
+            //
+            currentTab: "Pysical Digital Input",
+            currentPartition: {},
         };
     },
-    created() {
-         
-        this.socket = io("http://localhost:3030");
-    },
     mounted() {
-        
-        this.getCurrenPoints();
+
+        this.getCurData();
 
         uibuilder.start();
         uibuilder.onChange("msg", (msg) => {
             console.info("Msg received from Node-RED server in Home:", msg);
         });
-        // this.socket.on("server:di_List", (objs) => {
-        //     this.currentPoints = []
-        //     this.currentPoints.push(objs[0])
-        // });
-
 
     },
-
     methods: {
-        getCurrenPoints() {
-           
-        },
-
-        addPointItem() {
-            // socket.on("added", (obj) => {
-            //     this.addCategoryList.push(obj);
-            // });
+        getCurData() {
+            //from CP_.vue
+            this.$bus.$on("bus:curParation", msg => {
+                this.currentPartition = msg
+            });
+            //from CP_.vue
+            this.$bus.$on("bus:curSelect", msg => {
+                this.currentTab = msg
+            });
         },
         addPoint() {
-            //目前選擇的類別名稱
             //current partition / Tab
-            var partition = this.currentPartition
-            var tab = this.currentTab
-            console.log(partition);
+            let partition = this.currentPartition
+            let tab = this.currentTab
 
             if (partition.length === 0) {
                 this.$swal.fire({
@@ -285,30 +273,34 @@ export default {
                     text: `Please Select Type`,
                 });
             }
+            if (partition === "Pysical Digital Input") {
+                // // //加入以下資料
+                var di = this.Physical_DI;
+                var DI_name = di.name;
+                var digital_text = di.digital;
+                var digital_type = di.type;
 
-            // // //加入以下資料
-            var di = this.Physical_DI;
-            var DI_name = di.name;
-            var digital_text = di.digital;
-            var digital_type = di.type;
+                var pointData = {
+                    DI_name: DI_name,
+                    digital_text: digital_text,
+                    digital_type: digital_type,
+                };
+                this.currentPoints.push(pointData);
 
-            var pointData = {
-                DI_name: DI_name,
-                digital_text: digital_text,
-                digital_type: digital_type,
-            };
-            this.currentPoints.push(pointData);
-
-            var addData = { partition, tab, pointData };
-            console.log(addData);
-            //socket.emit("add_di", addData);
-
-            // console.log(this.currentPoints);
-
+                let addData = { partition, tab, pointData };
+                this.$socket.emit("client:DI_adding", addData)
+            }else{
+               this.$swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: `Please Select Object Type`,
+                }); 
+            }
             $("#CP_PointsList").modal("hide");
             this.Physical_DI.name = "";
             this.Physical_DI.digital = "";
             this.Physical_DI.type = "";
+
         },
 
         getPointList() {
@@ -322,18 +314,60 @@ export default {
         },
 
         getPointItem(item, key) {
-
-            this.currentPoint.push(item)
+            this.currentPoint = item
             this.itemKey++;
             this.itemKey = key;
         },
 
+        editSubmit(item) {
+            this.Physical_DI.name = item.DI_name;
+            this.Physical_DI.digital = item.digital_text;
+            this.Physical_DI.type = item.digital_type;
+            this.old_Physical_DI = item;
+        },
         UpdatePoint() {
-            var objs = this.currentPoint
+            let old_ = this.old_Physical_DI;
+            let name = this.Physical_DI.name
+            let digital = this.Physical_DI.digital
+            let type = this.Physical_DI.type
+            let new_ = {
+                name,
+                digital,
+                type
+            }
+            let data = {
+                new: new_,
+                old: old_,
+            }
+            this.$socket.emit("client:DI_updating", data)
+            this.$socket.on("server:DI_updated", (obj) => {
 
+            })
 
         },
-        deletePoint(item, $event) { },
+        deleteSubmit(item) {
+            console.log("item", item);
+            this.$swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                let cancel = result.isDismissed //===true
+                let yes = result.isConfirmed //===true
+                if (cancel) {
+                    return;
+                } else if (yes) {
+                    this.$socket.emit("client:DI_deleteing", item);
+                    this.$socket.on("server:DI_deleted", (obj) => {
+
+                    });
+                }
+            })
+        },
     },
 
 
