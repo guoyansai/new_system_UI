@@ -1,49 +1,21 @@
 <template>
     <div>
-        <!-- Add Paration Modal -->
-        <div class="modal fade" id="CS_AddBtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">add a shope</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group row">
-                                <label for="custom_name" class="col-sm-2 col-form-label">Name</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="custom_name" required
-                                        v-model="newItem.setname">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-                        <button type="button" class="btn btn-primary" @click="saveCustomShopes">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="custom_table">
             <h6>Custom Shapes</h6>
+            <form>
+                <label class="sr-only" for="paration_name">Name</label>
+                <div class="input-group">
+
+                    <input type="text" class="form-control" id="paration_name" placeholder="Name"
+                        v-model.trim="newItem.name">
+                    <button id="custom_addBtn">Add</button>
+                </div>
+            </form>
             <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">No.</th>
                         <th scope="col">Name</th>
-                        <th>
-
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                                data-target="#CS_AddBtn" id="addBtn">
-                                + Add
-                            </button>
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,8 +25,11 @@
                         <td>{{ item.setname }}</td>
 
                     </tr>
+
                 </tbody>
             </table>
+
+
         </div>
 
 
@@ -68,7 +43,7 @@ export default {
     data() {
         return {
             newItem: {
-                setname: "",
+                name: "",
             },
             itemKey: -1,
             editorCanvas: null,
@@ -94,7 +69,7 @@ export default {
 
     methods: {
         getItems() {
-            var objs = JSON.parse(localStorage.getItem("CustomerItem"));
+            let objs = JSON.parse(localStorage.getItem("CustomerItem"));
             if (objs === null) {
                 return;
             }
@@ -102,11 +77,11 @@ export default {
         },
         // save new custom a Shope
         saveCustomShopes() {
-            var canvas = this.editorCanvas;
+            let canvas = this.editorCanvas;
             const objs = canvas.getObjects();
 
-            var shopesList = localStorage.getItem("shopesList");
-            var setname = this.newItem.setname;
+            let shopesList = localStorage.getItem("shopesList");
+            let name = this.newItem.name;
             //var items = this.CustomerItem;
             if (objs != undefined) {
                 if (objs.length >= 2) {
@@ -121,7 +96,7 @@ export default {
                 } else if (objs.length <= 1) {
                     //  console.log(objs);
                 }
-            } else if (setname == "" || shopesList == null) {
+            } else if (name == "" || shopesList == null) {
                 alert("cannot empty");
             }
             this.CustomerItem.push({
@@ -191,13 +166,20 @@ tbody tr:hover {
 
 #custom_table {
     width: 100%;
-    height: 100vh;
+    height: 50vh;
     border: 1px solid black;
     text-align: center;
 }
 
 h6 {
     background: black;
+    color: white;
+}
+
+#custom_addBtn {
+    width: 50px;
+    font-size: 10px;
+    background-color: #007bff;
     color: white;
 }
 </style>

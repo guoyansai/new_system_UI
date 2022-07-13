@@ -5,15 +5,13 @@
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success mt-2 my-sm-0" type="submit">Search</button>
+                   <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#CP_PointsList"
                     id="diContent_addBtn">
                     + Add
                 </button>
             </form>
-            <!-- Button trigger modal -->
-
         </div>
-
 
         <table class="table table-sm">
             <thead class="thead-dark">
@@ -39,8 +37,8 @@
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-x" id="deleteBtn" @click="deleteSubmit(item)">
+                            stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x" id="deleteBtn" 
+                            @click="deleteSubmit(item)">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -132,7 +130,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Physical Digital Input</h5>
+                        <h5 class="modal-title">Update Physical Digital Input</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -234,14 +232,7 @@ export default {
         };
     },
     mounted() {
-
         this.getCurData();
-
-        uibuilder.start();
-        uibuilder.onChange("msg", (msg) => {
-            console.info("Msg received from Node-RED server in Home:", msg);
-        });
-
     },
     methods: {
         getCurData() {

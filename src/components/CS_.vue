@@ -41,8 +41,10 @@
                                         <div class="col-8">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <csShopeEditor :inp_width="inp_width" 
-                                                    :inp_height="inp_height"
+                                                    <csShopeEditor 
+                                                    v-show="isShow"
+                                                        :inp_width="inp_width" 
+                                                        :inp_height="inp_height"
                                                         :inp_color="inp_color"
                                                         :inp_borderW="inp_borderW" 
                                                         :inp_borderC="inp_borderC"
@@ -231,7 +233,7 @@ export default {
             inp_CoordY:[],
             canvasComponent: undefined,
             canvas: undefined,
-
+            isShow:false,
         };
     },
 
@@ -302,12 +304,16 @@ export default {
         createButton(event) {
             let key = event.target.dataset.key
             this.curBtnType = key
+            
+            this.$bus.$emit("curBtnType",this.curBtnType)
             switch (this.curBtnType) {
                 case "Circle":
                     this.canvasComponent.createCir(this.canvas);
+                    this.isShow =false;
                     break;
                 case "Rectangle":
                     this.canvasComponent.createRec(this.canvas);
+                    this.isShow =true;
                     break;
                 case "Line":
                     this.canvasComponent.createLine(this.canvas);
@@ -330,9 +336,8 @@ export default {
             //value.x/y -->> underfind 
             this.inp_CoordX.push(value)
             this.inp_CoordY.push(value.y)
-            console.log(this.inp_CoordX);
-            console.log(this.inp_CoordY);
         },
+        
 
     },
 

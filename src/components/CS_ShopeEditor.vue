@@ -91,6 +91,7 @@ export default {
         inp_font_size: Array,
         // inp_font_family: Array,
         // inp_font_weight: Array,
+        isSelectedBtn:Boolean,
     },
     data() {
         return {

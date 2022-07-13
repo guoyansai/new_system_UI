@@ -8,6 +8,7 @@ export default class CanvasInit {
       width: 800,
       height: 600,
       backgroundColor: "black",
+      preserveObjectStacking : true //圖層
     });
   }
 }

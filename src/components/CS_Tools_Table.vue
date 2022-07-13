@@ -2,22 +2,24 @@
     <div>
         <div>
             <!-- <h6>Shapes</h6> -->
-            <table class="table table-sm" id="shopes_table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Name</th>
-                        <th>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div id="shopes_table">
+                <table class="table table-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Name</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, key) in getshopesList">
+                            <td>{{ key + 1 }}</td>
+                            <td>{{ item }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div id="shopesBtnBox">
                 <span>
                     <button type="button" class="" @click="changeZindexHandle('add')">
@@ -59,22 +61,21 @@ export default {
     data() {
         return {
             getshopesList: [],
-            isActive: false,
-            hasError: false,
             itemKey: -1,
+            curBtnType: "",
         };
     },
     watch: {
         '$props': {
             handler: function (val, oldVal) {
                 console.log('watch val', val)
+                console.log('watch oldVal', oldVal)
             },
             deep: true
         }
     },
     mounted() {
         this.getData();
-    console.log("this.buttons",this.buttons)
 
         this.$bus.$on("editorCanvas", (canvas) => {
             var data = this.getshopesList;
@@ -93,6 +94,11 @@ export default {
     created() { },
     methods: {
         getData() {
+
+            this.$bus.$on("curBtnType", (obj) => {
+                this.curBtnType = obj
+                this.getshopesList.push(this.curBtnType)
+            })
             // var objs = JSON.parse(localStorage.getItem("shopesList"));
             // console.log(objs);
             // if (objs != null || []) {
@@ -128,9 +134,9 @@ export default {
 <style scoped>
 #shopes_table {
     width: 100%;
-    height: 300px;
+    height: 40vh;
+    overflow: scroll;
     border: 1px solid black;
-    text-align: center;
 }
 
 h6 {

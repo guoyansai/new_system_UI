@@ -281,6 +281,7 @@ export default {
       let y = parseInt(inp_position_y.value)
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
+      
 
       const rect = new fabric.Rect({
         height: h,
@@ -292,6 +293,7 @@ export default {
         strokeWidth: borderW,
       });
       canvas.add(rect);
+      console.log("add rect",rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
     },

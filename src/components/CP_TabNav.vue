@@ -3,7 +3,6 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li v-for="tab in tabs" :key="tab" class="breadcrumb-item">
-          <!--  @click="setTab(tab)" -->
           <a class="nav-link" :class="{ active: tab === selected }" @click="setTab(tab)">
             {{ tab }}
           </a>
