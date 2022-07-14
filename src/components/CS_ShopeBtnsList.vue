@@ -1,6 +1,6 @@
 <template>
   <div id="shopebtnselement">
-    <h6>Create Shopes</h6>
+    <!-- <h6>Create Shopes</h6> -->
     <div :key="button.type" v-for="button in buttons">
       <ShopeBtnsElement :button="button" 
       @add-buttons="$emit('add-buttons', $event)"/>
@@ -33,5 +33,6 @@ export default {
 #shopebtnselement {
   width: 100%;
   border: 1px solid black;
+  display: flex;
 }
 </style>

@@ -1,13 +1,13 @@
-<template>
+<!-- <template>
     <div>
         <div class="row">
-            <!-- Draw -->
+            Draw 
             <div class="col">
                 <div id="canvasId">
                     <canvas ref="canvas"></canvas>
                 </div>
-            </div>
-            <!-- Create Shopes -->
+            </div>-->
+            <!-- Create Shopes 
             <div class="col">
                 <h5>Shopes</h5>
                 <div id="tools">
@@ -24,7 +24,7 @@
                                     Circle
                                 </button>
                             </li>
-                            <!-- <li>
+                            <li>
                                 <button
                                     type="button"
                                     class="btn btn-outline-dark btn-sm"
@@ -32,7 +32,7 @@
                                 >
                                     Triangle
                                 </button>
-                            </li> -->
+                            </li>
                             <li>
                                 <button type="button" class="btn btn-outline-dark btn-sm" @click.prevent="createLine()">
                                     Line
@@ -44,7 +44,7 @@
                                 </button>
                             </li>
                             <li>
-                                <!-- image/svg+xml -->
+                               
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">Image</span>
@@ -79,33 +79,33 @@
 
 
                             </li>
-                            <!-- <li>
+                           <li>
                                     <button type="button" class="btn btn-success btn-sm" @click="GroupObjects()">
                                         Group
                                     </button>
-                                </li> -->
+                                </li> 
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="w-100"></div>
-            <!-- Shope Parameters -->
+            </div>-->
+             <!--<div class="w-100"></div>
+            Shope Parameters 
             <div class="col">
                 <h5>Shope Parameter</h5>
                 <div id="shopeParameter">
                     <div class="row">
-                        <!-- width,heigh,fill color ,borderWidth, borderColor-->
+                      
                         <div class="col">
                             <div id="parameter1">
                               
                                 <div class="input-group input-group-sm mb-1" v-show="w">
-                                    <!-- width -->
+                                 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Width</span>
                                     </div>
                                     <input type="number" id="inp_width" v-model.number="inpWidth" class="form-control"
                                         aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
-                                    <!-- height  -->
+                                 
                                      <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Height</span>
                                     </div>
@@ -114,7 +114,7 @@
                                 </div>
                                
 
-                                <!-- fill color  -->
+                       
                                 <div class="input-group input-group-sm mb-3" v-show="fill_color">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Fill Color</span>
@@ -122,10 +122,7 @@
                                     <input type="color" id="fill_color" v-model="drawColor" class="form-control"
                                         aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                 </div>
-
-                                <!-- Border -->
-
-                                <!-- borderWidth -->
+      
                                 <div class="input-group input-group-sm mb-3" v-show="border_w">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">BorderWidth</span>
@@ -135,7 +132,7 @@
                                         aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
-                                <!-- borderColor  -->
+                       
                                 <div class="input-group input-group-sm mb-3" v-show="border_color">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">BorderColor</span>
@@ -146,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- font size ,family, -->
+               
                         <div class="col">
                             <div id="parameter2">
                                 <div class="input-group input-group-sm mb-3" v-show="font_size">
@@ -157,7 +154,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <!-- font family: -->
+                       
                                 <div class="input-group input-group-sm mb-3" v-show="font_family">
                                     <select id="font-family">
                                         <option value="arial">Arial</option>
@@ -208,7 +205,7 @@
                                     <select @change="
                                         setFontWeight($event, font)
                                     ">
-                                        <!-- :value="font.id" -->
+                                     
                                         <option v-for="(
                                                     font, key
                                                 ) in fontWeight" :key="key" :id="font.id">
@@ -222,7 +219,7 @@
                     </div>
                     <div class="w-100"></div>
 
-                    <!-- point X /Y , zoom-->
+            
                     <div class="col">
                         <div id="parameter3">
                             <div v-show="point_x">
@@ -238,7 +235,7 @@
                                         aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
                                 </div>
 
-                                <!-- point Y -->
+                           
                                 <div class="
                                                 input-group input-group-sm
                                                 mb-3
@@ -252,17 +249,17 @@
                             </div>
                         </div>
                     </div>
-                    <!-- line, Point X1-->
+                  
                     <div class="col">
                         <div id="parameter4">
                             <div id="lineBox" v-show="line_X1">
-                                    <!-- Point X1 -->
+                                 
                                     <h5>Coord Point</h5>
                                     <div>
                                         <table class="table table-sm table-dark" v-show="line_X1">
                                             <thead>
                                                 <tr>
-                                                    <!-- <th scope="col">#</th> -->
+                                                  
                                                     <th scope="col">X</th>
                                                     <th scope="col">Y</th>
                                                 </tr>
@@ -271,7 +268,7 @@
                                                 <tr v-for="(
                                                         item, key
                                                     ) in points" :key="key" id="tr">
-                                                    <!-- <td>{{key + 1}}</td> -->
+                                                   
                                                     <td>
                                                         <input type="number" v-model="item.x" class="
                                                                 form-control
@@ -302,7 +299,7 @@
                 </div>
             </div>
         </div>
-        <!-- Shopes List -->
+  
         <div class="col">
             <h5>Shopes</h5>
             <div id="shopesList">
@@ -1450,4 +1447,4 @@ button {
     height: 200px;
     border: 1px solid black;
 }
-</style>
+</style>-->

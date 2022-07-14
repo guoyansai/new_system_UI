@@ -11,7 +11,25 @@ import CanvasInit from "../../public/js/CanvasInit.js"
 
 export default {
   name: "DrawBoard",
-  props: {
+
+  data() {
+    return {
+      canvasId: "mycanvas",
+      canvas: undefined,
+      points: [],
+      // width: Number,
+      // height: Number,
+      // radius: Number,
+      // color: String,
+      // borderW: Number,
+      // borderC: String,
+      // position_x: Number,
+      // position_y: Number,
+      width: null,
+    }
+  },
+  props:
+  {
     inp_width: Number,
     inp_height: Number,
     inp_radius: Number,
@@ -25,21 +43,31 @@ export default {
     inp_font_style: Array,
     inp_arcStart: Number,
     inp_arcEnd: Number,
-    inp_arcEnd: Number,
-
-  },
-  data() {
-    return {
-      canvasId: "mycanvas",
-      canvas: undefined,
-      points: [],
-    }
+    inp_arcEnd: Number
   },
   mounted() {
     this.init();
-  },
+    //  this.width = inp_width;
+    //   this.height = inp_height;
+    //   this.radius = inp_radius;
+    //   this.color = inp_color;
+    //   this.borderW = inp_borderW;
+    //   this.borderC = inp_borderC;
+    //   this.position_x = inp_position_x;
+    //   this.position_y = inp_position_y;
 
+
+  },
+  watch: {
+    //not worked
+    inp_Width(newData, oldData) {
+      this.width = newData
+      console.log("new", newDat, "old", oldData);
+    },
+    immediate: true,
+  },
   methods: {
+
     init() {
       let newCanvas = new CanvasInit(this.canvasId);
       this.canvas = newCanvas.initialiaze();
@@ -245,7 +273,6 @@ export default {
     },
     changeObjArcEnd(event) {
       let curObj = this.canvas.getActiveObject()
-      console.log("D", event);
       let acr = parseInt(event);
       if (curObj) {
         curObj.set({
@@ -256,46 +283,44 @@ export default {
     },
     changeObjCoordX(event) {
       let points = this.points
-      
+
       console.log("changeObjCoordX", points);
-      
+
 
     },
     changeObjCoordY(event) {
       let points = this.points
 
       console.log("changeObjCoordY", points);
-    
+
 
 
     },
 
-
-
     //CREATE SHOPES
     createRec(canvas) {
-      let h = parseInt(inp_height.value)
       let w = parseInt(inp_width.value)
+      let h = parseInt(inp_height.value)
       let color = inp_color.value
       let x = parseInt(inp_position_x.value)
       let y = parseInt(inp_position_y.value)
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
-      
-
       const rect = new fabric.Rect({
-        height: h,
         width: w,
+        height: h,
         fill: color,
         left: x,
         top: y,
         stroke: borderC,
         strokeWidth: borderW,
       });
+      console.log("inp_Width", inp_width);
       canvas.add(rect);
-      console.log("add rect",rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
+      console.log("rect", rect);
+
     },
     createCir(canvas) {
       let color = inp_color.value
@@ -330,8 +355,8 @@ export default {
       points.push(new fabric.Point(parseInt(50), parseInt(50)));
       points.push(new fabric.Point(parseInt(0), parseInt(50)));
 
-      
-      this.$emit("points",points)
+
+      this.$emit("points", points)
 
       // console.log(points);
       const line = new fabric.Polyline(points, {

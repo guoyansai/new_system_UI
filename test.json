@@ -145,3 +145,88 @@
 
     ]
 }
+
+
+
+
+inp_width: {
+    default: 100,
+    type: Number
+  },
+  inp_height: {
+    default: 100,
+    type: Number
+  },
+  
+  inp_radius: {
+    default: 50,
+    type: Number
+  },
+  inp_color: {
+    default: "#ff0000",
+    type: String
+  },
+  inp_borderW: {
+    default: 3,
+    type: Number
+  },
+  inp_borderC: {
+    default: "#228b22",
+    type: String
+  },
+  inp_position_x: {
+    default: 50,
+    type: Number
+  },
+  inp_position_y: {
+    default: 50,
+    type: Number
+  },
+  inp_zoom: {
+    default: 50,
+    type: Number
+  },
+  inp_font_size: {
+    default() {
+      return [6, 8, 10, 12, 14, 16, 18, 20, 24, 26, 28, 30, 32, 72]
+    },
+    type: Array
+  },
+  inp_font_style: {
+    default() { 
+      return [
+      {
+        text: "Regular",
+        id: "normal",
+      },
+      {
+        text: "Bold",
+        id: "bold",
+      },
+      {
+        text: "Italic",
+        id: "italic",
+      },
+      {
+        text: "Underline",
+        id: "text-cmd-underline",
+      },
+      {
+        text: "Linethrough",
+        id: "text-cmd-linethrough",
+      },
+      {
+        text: "Overline",
+        id: "text-cmd-overline",
+      },
+    ]},
+    type: Array
+  },
+  inp_arcStart: {
+    default: 360,
+    type: Number
+  },
+  inp_arcEnd: {
+    default: 360,
+    type: Number
+  },

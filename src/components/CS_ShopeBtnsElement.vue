@@ -20,11 +20,10 @@ export default {
 button{
     width: 100%;
     text-align: center;
-    font-size: 10px;
+    font-size: 14px;
     background-color: #007bff;
-    margin: 2px;
-    border-radius: 5px;
-    border: 0px;
+  
+    border: 1px solid black;
 }
 button:hover{
     background-color: #4ca0fa;

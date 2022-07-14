@@ -5,8 +5,8 @@ export default class CanvasInit {
   }
   initialiaze() {
     return new fabric.Canvas(this.canvasId, {
-      width: 800,
-      height: 600,
+      width: window.innerWidth,
+      height:window.innerHeight,
       backgroundColor: "black",
       preserveObjectStacking : true //圖層
     });

@@ -1,6 +1,6 @@
-<template>
-    <div class="row">
-        <div class="col">
+<template >
+    <div class="row"  >
+           <div class="col">
             <form>
                 <!-- width,height -->
                 <div class="input">
@@ -63,9 +63,9 @@
                     </div>
                 </div>
 
-                
-               
-                      
+
+
+
             </form>
         </div>
 
@@ -89,14 +89,7 @@ export default {
         inp_position_y: Number,
         inp_zoom: Number,
         inp_font_size: Array,
-        // inp_font_family: Array,
-        // inp_font_weight: Array,
-        isSelectedBtn:Boolean,
-    },
-    data() {
-        return {
-
-        };
+        isSelectedBtn: Boolean,
     },
 };
 </script>
