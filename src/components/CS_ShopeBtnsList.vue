@@ -5,7 +5,7 @@
       <ShopeBtnsElement :button="button" 
       @add-buttons="$emit('add-buttons', $event)"/>
     </div>
-    <csAddImageCanvas @add-image="$emit('add-image')"/>
+    <csAddImageCanvas @add-image="$emit('add-image', $event)"/>
 
 
   </div>

@@ -3,7 +3,7 @@
     <label for="inpImage" id="imageLabel"> Image</label>
     <input type="file" class="form-control" accept="image/" 
     id="inpImage"
-    @change="$emit('add-image')">
+    @change="$emit('add-image',$event)">
   
   </div>
 </template>

@@ -38,7 +38,7 @@
 
 <script>
 export default {
-    name: "guiViewShopesTable",
+    name: "guiViewShapesTable",
 
     data() {
         return {};

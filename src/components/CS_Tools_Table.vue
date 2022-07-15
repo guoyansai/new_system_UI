@@ -8,11 +8,10 @@
                         <tr>
                             <th scope="col">No.</th>
                             <th scope="col">Name</th>
-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, key) in getshopesList">
+                        <tr v-for="(item, key) in getShapeStatus" @click="getShapeItem(item)">
                             <td>{{ key + 1 }}</td>
                             <td>{{ item }}</td>
                         </tr>
@@ -51,6 +50,7 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
 export default {
     name: "csToolsTable",
     props: {
@@ -62,21 +62,14 @@ export default {
         return {
             getshopesList: [],
             itemKey: -1,
-            curBtnType: "",
         };
     },
-    watch: {
-        '$props': {
-            handler: function (val, oldVal) {
-                console.log('watch val', val)
-                console.log('watch oldVal', oldVal)
-            },
-            deep: true
-        }
+    computed: {
+        //  ...mapState({
+        //     getShapeStatus: state => state.obj.message
+        // })
     },
     mounted() {
-        this.getData();
-
         this.$bus.$on("editorCanvas", (canvas) => {
             var data = this.getshopesList;
             //console.log(data);
@@ -91,32 +84,15 @@ export default {
             }
         });
     },
-    created() { },
+    computed: {
+        getShapeStatus() {
+            return this.$store.state.getShapeStatus
+        }
+    },
     methods: {
-        getData() {
-
-            this.$bus.$on("curBtnType", (obj) => {
-                this.curBtnType = obj
-                this.getshopesList.push(this.curBtnType)
-            })
-            // var objs = JSON.parse(localStorage.getItem("shopesList"));
-            // console.log(objs);
-            // if (objs != null || []) {
-            //     objs.forEach((element) => {
-            //         var el = JSON.parse(element);
-            //         //console.log(el);
-            //         var obj = el.objects[0];
-            //         this.getshopesList.push(obj);
-            //         // console.log(this.getshopesList);
-            //     });
-            // }
-            // this.$bus.$emit("ref", this.$refs.shopesTbody);
+        getShapeItem(item) {
+            console.log("getShapeItem",item);
         },
-        getDataItem(item, key) {
-            this.itemKey = key;
-            console.log(item);
-        },
-
         changeZindexHandle(type) {
             const obj = editorCanvas.getActiveObject();
 

@@ -691,7 +691,7 @@ export default {
                 "object:modified": (e) => {
                     console.log("modified", e);
                     var obj = this.editorCanvas.getActiveObject();
-                    //a shope "scale"
+                    //a shape "scale"
                     var et = e.target;
                     if ((e.action = "scale")) {
                         var inp_top = (document.getElementById(

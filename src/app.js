@@ -36,6 +36,9 @@ Vue.config.devtools = true;
 import socket from "./socket"
 Vue.prototype.$socket = socket
 
+//store
+import store from "./store/index.js"
+
 
 // store const bus = new Vue();
 Vue.prototype.$bus = new Vue();
@@ -43,6 +46,7 @@ Vue.prototype.$bus = new Vue();
 new Vue({
     el: "#app",
     runtimerCompiler: true,
+    store,
     router,
     render: (h) => h(App),
     

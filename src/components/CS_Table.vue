@@ -115,21 +115,7 @@ export default {
 
         getTableItem(item, key) {
             this.itemKey = key;
-            //console.log(item);
-
-            //var obj_slice = item.shopesList.slice(40, -2);
-            //console.log(obj_slice);
-            //this.editorCanvas.clear();
-            //console.log(JSON.parse(item.shopesList));
-
-            // if (item != [] || item != null) {
-            //   var shope = item.shopesList;
-            //   var canvasJson = `{"version":"5.2.1","objects":[${shope}]}`;
-            //   console.log(canvasJson);
-            //   this.editorCanvas.loadFromJSON(canvasJson);
-            // }
-            this.$bus.$emit("CS_Table_Item", item);
-            this.$bus.$emit("CS_Table_Item_Key", this.itemKey);
+          
         },
     },
 };

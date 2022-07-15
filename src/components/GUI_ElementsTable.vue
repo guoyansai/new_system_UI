@@ -57,8 +57,8 @@ export default {
             var canvas = this.editorCanvas;
 
             //取shopes 中的shopesList
-            var shopes = item.shope;
-            shopes.forEach((element) => {
+            var shapes = item.shape;
+            shapes.forEach((element) => {
                 var el = element.shopesList;
                 var slice_el = JSON.parse(el.slice(1, -1));
 

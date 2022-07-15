@@ -17,20 +17,12 @@ export default {
       canvasId: "mycanvas",
       canvas: undefined,
       points: [],
-      // width: Number,
-      // height: Number,
-      // radius: Number,
-      // color: String,
-      // borderW: Number,
-      // borderC: String,
-      // position_x: Number,
-      // position_y: Number,
       width: null,
     }
   },
   props:
   {
-    inp_width: Number,
+    inp_width:Number,
     inp_height: Number,
     inp_radius: Number,
     inp_color: String,
@@ -45,29 +37,18 @@ export default {
     inp_arcEnd: Number,
     inp_arcEnd: Number
   },
+   computed: {
+        //  ...mapState({
+        //     inp_width: state => state.input.width,
+        //     inp_height: state => state.input.width
+        // })
+    },
   mounted() {
     this.init();
-    //  this.width = inp_width;
-    //   this.height = inp_height;
-    //   this.radius = inp_radius;
-    //   this.color = inp_color;
-    //   this.borderW = inp_borderW;
-    //   this.borderC = inp_borderC;
-    //   this.position_x = inp_position_x;
-    //   this.position_y = inp_position_y;
-
-
+   
   },
-  watch: {
-    //not worked
-    inp_Width(newData, oldData) {
-      this.width = newData
-      console.log("new", newDat, "old", oldData);
-    },
-    immediate: true,
-  },
+ 
   methods: {
-
     init() {
       let newCanvas = new CanvasInit(this.canvasId);
       this.canvas = newCanvas.initialiaze();
@@ -115,7 +96,6 @@ export default {
     changeObjBorderW(event) {
       let curObj = this.canvas.getActiveObject()
       let w = parseInt(event);
-      console.log("changeObjBorderW", w);
       if (curObj) {
         curObj.set({
           strokeWidth: w,
@@ -299,6 +279,7 @@ export default {
 
     //CREATE SHOPES
     createRec(canvas) {
+      console.log("clicked Rect");
       let w = parseInt(inp_width.value)
       let h = parseInt(inp_height.value)
       let color = inp_color.value
@@ -315,17 +296,17 @@ export default {
         stroke: borderC,
         strokeWidth: borderW,
       });
-      console.log("inp_Width", inp_width);
       canvas.add(rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
-      console.log("rect", rect);
-
+      let toJson = JSON.stringify(rect)
+      this.$store.dispatch('updateShapeStatus',{toJson})
     },
     createCir(canvas) {
-      let color = inp_color.value
+      console.log("clicked createCir");
       let x = parseInt(inp_position_x.value)
       let y = parseInt(inp_position_y.value)
+      let color = inp_color.value
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
       let radius = parseInt(inp_radius.value)
@@ -341,6 +322,8 @@ export default {
       canvas.add(circle);
       canvas.setActiveObject(circle);
       canvas.renderAll();
+      let toJson = JSON.stringify(circle)
+      this.$store.dispatch('updateShapeStatus',{toJson})
     },
 
     createLine(canvas) {
@@ -371,6 +354,8 @@ export default {
       canvas.add(line);
       canvas.setActiveObject(line);
       canvas.renderAll();
+      let toJson = JSON.stringify(line)
+      this.$store.dispatch('updateShapeStatus',{toJson})
     },
     createAcr(canvas) {
       let h = parseInt(inp_height.value)
@@ -394,7 +379,8 @@ export default {
       canvas.add(acr);
       canvas.setActiveObject(acr);
       canvas.renderAll();
-      console.log(acr);
+      let toJson = JSON.stringify(acr)
+      this.$store.dispatch('updateShapeStatus',{toJson})
     },
     createText(canvas) {
       let color = inp_color.value
@@ -412,33 +398,37 @@ export default {
       canvas.add(text);
       canvas.setActiveObject(text);
       canvas.renderAll();
+      let toJson = JSON.stringify(text)
+      this.$store.dispatch('updateShapeStatus',{toJson})
     },
     addImageCanvas() {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        fabric.Image.fromURL(
-          reader.result,
-          (img) => {
-            const canvCenter = this.canvas.getCenter();
-            img.left = canvCenter.left;
-            (img.originX = "center"), (img.scaleX = 0.5);
-            img.scaleY = 0.5;
-            this.canvas.add(img);
-            this.canvas.requestRenderAll();
-            img.animate("top", 100, {
-              onChange: this.canvas.renderAll.bind(this.canvas),
-              duration: 1000,
-              easing: fabric.util.ease.easeOutBounce,
-            });
-          },
-          { crossOrigin: "Anonymous" }
-        );
-      });
-
-      const inputImage = document.getElementById("inp_image");
-      const file = inputImage.files[0];
-      reader.readAsDataURL(file);
+      const inputImage = document.getElementById("inpImage");
     },
+    // addImageCanvas() {
+    //   const reader = new FileReader();
+    //   reader.addEventListener("load", () => {
+    //     fabric.Image.fromURL(
+    //       reader.result,
+    //       (img) => {
+    //         const canvCenter = this.canvas.getCenter();
+    //         img.left = canvCenter.left;
+    //         (img.originX = "center"), (img.scaleX = 0.5);
+    //         img.scaleY = 0.5;
+    //         this.canvas.add(img);
+    //         this.canvas.requestRenderAll();
+    //         // img.animate("top", 100, {
+    //         //   onChange: this.canvas.renderAll.bind(this.canvas),
+    //         //   duration: 1000,
+    //         //   easing: fabric.util.ease.easeOutBounce,
+    //         // });
+    //       },
+    //       { crossOrigin: "Anonymous" }
+    //     );
+    //   });
+    //   const inputImage = document.getElementById("inpImage");
+    //   const file = inputImage.files[0];
+    //   reader.readAsDataURL(file);
+    // },
 
 
   }

@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <ShopeBtnsList @add-buttons="createButton($event)" :buttons="buttons"
-                                                @add-image="addImage" />
+                                                @add-image="addImage($event)" />
                                         </div>
                                         <div class="col">
                                             <DrawBoard ref="canvas" @points="getCoordPoints" />
@@ -60,41 +60,43 @@
                                         <div class="col-8">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div v-if="curBtnType === 'Rectangle' || curBtnType === 'Circle'">
-                                                        <csShopeEditor :inp_width="inp_width" :inp_height="inp_height"
-                                                            :inp_color="inp_color" :inp_borderW="inp_borderW"
-                                                            :inp_borderC="inp_borderC" :inp_position_x="inp_position_x"
-                                                            :inp_position_y="inp_position_y" :inp_zoom="inp_zoom"
-                                                            :inp_radius="inp_radius" :inp_arcStart="inp_arcStart"
-                                                            :inp_arcEnd="inp_arcEnd" :inp_font_size="inp_font_size"
-                                                            :inp_font_style="inp_font_style"
-                                                            @change-ObjWidth="changeObjWidth($event)"
-                                                            @change-ObjHeight="changeObjHeight($event)"
-                                                            @change-ObjColor="changeObjColor($event)"
-                                                            @change-ObjBorderW="changeObjBorderW($event)"
-                                                            @change-ObjBorderC="changeObjBorderC($event)"
-                                                            @change-ObjObjPositionX="changeObjPositionX($event)"
-                                                            @change-ObjObjPositionY="changeObjPositionY($event)"
-                                                            @change-ObjRadius="changeObjRadius($event)" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-12" v-if="curBtnType === 'Rectangle'">
-                                                    <csInputsRadius :inp_radius="inp_radius" />
+                                                    <!--  -->
+                                                    <csShopeEditor v-show="isEditor"
+                                                        :inp_width="inp_width" :inp_height="inp_height"
+                                                        :inp_color="inp_color" :inp_borderW="inp_borderW"
+                                                        :inp_borderC="inp_borderC" :inp_position_x="inp_position_x"
+                                                        :inp_position_y="inp_position_y" :inp_zoom="inp_zoom"
+                                                        :inp_radius="inp_radius" :inp_arcStart="inp_arcStart"
+                                                        :inp_arcEnd="inp_arcEnd" :inp_font_size="inp_font_size"
+                                                        :inp_font_style="inp_font_style"
+                                                        @change-ObjWidth="changeObjWidth($event)"
+                                                        @change-ObjHeight="changeObjHeight($event)"
+                                                        @change-ObjColor="changeObjColor($event)"
+                                                        @change-ObjBorderW="changeObjBorderW($event)"
+                                                        @change-ObjBorderC="changeObjBorderC($event)"
+                                                        @change-ObjObjPositionX="changeObjPositionX($event)"
+                                                        @change-ObjObjPositionY="changeObjPositionY($event)"
+                                                        @change-ObjRadius="changeObjRadius($event)" />
                                                 </div>
                                                 <div class="col-12">
-                                                    <csInputsTextBox v-if="curBtnType === ''"
+                                                    <csInputsRadius v-show="isRadius" :inp_radius="inp_radius" />
+                                                </div>
+                                                <div class="col-12">
+                                                    <csInputsTextBox v-show="isTextBox"
                                                         :inp_font_size="inp_font_size" :inp_font_style="inp_font_style"
                                                         @change-textSize="changeTextSize($event)"
                                                         @change-textWeight="changeTextWeight($event)" />
                                                 </div>
-                                                <div class="col-12" v-if="curBtnType === ''">
-                                                    <csInputsArcBox :inp_arcStart="inp_arcStart"
+                                                <div class="col-12">
+                                                    <csInputsArcBox v-show="isArcBox"
+                                                    :inp_arcStart="inp_arcStart"
                                                         :inp_arcEnd="inp_arcEnd"
                                                         @change-ObjArcStart="changeObjArcStart($event)"
                                                         @change-ObjArcEnd="changeObjArcEnd($event)" />
                                                 </div>
-                                                <div class="col-12" v-if="curBtnType === 'Rectangle'">
-                                                    <csInputsCoordBox :inp_CoordX="inp_CoordX" :inp_CoordY="inp_CoordY"
+                                                <div class="col-12">
+                                                    <csInputsCoordBox v-show="isCoordBox"
+                                                    :inp_CoordX="inp_CoordX" :inp_CoordY="inp_CoordY"
                                                         @change-ObjCoordX="changeObjCoordX($event)"
                                                         @change-ObjCoordY="changeObjCoordY($event)" />
                                                 </div>
@@ -177,7 +179,7 @@ export default {
                 }
             ],
             //ShopeEditor
-            inp_width: 100,
+            inp_width:100,
             inp_height: 100,
             inp_radius: 50,
             inp_color: "#ff0000",
@@ -245,7 +247,12 @@ export default {
             inp_CoordY: [],
             canvasComponent: undefined,
             canvas: undefined,
-
+            //component are show?
+            isEditor:false,
+            isRadius:false,
+            isTextBox:false,
+            isArcBox:false,
+            isCoordBox:false,
         };
     },
 
@@ -314,33 +321,66 @@ export default {
         },
 
         createButton(event) {
-            let key = event.target.dataset.key
-            this.curBtnType = key
-
-            this.$bus.$emit("curBtnType", this.curBtnType)
-            switch (this.curBtnType) {
+            let key = event.target.dataset.key      
+            this.curBtnType = key   
+            switch (key) {
                 case "Rectangle":
                     this.canvasComponent.createRec(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = false;
+                    this.isCoordBox = false;
                     break;
                 case "Circle":
                     this.canvasComponent.createCir(this.canvas);
-
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = false;
+                    this.isCoordBox = true;
                     break;
                 case "Line":
                     this.canvasComponent.createLine(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = false;
+                    this.isCoordBox = true;
+                    //points
                     break;
                 case "Acr":
                     this.canvasComponent.createAcr(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = true;
+                    this.isCoordBox = false;
                     break;
                 case "Text":
                     this.canvasComponent.createText(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = true;
+                    this.isArcBox = false;
+                    this.isCoordBox = false;
                     break;
                 default:
             }
-
+            
+           
+           this.$store.dispatch('curShapeStatus',key)
         },
-        addImage() {
+        addImage(event) {
+            let key = event.target.files[0].name;
+            this.$store.dispatch('updateShapeStatus',key)
+            this.$store.dispatch('curShapeStatus',key)
             this.canvasComponent.addImageCanvas();
+            this.isEditor = true;
+            this.isRadius = false;
+            this.isTextBox = false;
+            this.isArcBox = false;
+            this.isCoordBox = false;
         },
 
         getCoordPoints(value) {
@@ -362,8 +402,12 @@ export default {
 </script>
 
 <style scoped>
-* { margin: 0; padding: 0; }  
-#InputBoxs{
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#InputBoxs {
     width: 300px;
 }
 </style>

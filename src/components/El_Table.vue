@@ -189,8 +189,8 @@ export default {
         UpdateElement() {
             var currentCategory = this.currentCategory;
             var itemName = this.getDIitem.name;
-            var shope = this.SelectCSItem;
-            var shopes_Yes = "Yes";
+            var shape = this.SelectCSItem;
+            var shapes_Yes = "Yes";
             var data = JSON.parse(localStorage.getItem("element"));
             //綁定Element至DI ,傳遞字串"Yes"DI LIST清單
             //1.找出目前要儲存的DI資訊
@@ -208,12 +208,12 @@ export default {
                 elementList.push({
                     currentCategory,
                     itemName,
-                    shope,
-                    shopes_Yes,
+                    shape,
+                    shapes_Yes,
                 });
                 console.log(elementList);
-                console.log(elementList[0].shope);
-                var s = elementList[0].shope;
+                console.log(elementList[0].shape);
+                var s = elementList[0].shape;
 
                 //錯誤
                 // if (s.length >= 0) {
@@ -223,7 +223,7 @@ export default {
                 localStorage.setItem("element", JSON.stringify(elementList));
 
             } else {
-                data.push({ currentCategory, itemName, shope, shopes_Yes });
+                data.push({ currentCategory, itemName, shape, shapes_Yes });
              
                 
                 localStorage.setItem("element", JSON.stringify(data));

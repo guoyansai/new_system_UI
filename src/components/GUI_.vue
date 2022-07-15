@@ -6,8 +6,8 @@
             2.Vies Shapes Table
         ----- Right
 
-            1.Shopes Tools
-            2.Customer Shopes Table
+            1.shapes Tools
+            2.Customer shapes Table
         ----- Middle
 
             1.Vie  
@@ -35,16 +35,16 @@
             <div class="row">
                 <div class="col-sm-2">
                    <!-- <div class="form-group">
-                        <label for="shope">Shape Type</label>
+                        <label for="shape">Shape Type</label>
                         <select  
                             class="custom-select"
                            
                             >
                             <!--eslint-disable-next-line-->
                             <!-- <option :key="null" disabled selected>
-                                Select Shope Type
+                                Select shape Type
                             </option> -->
-                            <!-- <option v-for="(item,key) in shopeTypeArr" :key="key" @click="shopeTypeChange(item,key)">
+                            <!-- <option v-for="(item,key) in shapeTypeArr" :key="key" @click="shapeTypeChange(item,key)">
                                 {{ item.text }}
                             </option> 
                         </select>
@@ -68,8 +68,7 @@
 
 <script>
 import guiViewsTable from "./GUI_ViewsTable.vue";
-import guiViewShopesTable from "./GUI_ViewShopesTable.vue";
-import guiShopesTools from "./GUI_ShopesTools.vue";
+import guiViewshapesTable from "./GUI_ViewshapesTable.vue";
 import csTabl from "./CS_Table.vue";
 import guiElementsTable from "./GUI_ElementsTable.vue";
 
@@ -77,8 +76,7 @@ export default {
     name: "GUI",
     components: {
         guiViewsTable,
-        guiViewShopesTable,
-        guiShopesTools,
+        guiViewshapesTable,
         csTabl,
         guiElementsTable
     },
@@ -93,14 +91,14 @@ export default {
             viewList:[],
             viewObjs: [],
 
-            shopeTypeArr: [
+            shapeTypeArr: [
                 { id: 1, text: "Elements (DI / DPS)" },
                 { id: 2, text: "Object Text (AI)" },
-                { id: 3, text: "Custom Shopes" },
+                { id: 3, text: "Custom shapes" },
             ],
-            shope: null,
-            shopeModel:null,
-            shopeTypeKey: 0,
+            shape: null,
+            shapeModel:null,
+            shapeTypeKey: 0,
             currentOption:"",
         };
     },
@@ -124,7 +122,7 @@ export default {
             // loading -> add to canvas
             var objs = this.viewObjs;
 
-            var obj = data.shopesList.slice(30, -2);
+            var obj = data.shapesList.slice(30, -2);
             objs.push(obj);
             var canvasJson = `{"version":"5.2.1","objects":[${objs}]}`;
             this.editorCanvas.loadFromJSON(canvasJson);
@@ -150,13 +148,13 @@ export default {
         },
 
         getElements() {},
-        getCustomShopes() {},
+        getCustomshapes() {},
 
-        shopeTypeChange(item,key) {
+        shapeTypeChange(item,key) {
             console.log(item);
             console.log(key);
           
-            //this.shopeTypeKey = key
+            //this.shapeTypeKey = key
             //var item = e.target.value;
             //this.currentTool = e.target.value;
            // console.log(this.currentTool);
@@ -168,7 +166,7 @@ export default {
                     
 
             //         break;
-            //     case "Custom Shopes":
+            //     case "Custom shapes":
                     
 
             //         break;

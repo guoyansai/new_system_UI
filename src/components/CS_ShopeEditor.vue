@@ -1,5 +1,6 @@
 <template >
-    <div class="row"  >
+    <div class="row">
+        
            <div class="col">
             <form>
                 <!-- width,height -->
@@ -90,6 +91,26 @@ export default {
         inp_zoom: Number,
         inp_font_size: Array,
         isSelectedBtn: Boolean,
+    },
+     data() {
+        return {
+            shapeList: [],
+        };
+    },
+    computed: {
+        getShapeStatus() {
+            return this.$store.state.curShapeStatus
+        }
+    },
+    methods:{
+        // updateWidth(e){
+        //     console.log(e.target.value);
+        //     this.$store.commit('updateWidth', e.target.value)
+        // },
+        // updateHeight(e){
+        //     console.log(e.target.value);
+        //     this.$store.commit('updateHeight(', e.target.value)
+        // },
     },
 };
 </script>

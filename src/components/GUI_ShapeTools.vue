@@ -1,8 +1,8 @@
 <template>
     <div>
-        <!-- drawing shope -->
+        <!-- drawing shape -->
     <div id="objectBtns">
-      <p id="objectTitle">Shopes</p>
+      <p id="objectTitle">Shapes</p>
       <button type="button" class="btn btn-light">
         Rect
       </button>
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-    name: "guiShopesTools",
+    name: "guiShapeTools",
 
     data() {
         return {};
