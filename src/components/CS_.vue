@@ -32,16 +32,6 @@
                                             <DrawBoard ref="canvas" @points="getCoordPoints" />
                                         </div>
                                     </div>
-
-
-                                    <!--:inp_width="inp_width"
-                                        :inp_height="inp_height" :inp_color="inp_color" :inp_borderW="inp_borderW"
-                                        :inp_borderC="inp_borderC" :inp_position_x="inp_position_x"
-                                        :inp_position_y="inp_position_y" :inp_zoom="inp_zoom" :inp_radius="inp_radius"
-                                        :inp_arcEnd="inp_arcEnd" 
-                                        :inp_arcStart="inp_arcStart"
-                                        :inp_font_size="inp_font_size"
-                                        :inp_font_style="inp_font_style" /> -->
                                 </div>
                             </div>
 
@@ -52,12 +42,9 @@
 
                                 <div class="col">
                                     <div class="row">
-                                        <div class="col-4">
+                                    
 
-                                        </div>
-
-
-                                        <div class="col-8">
+                                        <div class="col">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <!--  -->
@@ -68,15 +55,17 @@
                                                         :inp_position_y="inp_position_y" :inp_zoom="inp_zoom"
                                                         :inp_radius="inp_radius" :inp_arcStart="inp_arcStart"
                                                         :inp_arcEnd="inp_arcEnd" :inp_font_size="inp_font_size"
-                                                        :inp_font_style="inp_font_style"
+                                                        :inp_font_style="inp_font_style" :inp_Angle="inp_Angle"
                                                         @change-ObjWidth="changeObjWidth($event)"
                                                         @change-ObjHeight="changeObjHeight($event)"
                                                         @change-ObjColor="changeObjColor($event)"
                                                         @change-ObjBorderW="changeObjBorderW($event)"
                                                         @change-ObjBorderC="changeObjBorderC($event)"
-                                                        @change-ObjObjPositionX="changeObjPositionX($event)"
-                                                        @change-ObjObjPositionY="changeObjPositionY($event)"
-                                                        @change-ObjRadius="changeObjRadius($event)" />
+                                                        @change-ObjPositionX="changeObjPositionX($event)"
+                                                        @change-ObjPositionY="changeObjPositionY($event)"
+                                                        @change-ObjRadius="changeObjRadius($event)" 
+                                                        @change-ObjZoom="changeObjZoom($event)" 
+                                                        />
                                                 </div>
                                                 <div class="col-12">
                                                     <csInputsRadius v-show="isRadius" :inp_radius="inp_radius" />
@@ -99,6 +88,11 @@
                                                     :inp_CoordX="inp_CoordX" :inp_CoordY="inp_CoordY"
                                                         @change-ObjCoordX="changeObjCoordX($event)"
                                                         @change-ObjCoordY="changeObjCoordY($event)" />
+                                                </div>
+                                                <div class="col-12">
+                                                    <csInputsAngle v-show="isAngle"
+                                                    :inp_Angle="inp_Angle" 
+                                                    @change-ObjAngl="changeObjAngle($event)"  />
                                                 </div>
                                             </div>
 
@@ -140,6 +134,7 @@ import csInputsTextBox from "./CS_InputsTextBox.vue"
 import csInputsArcBox from "./CS_InputsArcBox.vue"
 import csInputsCoordBox from "./CS_InputsCoordBox.vue"
 import csInputsRadius from "./CS_InputsRadius.vue"
+import csInputsAngle from "./CS_InputsAngle.vue"
 
 export default {
     name: "CS",
@@ -155,7 +150,8 @@ export default {
         csInputsTextBox,
         csInputsArcBox,
         csInputsCoordBox,
-        csInputsRadius
+        csInputsRadius,
+        csInputsAngle
     },
 
     data() {
@@ -169,11 +165,18 @@ export default {
                     type: "Circle",
                 },
                 {
-                    type: "Line",
+                    type: "Ellipse",
                 },
                 {
                     type: "Acr",
                 },
+                {
+                    type: "Triangle",
+                },
+                {
+                    type: "Line",
+                },
+                
                 {
                     type: "Text",
                 }
@@ -245,6 +248,7 @@ export default {
             inp_arcEnd: 0,
             inp_CoordX: [],
             inp_CoordY: [],
+            inp_Angle:0,
             canvasComponent: undefined,
             canvas: undefined,
             //component are show?
@@ -253,6 +257,7 @@ export default {
             isTextBox:false,
             isArcBox:false,
             isCoordBox:false,
+            isAngle:false,
         };
     },
 
@@ -290,10 +295,17 @@ export default {
             let value = event.target.value
             this.canvasComponent.changeObjPositionY(value)
         },
-        //changeObjZoom
         changeObjRadius(event) {
             let value = event.target.value
             this.canvasComponent.changeObjRadius(value)
+        },
+        changeObjZoom(event){
+            let value = event.target.value
+            this.canvasComponent.changeObjZoom(value)
+        },
+        changeObjAngle(event){
+            let value = event.target.value
+            this.canvasComponent.changeObjAngle(value)
         },
         changeTextSize(event) {
             let value = event.target.value
@@ -319,6 +331,7 @@ export default {
             let value = event.target.value
             this.canvasComponent.changeObjCoordY(value)
         },
+        
 
         createButton(event) {
             let key = event.target.dataset.key      
@@ -340,6 +353,35 @@ export default {
                     this.isArcBox = false;
                     this.isCoordBox = true;
                     break;
+                    //not yet
+                 case "Ellipse":
+                    this.canvasComponent.createEllipse(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = false;
+                    this.isCoordBox = true;
+                    break;
+                 case "Acr":
+                    this.canvasComponent.createAcr(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = true;
+                    this.isCoordBox = false;
+                    break;
+                    //not yet
+                 case "Triangle":
+                    this.canvasComponent.createTriangle(this.canvas);
+                    this.isEditor = true;
+                    this.isRadius = false;
+                    this.isTextBox = false;
+                    this.isArcBox = true;
+                    this.isCoordBox = false;
+                    this.isAngle= false;
+                    break;
+
+
                 case "Line":
                     this.canvasComponent.createLine(this.canvas);
                     this.isEditor = true;
@@ -349,14 +391,7 @@ export default {
                     this.isCoordBox = true;
                     //points
                     break;
-                case "Acr":
-                    this.canvasComponent.createAcr(this.canvas);
-                    this.isEditor = true;
-                    this.isRadius = false;
-                    this.isTextBox = false;
-                    this.isArcBox = true;
-                    this.isCoordBox = false;
-                    break;
+               
                 case "Text":
                     this.canvasComponent.createText(this.canvas);
                     this.isEditor = true;

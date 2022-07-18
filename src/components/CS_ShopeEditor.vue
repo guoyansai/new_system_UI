@@ -55,11 +55,12 @@
                         <div class="form-group col-md-4">
                             <label for="inp_position_y">y</label>
                             <input type="number" class="form-control" id="inp_position_y" :value="inp_position_y"
-                                @input="$emit('change-ObjObjPositionY', $event)">
+                                @input="$emit('change-ObjPositionY', $event)">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inp_zoom">zoom</label>
-                            <input type="number" class="form-control" id="inp_zoom" :value="inp_zoom"><span>%</span>
+                            <input type="number" class="form-control" id="inp_zoom" :value="inp_zoom"
+                            @input="$emit('change-ObjZoom', $event)"><span>%</span>
                         </div>
                     </div>
                 </div>

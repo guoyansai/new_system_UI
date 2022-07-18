@@ -11,7 +11,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, key) in getShapeStatus" @click="getShapeItem(item)">
+                        <tr v-for="(item, key) in getshopesList" @click="getShapeItem(item)">
                             <td>{{ key + 1 }}</td>
                             <td>{{ item }}</td>
                         </tr>
@@ -64,11 +64,11 @@ export default {
             itemKey: -1,
         };
     },
-    computed: {
-        //  ...mapState({
-        //     getShapeStatus: state => state.obj.message
-        // })
-    },
+    // computed: {
+    //      ...mapState({
+    //         getShapeStatus: state => state.shapeStatus
+    //     })
+    // },
     mounted() {
         this.$bus.$on("editorCanvas", (canvas) => {
             var data = this.getshopesList;
@@ -86,12 +86,14 @@ export default {
     },
     computed: {
         getShapeStatus() {
-            return this.$store.state.getShapeStatus
+            return  this.getshopesList = this.$store.state.getShapeStatus
+            
         }
     },
     methods: {
         getShapeItem(item) {
             console.log("getShapeItem",item);
+            console.log("getshopesList",this.getshopesList);
         },
         changeZindexHandle(type) {
             const obj = editorCanvas.getActiveObject();

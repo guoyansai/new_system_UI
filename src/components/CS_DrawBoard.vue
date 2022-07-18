@@ -22,7 +22,7 @@ export default {
   },
   props:
   {
-    inp_width:Number,
+    inp_width: Number,
     inp_height: Number,
     inp_radius: Number,
     inp_color: String,
@@ -37,23 +37,23 @@ export default {
     inp_arcEnd: Number,
     inp_arcEnd: Number
   },
-   computed: {
-        //  ...mapState({
-        //     inp_width: state => state.input.width,
-        //     inp_height: state => state.input.width
-        // })
-    },
+  computed: {
+    //  ...mapState({
+    //     inp_width: state => state.input.width,
+    //     inp_height: state => state.input.width
+    // })
+  },
   mounted() {
     this.init();
-   
+
   },
- 
+
   methods: {
     init() {
       let newCanvas = new CanvasInit(this.canvasId);
       this.canvas = newCanvas.initialiaze();
     },
-    //CHANGE SHOPE PROPERTY
+    //CHANGE SHAPE PROPERTY
     setCanvasObjFillColor(event) {
       let curObj = this.canvas.getActiveObject()
       let color = event;
@@ -154,6 +154,19 @@ export default {
         })
         this.canvas.requestRenderAll();
       }
+    },
+
+    changeObjZoom(event) {
+      let canvas = this.canvas;
+      let curObj = canvas.getActiveObject()
+
+      canvas.setZoom(event)
+      let getZoom = canvas.getZoom();
+      console.log("getZoom", getZoom);
+
+    },
+    changeObjAngle(event) {
+      console.log("event", event);
     },
     changeTextSize(event) {
       let curObj = this.canvas.getActiveObject()
@@ -277,9 +290,8 @@ export default {
 
     },
 
-    //CREATE SHOPES
+    //CREATE SHAPES
     createRec(canvas) {
-      console.log("clicked Rect");
       let w = parseInt(inp_width.value)
       let h = parseInt(inp_height.value)
       let color = inp_color.value
@@ -299,11 +311,13 @@ export default {
       canvas.add(rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
+      let getZoom = canvas.getZoom();
+      let setZoom = getZoom * 2
+      console.log("setZoom", getZoom * 2);
       let toJson = JSON.stringify(rect)
-      this.$store.dispatch('updateShapeStatus',{toJson})
+      this.$store.dispatch('updateShapeStatus', { toJson })
     },
     createCir(canvas) {
-      console.log("clicked createCir");
       let x = parseInt(inp_position_x.value)
       let y = parseInt(inp_position_y.value)
       let color = inp_color.value
@@ -312,9 +326,9 @@ export default {
       let radius = parseInt(inp_radius.value)
 
       const circle = new fabric.Circle({
-        fill: color,
         left: x,
         top: y,
+        fill: color,
         stroke: borderC,
         strokeWidth: borderW,
         radius: radius,
@@ -323,9 +337,70 @@ export default {
       canvas.setActiveObject(circle);
       canvas.renderAll();
       let toJson = JSON.stringify(circle)
-      this.$store.dispatch('updateShapeStatus',{toJson})
+      this.$store.dispatch('updateShapeStatus', { toJson })
     },
-
+    createEllipse(canvas) {
+      let w = parseInt(inp_width.value)
+      let h = parseInt(inp_height.value)
+      let color = inp_color.value
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      const ellipse = new fabric.Ellipse({
+        rx: w,
+        ry: h,
+        fill: color,
+        stroke: borderC,
+        strokeWidth: borderW,
+        selectable: false,
+      });
+      canvas.add(ellipse);
+      canvas.setActiveObject(ellipse);
+      canvas.renderAll();
+      let toJson = JSON.stringify(ellipse)
+      this.$store.dispatch('updateShapeStatus', { toJson })
+    },
+    createAcr(canvas) {
+      let h = parseInt(inp_height.value)
+      let w = parseInt(inp_width.value)
+      let color = inp_color.value
+      let x = parseInt(inp_position_x.value)
+      let y = parseInt(inp_position_y.value)
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      const acr = new fabric.Circle({
+        height: h,
+        width: w,
+        left: x,
+        right: y,
+        radius: w / 2,
+        startAngle: 360,
+        endAngle: 0,
+        stroke: borderC,
+        strokeWidth: borderW,
+      });
+      canvas.add(acr);
+      canvas.setActiveObject(acr);
+      canvas.renderAll();
+      let toJson = JSON.stringify(acr)
+      this.$store.dispatch('updateShapeStatus', { toJson })
+    },
+    createTriangle(canvas) {
+      let w = parseInt(inp_width.value)
+      let h = parseInt(inp_height.value)
+      let color = inp_color.value
+      let borderW = parseInt(inp_borderW.value)
+      let borderC = inp_borderC.value
+      const triangle = new fabric.Triangle({
+        width: w,
+        height: h,
+        fill: color,
+        stroke: borderC,
+        strokeWidth: borderW,
+        angle: 0,
+      });
+      canvas.add(triangle);
+      canvas.setActiveObject(triangle);
+    },
     createLine(canvas) {
       let h = parseInt(inp_height.value)
       let w = parseInt(inp_width.value)
@@ -355,32 +430,7 @@ export default {
       canvas.setActiveObject(line);
       canvas.renderAll();
       let toJson = JSON.stringify(line)
-      this.$store.dispatch('updateShapeStatus',{toJson})
-    },
-    createAcr(canvas) {
-      let h = parseInt(inp_height.value)
-      let w = parseInt(inp_width.value)
-      let color = inp_color.value
-      let x = parseInt(inp_position_x.value)
-      let y = parseInt(inp_position_y.value)
-      let borderW = parseInt(inp_borderW.value)
-      let borderC = inp_borderC.value
-      const acr = new fabric.Circle({
-        height: h,
-        width: w,
-        left: x,
-        right: y,
-        radius: w / 2,
-        startAngle: 360,
-        endAngle: 0,
-        stroke: borderC,
-        strokeWidth: borderW,
-      });
-      canvas.add(acr);
-      canvas.setActiveObject(acr);
-      canvas.renderAll();
-      let toJson = JSON.stringify(acr)
-      this.$store.dispatch('updateShapeStatus',{toJson})
+      this.$store.dispatch('updateShapeStatus', { toJson })
     },
     createText(canvas) {
       let color = inp_color.value
@@ -399,7 +449,7 @@ export default {
       canvas.setActiveObject(text);
       canvas.renderAll();
       let toJson = JSON.stringify(text)
-      this.$store.dispatch('updateShapeStatus',{toJson})
+      this.$store.dispatch('updateShapeStatus', { toJson })
     },
     addImageCanvas() {
       const inputImage = document.getElementById("inpImage");
