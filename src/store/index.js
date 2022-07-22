@@ -6,6 +6,8 @@ const store = new Vuex.Store({
     state: () => ({
         shapeStatus: [],
         curShapeStatus:"",
+        curPartition:{},
+        curTab:"Pysical Digital Input",
         // input:{
         //     width:null,
         //     height:null,
@@ -18,6 +20,13 @@ const store = new Vuex.Store({
         
     }),
     actions: {
+        updatePartitionStatus(context, status){
+            context.commit('PartitionStatus', status)   
+        },
+        updateTabStatus(context, status){
+            context.commit('TabStatus', status)   
+        },
+
         updateShapeStatus(context, status){
             context.commit('ShapeStatus', status)   
         },
@@ -26,6 +35,12 @@ const store = new Vuex.Store({
         },
     },
     mutations: {
+        PartitionStatus(state, status){ 
+            state.curPartition = status
+        },
+        TabStatus(state, status){ 
+            state.curTab = status
+        },
         ShapeStatus(state, status){
             state.shapeStatus.push(status)
         },

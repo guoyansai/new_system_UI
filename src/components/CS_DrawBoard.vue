@@ -35,7 +35,9 @@ export default {
     inp_font_style: Array,
     inp_arcStart: Number,
     inp_arcEnd: Number,
-    inp_arcEnd: Number
+    inp_Angle:Number,
+    inp_rx: Number,
+    inp_ry: Number,
   },
   computed: {
     //  ...mapState({
@@ -146,6 +148,8 @@ export default {
       }
     },
     changeObjRadius(event) {
+
+      console.log("changeObjRadius", event);
       let curObj = this.canvas.getActiveObject()
       let r = parseInt(event);
       if (curObj) {
@@ -167,6 +171,12 @@ export default {
     },
     changeObjAngle(event) {
       console.log("event", event);
+      let curObj = this.canvas.getActiveObject()
+      let e = parseInt(event);
+      if (curObj) {
+        curObj.set({ angle: e })
+        this.canvas.requestRenderAll();
+      }
     },
     changeTextSize(event) {
       let curObj = this.canvas.getActiveObject()
@@ -285,9 +295,27 @@ export default {
       let points = this.points
 
       console.log("changeObjCoordY", points);
-
-
-
+    },
+    changeObjRx(event) {
+      let curObj = this.canvas.getActiveObject()
+      let e = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          rx: e,
+        }).setCoords();
+        this.canvas.requestRenderAll();
+      }
+    },
+    changeObjRy(event) {
+      console.log("changeRx", event);
+      let curObj = this.canvas.getActiveObject()
+      let e = parseInt(event);
+      if (curObj) {
+        curObj.set({
+          ry: e,
+        }).setCoords();
+        this.canvas.requestRenderAll();
+      }
     },
 
     //CREATE SHAPES
@@ -311,9 +339,7 @@ export default {
       canvas.add(rect);
       canvas.setActiveObject(rect);
       canvas.renderAll();
-      let getZoom = canvas.getZoom();
-      let setZoom = getZoom * 2
-      console.log("setZoom", getZoom * 2);
+
       let toJson = JSON.stringify(rect)
       this.$store.dispatch('updateShapeStatus', { toJson })
     },
@@ -340,18 +366,20 @@ export default {
       this.$store.dispatch('updateShapeStatus', { toJson })
     },
     createEllipse(canvas) {
-      let w = parseInt(inp_width.value)
-      let h = parseInt(inp_height.value)
+      let rx = parseInt(inp_rx.value)
+      let ry = parseInt(inp_ry.value)
       let color = inp_color.value
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
+      let angle = inp_Angle.value
+      
       const ellipse = new fabric.Ellipse({
-        rx: w,
-        ry: h,
+        rx: rx,
+        ry: ry,
         fill: color,
         stroke: borderC,
         strokeWidth: borderW,
-        selectable: false,
+        angle: angle,
       });
       canvas.add(ellipse);
       canvas.setActiveObject(ellipse);
@@ -362,24 +390,31 @@ export default {
     createAcr(canvas) {
       let h = parseInt(inp_height.value)
       let w = parseInt(inp_width.value)
-      let color = inp_color.value
+      //let color = inp_color.value
       let x = parseInt(inp_position_x.value)
       let y = parseInt(inp_position_y.value)
       let borderW = parseInt(inp_borderW.value)
       let borderC = inp_borderC.value
+      let arcStart = parseInt(inp_arcStart.value)
+      let arcEnd = parseInt(inp_arcEnd.value)
+
+      console.log("");
       const acr = new fabric.Circle({
         height: h,
         width: w,
         left: x,
         right: y,
         radius: w / 2,
-        startAngle: 360,
-        endAngle: 0,
+        //fill:color,
+        startAngle: arcStart,
+        endAngle: arcEnd,
         stroke: borderC,
         strokeWidth: borderW,
       });
+      
       canvas.add(acr);
       canvas.setActiveObject(acr);
+      console.log("acr",acr);
       canvas.renderAll();
       let toJson = JSON.stringify(acr)
       this.$store.dispatch('updateShapeStatus', { toJson })

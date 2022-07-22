@@ -8,7 +8,8 @@
                 <div class="form-group col-md">
                     <label for="inp_font_size">font size</label>
                     <br/>
-                    <select id="inp_font_size" @change="$emit('change-textSize', $event)">
+                    <select id="inp_font_size" 
+                    @change="$emit('change-textSize', $event)">
                         <option v-for="d in inp_font_size" :value="d">
                             {{d}}
                         </option>

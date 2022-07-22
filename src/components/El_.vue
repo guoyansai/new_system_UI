@@ -40,8 +40,8 @@ import elTable from "./El_Table.vue";
 
 import cpTabNav from "./CP_TabNav.vue";
 import cpDPSContent from "./CP_DPSContent.vue";
-import cpDIContent from "./CP_DI-Content.vue";
-import cpAIContent from "./CP_AI-Content.vue";
+import cpDIContent from "./CP_DIContent.vue";
+import cpAIContent from "./CP_AIContent.vue";
 
 export default {
   name: "El",

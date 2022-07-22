@@ -6,7 +6,7 @@
                     <cpSelectTable @selected-partition="onSelectedPartition" :curparation="curparation" />
                 </div>
                 <div class="col-sm-9">
-                    <cpTabNav :tabs="['Pysical Digital Input', 'Pysical Analog Input', 'Software Digital Input']"
+                    <cpTabNav :tabs="['Pysical Digital Input', 'Pysical Analog Input', 'Pysical Digital Output','Software Digital Input']"
                         :selected="selected" @selected="setSelected">
                         <div>
                             <cpDIContent :isSelected="selected === 'Pysical Digital Input'" />
@@ -15,6 +15,9 @@
                             <cpAIContent :isSelected="selected === 'Pysical Analog Input'" />
                         </div>
                         <div>
+                            <cpDOContent :isSelected="selected === 'Pysical Digital Output'" />
+                        </div>
+                          <div>
                             <cpDPSContent :isSelected="selected === 'Software Digital Input'" />
                         </div>
 
@@ -29,9 +32,10 @@
 import cpSelectTable from "./CP_SelectTable.vue";
 import cpPointsTable from "./CP_PointsList.vue";
 import cpTabNav from "./CP_TabNav.vue";
-import cpDIContent from "./CP_DI-Content.vue";
-import cpAIContent from "./CP_AI-Content.vue";
+import cpDIContent from "./CP_DIContent.vue";
+import cpAIContent from "./CP_AIContent.vue";
 import cpDPSContent from "./CP_DPSContent.vue";
+import cpDOContent from "./CP_DOContent.vue";
 
 
 
@@ -45,6 +49,7 @@ export default {
         cpDIContent,
         cpAIContent,
         cpDPSContent,
+        cpDOContent,
     },
 
     data() {
@@ -61,12 +66,14 @@ export default {
         setSelected(value) {
             this.selected = value;
             this.socket.emit("client:curSelect", this.selected)
-            this.$bus.$emit("bus:curSelect", this.selected)
+            // this.$bus.$emit("bus:curSelect", this.selected)
+            this.$store.dispatch('updateTabStatus', this.selected)
         },
         onSelectedPartition(value) {
             this.curparation = value
             this.socket.emit("client:curParation", this.curparation)
-            this.$bus.$emit("bus:curParation", this.curparation)
+            this.$store.dispatch('updatePartitionStatus', this.curparation)
+
         },
     },
 };

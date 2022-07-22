@@ -4,7 +4,7 @@
         <div class="input">
             <!-- radius -->
             <div class="form-group col-md">
-                <label for="inp_radius">radius</label>
+                <label for="inp_radius">diameter</label>
                 <input type="number" class="form-control" id="inp_radius" :value="inp_radius"
                     @input="$emit('change-ObjRadius', $event)" />
             </div>
